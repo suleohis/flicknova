@@ -1,5 +1,11 @@
 {
   "app_name": "FlickNova",
   "app_name_title": "Your Cinematic Universe",
-  "loading_library": "Loading Library"
+  "loading_library": "Loading Library",
+  "welcome_text": "Your Universe of Cinema\nAwaits",
+  "welcome_button": "Start Exploring",
+  "onboarding_title1": "Personalized\nRecommendations",
+  "onboarding_content1": "Our smart engine finds gems tailored\nto your unique taste.",
+
+  "continue_text": "Continue"
 }

@@ -16,4 +16,20 @@ class SEn extends S {
 
   @override
   String get loading_library => 'Loading Library';
+
+  @override
+  String get welcome_text => 'Your Universe of Cinema\nAwaits';
+
+  @override
+  String get welcome_button => 'Start Exploring';
+
+  @override
+  String get onboarding_title1 => 'Personalized\nRecommendations';
+
+  @override
+  String get onboarding_content1 =>
+      'Our smart engine finds gems tailored\nto your unique taste.';
+
+  @override
+  String get continue_text => 'Continue';
 }

@@ -30,11 +30,14 @@ class $AssetsBrandingGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
-  /// File path: assets/images/background.png
-  AssetGenImage get background => const AssetGenImage('assets/images/background.png');
+  /// File path: assets/images/splash_background.png
+  AssetGenImage get splashBackground => const AssetGenImage('assets/images/splash_background.png');
+
+  /// File path: assets/images/welcome_background.png
+  AssetGenImage get welcomeBackground => const AssetGenImage('assets/images/welcome_background.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [background];
+  List<AssetGenImage> get values => [splashBackground, welcomeBackground];
 }
 
 class Assets {

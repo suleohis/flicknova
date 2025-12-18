@@ -17,6 +17,7 @@ final routerProvider = Provider<GoRouter>((ref) {
     initialLocation: AppRouter.splash,
     routes: [
       splashRoute,
+      welcomeRoute,
     ],
     errorPageBuilder: (context, state) => MaterialPage(
       key: state.pageKey,

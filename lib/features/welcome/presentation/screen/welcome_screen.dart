@@ -1,0 +1,58 @@
+import 'package:flicknova/core/theme/app_colors.dart';
+import 'package:flicknova/core/theme/extensions/context_theme_extension.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../../gen/assets.gen.dart';
+import '../../../../generated/app_localizations.dart';
+import '../../../../shared/widgets/buttons/secondary_button.dart';
+
+class WelcomeScreen extends ConsumerWidget {
+  const WelcomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, ref) {
+    return Scaffold(
+      body: Container(
+          width: double.infinity,
+          height: double.infinity,
+          padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 20.h),
+          decoration: BoxDecoration(
+              image: DecorationImage(image: AssetImage(Assets.images.welcomeBackground.path), fit: BoxFit.fill)
+          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(),
+            Column(
+              children: [
+                Text(
+                  S.of(context).app_name,
+                  textAlign: TextAlign.center,
+                  style: context.h1.copyWith(
+                    fontSize: 60
+                  ),
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                Text(
+                  S.of(context).welcome_text,
+                  textAlign: TextAlign.center,
+                  style: context.h4.copyWith(
+                      fontWeight: FontWeight.w400
+                  ),
+                ),
+              ],
+            ),
+            SecondaryButton(
+              text: S.of(context).welcome_button,
+              onPressed: () {},
+              suffixIcon: Icon(Icons.arrow_forward, color: AppColors.secondary, size: 24.w,),
+            )
+          ],
+      ),
+    ));
+  }
+}

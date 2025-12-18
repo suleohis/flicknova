@@ -110,6 +110,36 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Loading Library'**
   String get loading_library;
+
+  /// No description provided for @welcome_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Universe of Cinema\nAwaits'**
+  String get welcome_text;
+
+  /// No description provided for @welcome_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Exploring'**
+  String get welcome_button;
+
+  /// No description provided for @onboarding_title1.
+  ///
+  /// In en, this message translates to:
+  /// **'Personalized\nRecommendations'**
+  String get onboarding_title1;
+
+  /// No description provided for @onboarding_content1.
+  ///
+  /// In en, this message translates to:
+  /// **'Our smart engine finds gems tailored\nto your unique taste.'**
+  String get onboarding_content1;
+
+  /// No description provided for @continue_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continue_text;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

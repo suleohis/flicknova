@@ -7,7 +7,7 @@ class AppColors {
 
   static const primary = Color(0xFFE50914);
   static const onPrimary = Color(0xFFFFFFFF);
-  static const secondary = Color(0xFF2A8080);
+  static const secondary = Color(0xFF2559F4);
   static const onSecondary = Color(0xFFFFFFFF);
 
   static const textPrimary = Color(0xFFFFFFFF);
@@ -28,4 +28,5 @@ class AppColors {
   // Backgrounds
   static const background = Color(0xFF000000);
   static const surface = Color(0xFF000000);
+  static const transparent = Color(0x00000000);
 }
