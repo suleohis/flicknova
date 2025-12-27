@@ -4,8 +4,13 @@
   "loading_library": "Loading Library",
   "welcome_text": "Your Universe of Cinema\nAwaits",
   "welcome_button": "Start Exploring",
+
   "onboarding_title1": "Personalized\nRecommendations",
   "onboarding_content1": "Our smart engine finds gems tailored\nto your unique taste.",
+  "onboarding_title2": "Curated Collections",
+  "onboarding_content2": "Explore expertly crafted lists and embark on personal film journeys.",
+  "onboarding_title3": "Save to Watchlist",
+  "onboarding_content3": "Never forget a film! Organize your favorites and build your ultimate watchlist.",
 
   "continue_text": "Continue"
 }

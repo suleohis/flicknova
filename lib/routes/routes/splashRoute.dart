@@ -1,4 +1,5 @@
 
+import 'package:flicknova/features/onboarding/presentation/screen/onboarding_screen.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/splash/presentation/screen/splash_screen.dart';
@@ -16,5 +17,11 @@ final welcomeRoute = GoRoute(
   path: AppRouter.welcome,
   pageBuilder: (context, state) => const NoTransitionPage(
     child: WelcomeScreen(),
+  ),
+);
+final onboardingRoute = GoRoute(
+  path: AppRouter.onboarding,
+  pageBuilder: (context, state) => const NoTransitionPage(
+    child: OnboardingScreen(),
   ),
 );

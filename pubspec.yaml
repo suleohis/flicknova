@@ -67,6 +67,7 @@ flutter:
     - assets/lottie/
     - assets/icons/
     - assets/images/
+    - assets/images/onboarding/
 
 
 # FLUTTER_GEN CONFIG (this is what was missing!)

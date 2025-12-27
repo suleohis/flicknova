@@ -30,6 +30,12 @@ class $AssetsBrandingGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// Directory path: assets/images/onboarding
+  $AssetsImagesOnboardingGen get onboarding => const $AssetsImagesOnboardingGen();
+
+  /// File path: assets/images/onboarding_background.png
+  AssetGenImage get onboardingBackground => const AssetGenImage('assets/images/onboarding_background.png');
+
   /// File path: assets/images/splash_background.png
   AssetGenImage get splashBackground => const AssetGenImage('assets/images/splash_background.png');
 
@@ -37,7 +43,23 @@ class $AssetsImagesGen {
   AssetGenImage get welcomeBackground => const AssetGenImage('assets/images/welcome_background.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [splashBackground, welcomeBackground];
+  List<AssetGenImage> get values => [onboardingBackground, splashBackground, welcomeBackground];
+}
+
+class $AssetsImagesOnboardingGen {
+  const $AssetsImagesOnboardingGen();
+
+  /// File path: assets/images/onboarding/onboarding_1.png
+  AssetGenImage get onboarding1 => const AssetGenImage('assets/images/onboarding/onboarding_1.png');
+
+  /// File path: assets/images/onboarding/onboarding_2.png
+  AssetGenImage get onboarding2 => const AssetGenImage('assets/images/onboarding/onboarding_2.png');
+
+  /// File path: assets/images/onboarding/onboarding_3.png
+  AssetGenImage get onboarding3 => const AssetGenImage('assets/images/onboarding/onboarding_3.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [onboarding1, onboarding2, onboarding3];
 }
 
 class Assets {

@@ -24,9 +24,19 @@ class AppColors {
   static const white300 = Color(0xFF565551);
   static const white400 = Color(0xFF73737C);
 
+  /// Grey
+  static const gullGrey = Color(0xFF9CA3AF);
+
+
 
   // Backgrounds
   static const background = Color(0xFF000000);
   static const surface = Color(0xFF000000);
   static const transparent = Color(0x00000000);
+
+  // Linear Gradient
+  static const buttonGradient = [
+    Color(0xFF4A90E2),
+    Color(0xFFA076F9),
+  ];
 }

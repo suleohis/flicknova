@@ -31,5 +31,19 @@ class SEn extends S {
       'Our smart engine finds gems tailored\nto your unique taste.';
 
   @override
+  String get onboarding_title2 => 'Curated Collections';
+
+  @override
+  String get onboarding_content2 =>
+      'Explore expertly crafted lists and embark on personal film journeys.';
+
+  @override
+  String get onboarding_title3 => 'Save to Watchlist';
+
+  @override
+  String get onboarding_content3 =>
+      'Never forget a film! Organize your favorites and build your ultimate watchlist.';
+
+  @override
   String get continue_text => 'Continue';
 }

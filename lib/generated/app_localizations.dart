@@ -135,6 +135,30 @@ abstract class S {
   /// **'Our smart engine finds gems tailored\nto your unique taste.'**
   String get onboarding_content1;
 
+  /// No description provided for @onboarding_title2.
+  ///
+  /// In en, this message translates to:
+  /// **'Curated Collections'**
+  String get onboarding_title2;
+
+  /// No description provided for @onboarding_content2.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore expertly crafted lists and embark on personal film journeys.'**
+  String get onboarding_content2;
+
+  /// No description provided for @onboarding_title3.
+  ///
+  /// In en, this message translates to:
+  /// **'Save to Watchlist'**
+  String get onboarding_title3;
+
+  /// No description provided for @onboarding_content3.
+  ///
+  /// In en, this message translates to:
+  /// **'Never forget a film! Organize your favorites and build your ultimate watchlist.'**
+  String get onboarding_content3;
+
   /// No description provided for @continue_text.
   ///
   /// In en, this message translates to:

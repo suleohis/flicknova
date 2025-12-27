@@ -30,13 +30,17 @@ class PrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool shouldEnable = isEnabled && !isLoading && onPressed != null;
 
-    return SizedBox(
+    return Container(
       height: height ?? 56.h,
       width: width ?? double.infinity,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(colors: AppColors.buttonGradient),
+          borderRadius: BorderRadius.circular(30.r),
+    ),
       child: ElevatedButton(
         onPressed: shouldEnable ? onPressed : null,
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.secondary,
+          backgroundColor: AppColors.transparent,
           disabledBackgroundColor: AppColors.secondary.withValues(alpha: 0.4),
           foregroundColor: AppColors.white,
           elevation: 0,

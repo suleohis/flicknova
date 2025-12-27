@@ -1,8 +1,10 @@
 import 'package:flicknova/core/theme/app_colors.dart';
 import 'package:flicknova/core/theme/extensions/context_theme_extension.dart';
+import 'package:flicknova/routes/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../gen/assets.gen.dart';
 import '../../../../generated/app_localizations.dart';
@@ -48,7 +50,9 @@ class WelcomeScreen extends ConsumerWidget {
             ),
             SecondaryButton(
               text: S.of(context).welcome_button,
-              onPressed: () {},
+              onPressed: () {
+                context.push(AppRouter.onboarding);
+              },
               suffixIcon: Icon(Icons.arrow_forward, color: AppColors.secondary, size: 24.w,),
             )
           ],

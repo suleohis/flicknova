@@ -18,7 +18,7 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     return  ScreenUtilInit(
-      designSize: const Size(402, 884),
+      designSize: const Size(402, 894),
       minTextAdapt: true,
       splitScreenMode: true,
       child: MaterialApp.router(
