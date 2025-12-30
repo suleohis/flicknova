@@ -1,7 +1,7 @@
 import 'package:flicknova/core/theme/extensions/context_theme_extension.dart';
 import 'package:flutter/material.dart';
 
-import '../../theme/app_colors.dart';
+import '../core/theme/app_colors.dart';
 
 class AppLoading extends StatelessWidget {
   final String? message;

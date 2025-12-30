@@ -1,4 +1,4 @@
-import 'package:flicknova/core/shared/widget/app_loading.dart';
+import 'package:flicknova/shared/app_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

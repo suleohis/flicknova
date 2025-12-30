@@ -18,7 +18,10 @@ dependencies:
 
 
   # HTTP & Caching
-  dio: ^5.9.0
+  dio: ^5.9.0  # Latest stable Dec 2025 – battle-tested HTTP client
+  dio_cache_interceptor: ^4.0.5
+  pretty_dio_logger: ^1.4.0 # Beautiful colored logs with request/response/stack
+  stack_trace: ^1.12.1     # Clean stack trace formatting
 
   # Backend & Auth
   crypto: ^3.0.7

@@ -5,7 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'core/env/env.dart';
+import 'core/network/tmdb_client.dart';
+import 'env/env.dart';
 import 'core/theme/app_theme.dart';
 import 'firebase_options.dart';
 import 'generated/app_localizations.dart';
@@ -19,6 +20,10 @@ void main() async {
     url: Env.supabaseUrl,
     anonKey: Env.supabaseAnonKey,
   );
+
+  // Initialize TMDB client early
+  TmdbClient().init();
+
   runApp(ProviderScope(
       child: MyApp()));
 }
