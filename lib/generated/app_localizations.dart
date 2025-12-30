@@ -159,6 +159,66 @@ abstract class S {
   /// **'Never forget a film! Organize your favorites and build your ultimate watchlist.'**
   String get onboarding_content3;
 
+  /// No description provided for @get_started.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get get_started;
+
+  /// No description provided for @sign_in_note.
+  ///
+  /// In en, this message translates to:
+  /// **'Join FlickNova to discover your\nnext favorite film.'**
+  String get sign_in_note;
+
+  /// No description provided for @sign_in_with_google.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with Google'**
+  String get sign_in_with_google;
+
+  /// No description provided for @sign_in_with_apple.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with Apple'**
+  String get sign_in_with_apple;
+
+  /// No description provided for @agreeTo.
+  ///
+  /// In en, this message translates to:
+  /// **'By continuing, you agree to FlickNova\'s'**
+  String get agreeTo;
+
+  /// No description provided for @termsOfService.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get termsOfService;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicy;
+
+  /// No description provided for @and.
+  ///
+  /// In en, this message translates to:
+  /// **' and '**
+  String get and;
+
+  /// No description provided for @no_id_token.
+  ///
+  /// In en, this message translates to:
+  /// **'No ID Token'**
+  String get no_id_token;
+
+  /// No description provided for @sign_in_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in failed'**
+  String get sign_in_failed;
+
   /// No description provided for @continue_text.
   ///
   /// In en, this message translates to:

@@ -45,5 +45,36 @@ class SEn extends S {
       'Never forget a film! Organize your favorites and build your ultimate watchlist.';
 
   @override
+  String get get_started => 'Get Started';
+
+  @override
+  String get sign_in_note =>
+      'Join FlickNova to discover your\nnext favorite film.';
+
+  @override
+  String get sign_in_with_google => 'Sign in with Google';
+
+  @override
+  String get sign_in_with_apple => 'Sign in with Apple';
+
+  @override
+  String get agreeTo => 'By continuing, you agree to FlickNova\'s';
+
+  @override
+  String get termsOfService => 'Terms of Service';
+
+  @override
+  String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get and => ' and ';
+
+  @override
+  String get no_id_token => 'No ID Token';
+
+  @override
+  String get sign_in_failed => 'Sign in failed';
+
+  @override
   String get continue_text => 'Continue';
 }

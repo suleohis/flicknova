@@ -12,5 +12,17 @@
   "onboarding_title3": "Save to Watchlist",
   "onboarding_content3": "Never forget a film! Organize your favorites and build your ultimate watchlist.",
 
+  "get_started": "Get Started",
+  "sign_in_note": "Join FlickNova to discover your\nnext favorite film.",
+  "sign_in_with_google": "Sign in with Google",
+  "sign_in_with_apple": "Sign in with Apple",
+  "agreeTo": "By continuing, you agree to FlickNova's",
+  "termsOfService": "Terms of Service",
+  "privacyPolicy": "Privacy Policy",
+  "and": " and ",
+
+  "no_id_token": "No ID Token",
+  "sign_in_failed": "Sign in failed",
+
   "continue_text": "Continue"
 }

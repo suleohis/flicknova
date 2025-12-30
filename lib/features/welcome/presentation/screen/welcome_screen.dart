@@ -17,23 +17,23 @@ class WelcomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     return Scaffold(
       body: Container(
-          width: double.infinity,
-          height: double.infinity,
+          width: .infinity,
+          height: .infinity,
           padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 20.h),
           decoration: BoxDecoration(
-              image: DecorationImage(image: AssetImage(Assets.images.welcomeBackground.path), fit: BoxFit.fill)
+              image: DecorationImage(image: AssetImage(Assets.images.welcomeBackground.path), fit: .fill)
           ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: .spaceBetween,
           children: [
             Container(),
             Column(
               children: [
                 Text(
                   S.of(context).app_name,
-                  textAlign: TextAlign.center,
+                  textAlign: .center,
                   style: context.h1.copyWith(
-                    fontSize: 60
+                    fontSize: 60.sp
                   ),
                 ),
                 SizedBox(
@@ -41,9 +41,9 @@ class WelcomeScreen extends ConsumerWidget {
                 ),
                 Text(
                   S.of(context).welcome_text,
-                  textAlign: TextAlign.center,
+                  textAlign: .center,
                   style: context.h4.copyWith(
-                      fontWeight: FontWeight.w400
+                      fontWeight: .w400
                   ),
                 ),
               ],
@@ -53,6 +53,7 @@ class WelcomeScreen extends ConsumerWidget {
               onPressed: () {
                 context.push(AppRouter.onboarding);
               },
+              height: 58.h,
               suffixIcon: Icon(Icons.arrow_forward, color: AppColors.secondary, size: 24.w,),
             )
           ],

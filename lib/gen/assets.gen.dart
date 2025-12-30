@@ -23,12 +23,31 @@ class $AssetsBrandingGen {
   /// File path: assets/branding/logo_name.svg
   SvgGenImage get logoName => const SvgGenImage('assets/branding/logo_name.svg');
 
+  /// File path: assets/branding/logo_no_b.svg
+  SvgGenImage get logoNoB => const SvgGenImage('assets/branding/logo_no_b.svg');
+
   /// List of all assets
-  List<SvgGenImage> get values => [logo, logoName];
+  List<SvgGenImage> get values => [logo, logoName, logoNoB];
+}
+
+class $AssetsIconsGen {
+  const $AssetsIconsGen();
+
+  /// File path: assets/icons/apple_icon.svg
+  SvgGenImage get appleIcon => const SvgGenImage('assets/icons/apple_icon.svg');
+
+  /// File path: assets/icons/google_icon.svg
+  SvgGenImage get googleIcon => const SvgGenImage('assets/icons/google_icon.svg');
+
+  /// List of all assets
+  List<SvgGenImage> get values => [appleIcon, googleIcon];
 }
 
 class $AssetsImagesGen {
   const $AssetsImagesGen();
+
+  /// File path: assets/images/auth_background.png
+  AssetGenImage get authBackground => const AssetGenImage('assets/images/auth_background.png');
 
   /// Directory path: assets/images/onboarding
   $AssetsImagesOnboardingGen get onboarding => const $AssetsImagesOnboardingGen();
@@ -43,7 +62,7 @@ class $AssetsImagesGen {
   AssetGenImage get welcomeBackground => const AssetGenImage('assets/images/welcome_background.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [onboardingBackground, splashBackground, welcomeBackground];
+  List<AssetGenImage> get values => [authBackground, onboardingBackground, splashBackground, welcomeBackground];
 }
 
 class $AssetsImagesOnboardingGen {
@@ -66,6 +85,7 @@ class Assets {
   const Assets._();
 
   static const $AssetsBrandingGen branding = $AssetsBrandingGen();
+  static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
 }
 

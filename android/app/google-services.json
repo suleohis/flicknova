@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "140319445760",
+    "project_id": "flicknova-app",
+    "storage_bucket": "flicknova-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:140319445760:android:28c41693ea79d1f56e99e5",
+        "android_client_info": {
+          "package_name": "com.example.flicknova"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClVD1gdftQN8KVxiWMppDCADUL0pq1Xmw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
