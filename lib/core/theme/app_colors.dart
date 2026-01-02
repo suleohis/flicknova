@@ -39,23 +39,38 @@ class AppColors {
   static const blueGlow = Color(0xFF00B0FF);
   static const cyanGlow = Color(0xFF00FFFF);
 
-
   // Backgrounds
   static const background = Color(0xFF000000);
   static const surface = Color(0xFF000000);
   static const transparent = Color(0x00000000);
 
   // Linear Gradient
-  static const buttonGradient = [
-    Color(0xFF4A90E2),
-    Color(0xFFA076F9),
-  ];
+  static const buttonGradient = [Color(0xFF4A90E2), Color(0xFFA076F9)];
 
   // Flush Bar
   static const flushBarSuccess = Color(0xFF81C784);
   static const flushBarSuccessBackground = Color(0xFF1E1E1E);
-  static const flushBarInfo =  [Color(0xFF00D4FF), Color(0xFF8B5CF6)];
-  static const flushBarError =  Color(0xFFE57373);
-  static const flushBarErrorBackground =  Color(0xFF1E1E1E);
+  static const flushBarInfo = [Color(0xFF00D4FF), Color(0xFF8B5CF6)];
+  static const flushBarError = Color(0xFFE57373);
+  static const flushBarErrorBackground = Color(0xFF1E1E1E);
   static const warning = Color(0xFF1E1E1E);
+
+  // Home screen
+  static const cardBackground = Color(0xFF1A1A1A);
+  static const rating = Color(0xFFFFC107);
+  static const playButton = Color(0xFF00D4FF);
+  static const chipBackground = Color(0xFF2C2C2C);
+  static const chipSelected = Color(0xFF00D4FF);
+  static const numberGradient = [Color(0xFF1A1A1A), Color(0xFF000000)];
+
+  // Detail screen
+  static const castCardBackground = Color(0xFF252525);
+  static const metaIconColor = Color(0xFF9E9E9E);
+  static const divider = Color(0xFF2C2C2C);
+
+  // Search screen
+  static const searchBarBackground = Color(0xFF1C1C1C);
+  static const trendingBadge = Color(0xFF00D4FF);
+  static const rankBadge = Color(0xFFFFB800);
+  static const recentlyViewedBorder = Color(0xFF00D4FF);
 }

@@ -22,7 +22,7 @@ class ShimmerGenreRow extends StatelessWidget {
           alignment: .center,
           children: List.generate(
             8, // Show 8 placeholder pills (covers most genres)
-                (_) => const _ShimmerGenreButton(),
+            (_) => const _ShimmerGenreButton(),
           ),
         ),
       ),
@@ -43,7 +43,7 @@ class _ShimmerGenreButton extends StatelessWidget {
         border: Border.all(color: Colors.grey[800]!, width: 2),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.4),
+            color: Colors.black.withValues(alpha: 0.4),
             blurRadius: 20,
             spreadRadius: 2,
           ),

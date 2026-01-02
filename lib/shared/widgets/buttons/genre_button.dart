@@ -8,25 +8,30 @@ class GenreButton extends StatelessWidget {
   final int index;
   final bool isSelected;
 
-  const GenreButton({super.key, required this.label, required this.isSelected, this.onPressed, required this.index});
-
+  const GenreButton({
+    super.key,
+    required this.label,
+    required this.isSelected,
+    this.onPressed,
+    required this.index,
+  });
 
   @override
   Widget build(BuildContext context) {
-     const List<Color> _baseColors = [
+    const List<Color> baseColors = [
       AppColors.purple, // Purple (Action style)
       AppColors.blue, // Electric Blue
       AppColors.cyan, // Teal/Cyan (Sci-Fi style)
     ];
 
-     const List<Color> _glowColors = [
+    const List<Color> glowColors = [
       AppColors.purpleGlow,
       AppColors.blueGlow,
       AppColors.cyanGlow,
     ];
 
-    final baseColor = _baseColors[index];
-    final glowColor = _glowColors[index];
+    final baseColor = baseColors[index];
+    final glowColor = glowColors[index];
 
     return GestureDetector(
       onTap: onPressed,
@@ -35,27 +40,34 @@ class GenreButton extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
           color: AppColors.shark,
-          gradient: !isSelected ? null : LinearGradient(
-            colors: [
-              baseColor.withValues(alpha: 0.2),
-              baseColor.withValues(alpha: 0.1),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+          gradient: !isSelected
+              ? null
+              : LinearGradient(
+                  colors: [
+                    baseColor.withValues(alpha: 0.2),
+                    baseColor.withValues(alpha: 0.1),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+          boxShadow: !isSelected
+              ? null
+              : [
+                  BoxShadow(
+                    color: glowColor.withValues(alpha: 0.1),
+                    blurRadius: 10,
+                    spreadRadius: 2,
+                  ),
+                  BoxShadow(
+                    color: glowColor.withValues(alpha: 0.2),
+                    blurRadius: 20,
+                    spreadRadius: 4,
+                  ),
+                ],
+          border: Border.all(
+            color: !isSelected ? AppColors.white100 : glowColor,
+            width: 1,
           ),
-          boxShadow: !isSelected ? null : [
-            BoxShadow(
-              color: glowColor.withValues(alpha: 0.1),
-              blurRadius: 10,
-              spreadRadius: 2,
-            ),
-            BoxShadow(
-              color: glowColor.withValues(alpha: 0.2),
-              blurRadius: 20,
-              spreadRadius: 4,
-            ),
-          ],
-          border: Border.all(color: !isSelected ? AppColors.white100 : glowColor, width: 1),
         ),
         child: Text(
           label,

@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/auth_repository.dart';
 
@@ -8,7 +6,7 @@ class SignInWithAppleUseCase {
 
   SignInWithAppleUseCase(this.repository);
 
-  Future<UserEntity> call(BuildContext context) async {
-    return await repository.signInWithApple(context);
+  Future<UserEntity> call() async {
+    return await repository.signInWithApple();
   }
 }

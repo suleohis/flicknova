@@ -96,4 +96,199 @@ class SEn extends S {
   @override
   String get choose_favorite_genres_content =>
       'Select at least 3 to personalize your\nrecommendations.';
+
+  @override
+  String get trending_now => 'Trending Now';
+
+  @override
+  String get popular_on_crackshaft => 'Popular on Crackshaft';
+
+  @override
+  String get for_you => 'For You';
+
+  @override
+  String get top_10_in_your_country => 'Top 10 in Your Country';
+
+  @override
+  String get new_releases => 'New Releases';
+
+  @override
+  String get play_trailer => 'Play Trailer';
+
+  @override
+  String get see_all => 'See all';
+
+  @override
+  String get tv => 'TV';
+
+  @override
+  String get movies => 'Movies';
+
+  @override
+  String get anime => 'Anime';
+
+  @override
+  String get all => 'All';
+
+  @override
+  String get overview => 'Overview';
+
+  @override
+  String get cast => 'Cast';
+
+  @override
+  String get you_may_also_like => 'You May Also Like';
+
+  @override
+  String get add_to_watchlist => 'Add to Watchlist';
+
+  @override
+  String get share => 'Share';
+
+  @override
+  String get director => 'Director';
+
+  @override
+  String get budget => 'Budget';
+
+  @override
+  String get revenue => 'Revenue';
+
+  @override
+  String runtime_minutes(Object minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String get no_overview => 'No overview available';
+
+  @override
+  String get search => 'Search';
+
+  @override
+  String get search_movies_shows_actors => 'Search movies, shows, actors...';
+
+  @override
+  String get recently_viewed => 'Recently Viewed';
+
+  @override
+  String get trending_searches => 'Trending Searches';
+
+  @override
+  String get browse_by_genre => 'Browse by Genre';
+
+  @override
+  String get top_results => 'Top Results';
+
+  @override
+  String get top => 'Top';
+
+  @override
+  String get shows => 'Shows';
+
+  @override
+  String get clear => 'Clear';
+
+  @override
+  String get action => 'Action';
+
+  @override
+  String get sci_fi => 'Sci-Fi';
+
+  @override
+  String get comedy => 'Comedy';
+
+  @override
+  String get thriller => 'Thriller';
+
+  @override
+  String get adventure => 'Adventure';
+
+  @override
+  String get horror => 'Horror';
+
+  @override
+  String get romance => 'Romance';
+
+  @override
+  String get trending => 'Trending';
+
+  @override
+  String get my_watchlist => 'My Watchlist';
+
+  @override
+  String hours_saved(Object hours) {
+    return '$hours hours saved';
+  }
+
+  @override
+  String episodes_watched(Object total, Object watched) {
+    return '$watched of $total episodes watched';
+  }
+
+  @override
+  String get remove_from_watchlist => 'Remove from Watchlist';
+
+  @override
+  String get watchlist_empty => 'Your watchlist is empty';
+
+  @override
+  String get watchlist_empty_message =>
+      'Add movies and shows to start building your collection';
+
+  @override
+  String get grid_view => 'Grid View';
+
+  @override
+  String get list_view => 'List View';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String movies_watched(Object count) {
+    return '$count Movies Watched';
+  }
+
+  @override
+  String total_hours(Object hours) {
+    return '${hours}h Total';
+  }
+
+  @override
+  String avg_rating(Object rating) {
+    return '$rating★ Avg Rating';
+  }
+
+  @override
+  String get favorite_genres => 'Favorite Genres';
+
+  @override
+  String year_in_review(Object year) {
+    return '$year in Review';
+  }
+
+  @override
+  String get cinematic_journey => 'Your cinematic journey of the year';
+
+  @override
+  String get recent_ratings => 'Recent Ratings';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String get log_out => 'Log Out';
+
+  @override
+  String get other => 'Other';
+
+  @override
+  String get logout_confirmation => 'Are you sure you want to log out?';
+
+  @override
+  String get cancel => 'Cancel';
 }

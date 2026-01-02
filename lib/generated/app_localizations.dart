@@ -260,6 +260,366 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Select at least 3 to personalize your\nrecommendations.'**
   String get choose_favorite_genres_content;
+
+  /// No description provided for @trending_now.
+  ///
+  /// In en, this message translates to:
+  /// **'Trending Now'**
+  String get trending_now;
+
+  /// No description provided for @popular_on_crackshaft.
+  ///
+  /// In en, this message translates to:
+  /// **'Popular on Crackshaft'**
+  String get popular_on_crackshaft;
+
+  /// No description provided for @for_you.
+  ///
+  /// In en, this message translates to:
+  /// **'For You'**
+  String get for_you;
+
+  /// No description provided for @top_10_in_your_country.
+  ///
+  /// In en, this message translates to:
+  /// **'Top 10 in Your Country'**
+  String get top_10_in_your_country;
+
+  /// No description provided for @new_releases.
+  ///
+  /// In en, this message translates to:
+  /// **'New Releases'**
+  String get new_releases;
+
+  /// No description provided for @play_trailer.
+  ///
+  /// In en, this message translates to:
+  /// **'Play Trailer'**
+  String get play_trailer;
+
+  /// No description provided for @see_all.
+  ///
+  /// In en, this message translates to:
+  /// **'See all'**
+  String get see_all;
+
+  /// No description provided for @tv.
+  ///
+  /// In en, this message translates to:
+  /// **'TV'**
+  String get tv;
+
+  /// No description provided for @movies.
+  ///
+  /// In en, this message translates to:
+  /// **'Movies'**
+  String get movies;
+
+  /// No description provided for @anime.
+  ///
+  /// In en, this message translates to:
+  /// **'Anime'**
+  String get anime;
+
+  /// No description provided for @all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
+
+  /// No description provided for @overview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get overview;
+
+  /// No description provided for @cast.
+  ///
+  /// In en, this message translates to:
+  /// **'Cast'**
+  String get cast;
+
+  /// No description provided for @you_may_also_like.
+  ///
+  /// In en, this message translates to:
+  /// **'You May Also Like'**
+  String get you_may_also_like;
+
+  /// No description provided for @add_to_watchlist.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to Watchlist'**
+  String get add_to_watchlist;
+
+  /// No description provided for @share.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get share;
+
+  /// No description provided for @director.
+  ///
+  /// In en, this message translates to:
+  /// **'Director'**
+  String get director;
+
+  /// No description provided for @budget.
+  ///
+  /// In en, this message translates to:
+  /// **'Budget'**
+  String get budget;
+
+  /// No description provided for @revenue.
+  ///
+  /// In en, this message translates to:
+  /// **'Revenue'**
+  String get revenue;
+
+  /// No description provided for @runtime_minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String runtime_minutes(Object minutes);
+
+  /// No description provided for @no_overview.
+  ///
+  /// In en, this message translates to:
+  /// **'No overview available'**
+  String get no_overview;
+
+  /// No description provided for @search.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get search;
+
+  /// No description provided for @search_movies_shows_actors.
+  ///
+  /// In en, this message translates to:
+  /// **'Search movies, shows, actors...'**
+  String get search_movies_shows_actors;
+
+  /// No description provided for @recently_viewed.
+  ///
+  /// In en, this message translates to:
+  /// **'Recently Viewed'**
+  String get recently_viewed;
+
+  /// No description provided for @trending_searches.
+  ///
+  /// In en, this message translates to:
+  /// **'Trending Searches'**
+  String get trending_searches;
+
+  /// No description provided for @browse_by_genre.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse by Genre'**
+  String get browse_by_genre;
+
+  /// No description provided for @top_results.
+  ///
+  /// In en, this message translates to:
+  /// **'Top Results'**
+  String get top_results;
+
+  /// No description provided for @top.
+  ///
+  /// In en, this message translates to:
+  /// **'Top'**
+  String get top;
+
+  /// No description provided for @shows.
+  ///
+  /// In en, this message translates to:
+  /// **'Shows'**
+  String get shows;
+
+  /// No description provided for @clear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clear;
+
+  /// No description provided for @action.
+  ///
+  /// In en, this message translates to:
+  /// **'Action'**
+  String get action;
+
+  /// No description provided for @sci_fi.
+  ///
+  /// In en, this message translates to:
+  /// **'Sci-Fi'**
+  String get sci_fi;
+
+  /// No description provided for @comedy.
+  ///
+  /// In en, this message translates to:
+  /// **'Comedy'**
+  String get comedy;
+
+  /// No description provided for @thriller.
+  ///
+  /// In en, this message translates to:
+  /// **'Thriller'**
+  String get thriller;
+
+  /// No description provided for @adventure.
+  ///
+  /// In en, this message translates to:
+  /// **'Adventure'**
+  String get adventure;
+
+  /// No description provided for @horror.
+  ///
+  /// In en, this message translates to:
+  /// **'Horror'**
+  String get horror;
+
+  /// No description provided for @romance.
+  ///
+  /// In en, this message translates to:
+  /// **'Romance'**
+  String get romance;
+
+  /// No description provided for @trending.
+  ///
+  /// In en, this message translates to:
+  /// **'Trending'**
+  String get trending;
+
+  /// No description provided for @my_watchlist.
+  ///
+  /// In en, this message translates to:
+  /// **'My Watchlist'**
+  String get my_watchlist;
+
+  /// No description provided for @hours_saved.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} hours saved'**
+  String hours_saved(Object hours);
+
+  /// No description provided for @episodes_watched.
+  ///
+  /// In en, this message translates to:
+  /// **'{watched} of {total} episodes watched'**
+  String episodes_watched(Object total, Object watched);
+
+  /// No description provided for @remove_from_watchlist.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from Watchlist'**
+  String get remove_from_watchlist;
+
+  /// No description provided for @watchlist_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Your watchlist is empty'**
+  String get watchlist_empty;
+
+  /// No description provided for @watchlist_empty_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Add movies and shows to start building your collection'**
+  String get watchlist_empty_message;
+
+  /// No description provided for @grid_view.
+  ///
+  /// In en, this message translates to:
+  /// **'Grid View'**
+  String get grid_view;
+
+  /// No description provided for @list_view.
+  ///
+  /// In en, this message translates to:
+  /// **'List View'**
+  String get list_view;
+
+  /// No description provided for @profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
+  /// No description provided for @movies_watched.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Movies Watched'**
+  String movies_watched(Object count);
+
+  /// No description provided for @total_hours.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours}h Total'**
+  String total_hours(Object hours);
+
+  /// No description provided for @avg_rating.
+  ///
+  /// In en, this message translates to:
+  /// **'{rating}★ Avg Rating'**
+  String avg_rating(Object rating);
+
+  /// No description provided for @favorite_genres.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorite Genres'**
+  String get favorite_genres;
+
+  /// No description provided for @year_in_review.
+  ///
+  /// In en, this message translates to:
+  /// **'{year} in Review'**
+  String year_in_review(Object year);
+
+  /// No description provided for @cinematic_journey.
+  ///
+  /// In en, this message translates to:
+  /// **'Your cinematic journey of the year'**
+  String get cinematic_journey;
+
+  /// No description provided for @recent_ratings.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Ratings'**
+  String get recent_ratings;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// No description provided for @log_out.
+  ///
+  /// In en, this message translates to:
+  /// **'Log Out'**
+  String get log_out;
+
+  /// No description provided for @other.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get other;
+
+  /// No description provided for @logout_confirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to log out?'**
+  String get logout_confirmation;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

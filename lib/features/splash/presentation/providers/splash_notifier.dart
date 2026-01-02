@@ -29,6 +29,9 @@ class SplashNotifier extends Notifier<SplashState> {
     try {
       final profile = await _repository.getCurrentProfile();
       state = SplashState(profile: profile);
+
+      if (!context.mounted) return;
+
       if (profile == null) {
         context.push(AppRouter.welcome);
       } else if (profile.favoriteGenres == null) {
@@ -36,7 +39,6 @@ class SplashNotifier extends Notifier<SplashState> {
       } else {
         context.push(AppRouter.dashboard);
       }
-
     } catch (e) {
       state = SplashState(error: e.toString());
       if (kDebugMode) {
@@ -49,4 +51,3 @@ class SplashNotifier extends Notifier<SplashState> {
 final splashNotifier = NotifierProvider<SplashNotifier, SplashState>(
   () => SplashNotifier(),
 );
-

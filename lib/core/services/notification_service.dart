@@ -16,7 +16,7 @@ class NotificationService {
       backgroundColor: AppColors.flushBarSuccess.withValues(alpha: 0.9),
       boxShadows: [
         BoxShadow(
-          color: Colors.black.withOpacity(0.5),
+          color: Colors.black.withValues(alpha: 0.5),
           blurRadius: 20,
           offset: const Offset(0, 8),
         ),
@@ -55,9 +55,7 @@ class NotificationService {
   }) {
     Flushbar(
       message: message,
-      backgroundGradient: const LinearGradient(
-        colors: AppColors.flushBarInfo,
-      ),
+      backgroundGradient: const LinearGradient(colors: AppColors.flushBarInfo),
       duration: const Duration(seconds: 3),
       flushbarPosition: FlushbarPosition.TOP,
     ).show(context);

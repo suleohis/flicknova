@@ -1,5 +1,3 @@
-import 'package:flicknova/core/models/genre_entity.dart';
-
 import 'genre_model.dart';
 import 'profile_entity.dart';
 

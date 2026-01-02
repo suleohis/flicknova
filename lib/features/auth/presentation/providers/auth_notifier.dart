@@ -1,11 +1,12 @@
-import 'package:flicknova/core/models/profile_entity.dart';
 import 'package:flicknova/core/network/tmdb_service.dart';
+import 'package:flicknova/core/services/notification_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/models/genre_model.dart';
 import '../../../../core/models/profile_model.dart';
+import '../../../../generated/app_localizations.dart';
 import '../../../../routes/app_router.dart';
 import '../../data/repositories/auth_repository_impl.dart';
 import '../../domain/entities/user_entity.dart';
@@ -19,12 +20,7 @@ class AuthState {
   final bool isLoading;
   final String? error;
 
-  AuthState({
-    this.user,
-    this.profile,
-    this.isLoading = false,
-    this.error,
-  });
+  AuthState({this.user, this.profile, this.isLoading = false, this.error});
 
   // Fixed: Proper copyWith method
   AuthState copyWith({
@@ -63,17 +59,28 @@ class AuthNotifier extends Notifier<AuthState> {
   }
 
   Future<void> signInWithGoogle(BuildContext context) async {
+    final s = S.of(context);
     state = state.copyWith(isLoading: true, error: null);
     try {
-      final user = await _signInWithGoogle(context);
+      final user = await _signInWithGoogle();
       state = state.copyWith(user: user, isLoading: false);
+
+      // Show success notification
+      if (context.mounted) {
+        NotificationService.showSuccess(
+          context: context,
+          title: s.success,
+          message: s.sign_in_success,
+        );
+      }
 
       // Wait for profile to be fetched
       await getCurrentProfile();
 
       if (!context.mounted) return;
 
-      if (state.profile?.favoriteGenres == null || state.profile!.favoriteGenres!.isEmpty) {
+      if (state.profile?.favoriteGenres == null ||
+          state.profile!.favoriteGenres!.isEmpty) {
         context.go(AppRouter.favoriteGenre); // Use .go instead of .push
       } else {
         context.go(AppRouter.dashboard);
@@ -84,25 +91,40 @@ class AuthNotifier extends Notifier<AuthState> {
         print('Sign in error: $e');
       }
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Sign in failed: $e')),
+        NotificationService.showError(
+          context: context,
+          title: s.error,
+          message: e.toString().contains('No ID Token')
+              ? s.no_id_token
+              : s.sign_in_failed,
         );
       }
     }
   }
 
   Future<void> signInWithApple(BuildContext context) async {
+    final s = S.of(context);
     state = state.copyWith(isLoading: true, error: null);
     try {
-      final user = await _signInWithApple(context);
+      final user = await _signInWithApple();
       state = state.copyWith(user: user, isLoading: false);
+
+      // Show success notification
+      if (context.mounted) {
+        NotificationService.showSuccess(
+          context: context,
+          title: s.success,
+          message: s.sign_in_success,
+        );
+      }
 
       // Wait for profile to be fetched
       await getCurrentProfile();
 
       if (!context.mounted) return;
 
-      if (state.profile?.favoriteGenres == null || state.profile!.favoriteGenres!.isEmpty) {
+      if (state.profile?.favoriteGenres == null ||
+          state.profile!.favoriteGenres!.isEmpty) {
         context.go(AppRouter.favoriteGenre);
       } else {
         context.go(AppRouter.dashboard);
@@ -113,8 +135,12 @@ class AuthNotifier extends Notifier<AuthState> {
         print('Sign in error: $e');
       }
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Sign in failed: $e')),
+        NotificationService.showError(
+          context: context,
+          title: s.error,
+          message: e.toString().contains('No ID Token')
+              ? s.no_id_token
+              : s.sign_in_failed,
         );
       }
     }
@@ -147,11 +173,13 @@ class AuthNotifier extends Notifier<AuthState> {
 
     // Update state with new profile
     var updatedProfile = state.profile!;
-     updatedProfile.favoriteGenres = updatedGenres;
+    updatedProfile.favoriteGenres = updatedGenres;
     state = state.copyWith(profile: updatedProfile);
 
     if (kDebugMode) {
-      print('Updated favorite genres: ${updatedGenres.map((g) => g.name).toList()}');
+      print(
+        'Updated favorite genres: ${updatedGenres.map((g) => g.name).toList()}',
+      );
     }
   }
 

@@ -6,15 +6,19 @@ import '../network/tmdb_service.dart';
 extension TmdbImage on BuildContext {
   String tmdbBackdropUrl(String? path) {
     if (path == null || path.isEmpty) return '';
-    final bool isLargeScreen = ScreenUtil().screenWidth > 600; // Tablet+
-    final size = isLargeScreen ? TmdbService.backdropSizeLarge : TmdbService.backdropSize;
+    final bool isLargeScreen = ScreenUtil().screenWidth > 600;
+    final size = isLargeScreen
+        ? TmdbService.backdropSizeLarge
+        : TmdbService.backdropSize;
     return '${TmdbService.baseImageUrl}$size$path';
   }
 
   String tmdbPosterUrl(String? path) {
     if (path == null || path.isEmpty) return '';
     final bool isLargeScreen = ScreenUtil().screenWidth > 600;
-    final size = isLargeScreen ? TmdbService.posterSizeLarge : TmdbService.posterSize;
+    final size = isLargeScreen
+        ? TmdbService.posterSizeLarge
+        : TmdbService.posterSize;
     return '${TmdbService.baseImageUrl}$size$path';
   }
 
