@@ -1,5 +1,5 @@
 import 'package:flicknova/core/theme/app_colors.dart';
-import 'package:flicknova/core/theme/extensions/context_theme_extension.dart';
+import 'package:flicknova/core/extensions/context_theme_extension.dart';
 import 'package:flicknova/generated/app_localizations.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -75,7 +75,7 @@ class SignInScreen extends ConsumerWidget {
                       textAlign: TextAlign.center,
                       style: context.body.copyWith(
                         fontSize: 17.sp,
-                        color: AppColors.white.withValues(alpha: .6),
+                        color: AppColors.white600,
                       ),
                     ),
                     SizedBox(height: 40.h),

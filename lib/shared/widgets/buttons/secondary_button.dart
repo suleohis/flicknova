@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/theme/app_colors.dart';
-import '../../../core/theme/extensions/context_theme_extension.dart';
+import '../../../core/extensions/context_theme_extension.dart';
 
 class SecondaryButton extends StatelessWidget {
   final String text;

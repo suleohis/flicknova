@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
+import 'package:flicknova/core/models/profile_model.dart';
+import 'package:flicknova/core/utils/api_const.dart';
 import 'package:flicknova/features/auth/data/models/user_model.dart';
 import 'package:flicknova/features/auth/domain/repositories/auth_repository.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../../core/models/profile_entity.dart';
+import '../../../../core/services/notification_service.dart';
 import '../../../../generated/app_localizations.dart';
 import '../../domain/entities/user_entity.dart';
 
@@ -33,14 +37,20 @@ class AuthRepositoryImpl implements AuthRepository {
     final googleAuth = googleUser.authentication;
     final idToken = googleAuth.idToken;
 
-    if (idToken == null) throw Exception(S.of(context).no_id_token);
+    if(idToken == null) {
+      NotificationService.showError(context: context, title: S.of(context).error, message: S.of(context).no_id_token);
+      throw Exception(S.of(context).no_id_token);
+    }
 
     final response = await _client.auth.signInWithIdToken(
       provider: OAuthProvider.google,
       idToken: idToken,
     );
-
-    if (response.user == null) throw Exception(S.of(context).sign_in_failed);
+    if (response.user == null) {
+      NotificationService.showError(context: context, title: S.of(context).error, message: S.of(context).sign_in_failed);
+      throw Exception(S.of(context).sign_in_failed);
+    }
+    NotificationService.showSuccess(context: context, title: S.of(context).success, message: S.of(context).sign_in_success);
     return UserModel.fromSupabase(response.user!);
   }
   
@@ -55,7 +65,10 @@ class AuthRepositoryImpl implements AuthRepository {
     );
 
     final idToken = credential.identityToken;
-    if(idToken == null) throw Exception(S.of(context).no_id_token);
+    if(idToken == null) {
+      NotificationService.showError(context: context, title: S.of(context).error, message: S.of(context).no_id_token);
+      throw Exception(S.of(context).no_id_token);
+    }
 
     final response = await _client.auth.signInWithIdToken(
       provider: OAuthProvider.apple,
@@ -63,7 +76,11 @@ class AuthRepositoryImpl implements AuthRepository {
       nonce: rawNonce
     );
 
-    if (response.user == null) throw Exception(S.of(context).sign_in_failed);
+    if (response.user == null) {
+      NotificationService.showError(context: context, title: S.of(context).error, message: S.of(context).sign_in_failed);
+      throw Exception(S.of(context).sign_in_failed);
+    }
+    NotificationService.showSuccess(context: context, title: S.of(context).success, message: S.of(context).sign_in_success);
     return UserModel.fromSupabase(response.user!);
   }
 
@@ -79,5 +96,23 @@ class AuthRepositoryImpl implements AuthRepository {
       final user = event.session?.user;
       return user != null ? UserModel.fromSupabase(user) :null;
     });
+  }
+
+  @override
+  Future<ProfileModel?>  getCurrentProfile() async {
+    final user = _client.auth.currentUser;
+    if (user == null) return null;
+    final response = await _client.from(ApiConst.profiles).select().eq(ApiConst.id, user.id).single();
+
+    return ProfileModel.fromJson(response);
+  }
+
+  @override
+  Future<ProfileModel?> updateProfile(ProfileModel profile) async {
+    final user = _client.auth.currentUser;
+    if (user == null) return null;
+    final response = await _client.from(ApiConst.profiles).update(profile.toJson());
+
+    return ProfileModel.fromJson(response);
   }
 }

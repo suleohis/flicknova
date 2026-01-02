@@ -4,10 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/theme/extensions/context_theme_extension.dart';
+import '../../../../core/extensions/context_theme_extension.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../../generated/app_localizations.dart';
 import '../../../../routes/app_router.dart';
+import '../providers/splash_notifier.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -17,27 +18,20 @@ class SplashScreen extends ConsumerStatefulWidget {
 }
 
 class _SplashScreenState extends ConsumerState<SplashScreen> {
-  late final GoRouter _router;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _router = GoRouter.of(context);
-  }
 
   @override
   void initState() {
     super.initState();
 
-    // Show splash for 3 seconds, THEN trigger redirect
-    Future.delayed(const Duration(seconds: 3), () {
-      // This re-triggers the redirect in app_router.dart
-      context.replace(AppRouter.welcome);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(splashNotifier.notifier).getCurrentProfile(context);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final splashState = ref.watch(splashNotifier);
+
     return Scaffold(
       body: Container(
         width: .infinity,

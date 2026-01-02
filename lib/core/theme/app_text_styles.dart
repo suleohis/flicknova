@@ -54,7 +54,7 @@ class AppTextStyles {
 
   static TextStyle body(BuildContext context) =>  GoogleFonts.splineSans(
     fontWeight: FontWeight.w400,
-    fontSize: _scale(context, mobile: 15, tablet: 16, desktop: 17),
+    fontSize: _scale(context, mobile: 16, tablet: 17, desktop: 18),
     height: 1.5,
     color: AppColors.textPrimary,
   );

@@ -70,11 +70,30 @@ class SEn extends S {
   String get and => ' and ';
 
   @override
+  String get error => 'Error';
+
+  @override
+  String get success => 'Success';
+
+  @override
+  String get sign_in_success => 'Sign in successful';
+
+  @override
   String get no_id_token => 'No ID Token';
 
   @override
   String get sign_in_failed => 'Sign in failed';
 
   @override
+  String get something_went_wrong => 'Something went wrong';
+
+  @override
   String get continue_text => 'Continue';
+
+  @override
+  String get choose_favorite_genres => 'Choose your favorite\ngenres';
+
+  @override
+  String get choose_favorite_genres_content =>
+      'Select at least 3 to personalize your\nrecommendations.';
 }

@@ -1,4 +1,4 @@
-import 'package:flicknova/core/theme/extensions/context_theme_extension.dart';
+import 'package:flicknova/core/extensions/context_theme_extension.dart';
 import 'package:flutter/material.dart';
 
 import '../core/theme/app_colors.dart';

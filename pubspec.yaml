@@ -52,6 +52,7 @@ dependencies:
   collection: ^1.18.0
   uuid: ^4.4.0
   flutter_screenutil: ^5.9.3
+  another_flushbar: ^1.12.32
 
   # Optional Phase 2
   fl_chart: ^0.70.0

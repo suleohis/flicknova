@@ -1,5 +1,5 @@
 import 'package:flicknova/core/theme/app_colors.dart';
-import 'package:flicknova/core/theme/extensions/context_theme_extension.dart';
+import 'package:flicknova/core/extensions/context_theme_extension.dart';
 import 'package:flicknova/routes/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

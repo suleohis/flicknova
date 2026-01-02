@@ -1,6 +1,6 @@
 // lib/core/theme/extensions/context_theme_extension.dart
 import 'package:flutter/material.dart';
-import '../app_text_styles.dart';
+import '../theme/app_text_styles.dart';
 
 extension BuildContextX on BuildContext {
   TextStyle get h1 => AppTextStyles.h1(this);

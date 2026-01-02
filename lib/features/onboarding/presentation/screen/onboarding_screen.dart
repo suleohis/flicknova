@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/theme/extensions/context_theme_extension.dart';
+import '../../../../core/extensions/context_theme_extension.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../../generated/app_localizations.dart';
 import '../providers/onboarding_provider.dart';

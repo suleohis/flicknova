@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:stack_trace/stack_trace.dart';
+import '../../env/env.dart';
 import 'tmdb_exception.dart';
 import 'tmdb_interceptor.dart';
 
@@ -74,8 +75,9 @@ class TmdbClient {
 
     // Add interceptors
     _dio.interceptors.add(TmdbInterceptor());
-    _dio.interceptors.add(prettyDioLogger);
-
+    if (Env.enableLogging == 'true') {
+      _dio.interceptors.add(prettyDioLogger);
+    }
     // Aggressive caching (TMDB data rarely changes)
     _dio.interceptors.add(DioCacheInterceptor(
       options: CacheOptions(
@@ -83,7 +85,7 @@ class TmdbClient {
         policy: CachePolicy.refreshForceCache,
         hitCacheOnErrorCodes: [401, 403, 404],
         hitCacheOnNetworkFailure: true,
-        maxStale: const Duration(days: 7),
+        maxStale: const Duration(days: 180),
         priority: CachePriority.high,
       ),
     ));

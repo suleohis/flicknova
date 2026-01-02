@@ -21,8 +21,15 @@
   "privacyPolicy": "Privacy Policy",
   "and": " and ",
 
+  "error": "Error",
+  "success": "Success",
+  "sign_in_success": "Sign in successful",
   "no_id_token": "No ID Token",
   "sign_in_failed": "Sign in failed",
+  "something_went_wrong": "Something went wrong",
 
-  "continue_text": "Continue"
+  "continue_text": "Continue",
+
+  "choose_favorite_genres": "Choose your favorite\ngenres",
+  "choose_favorite_genres_content": "Select at least 3 to personalize your\nrecommendations."
 }

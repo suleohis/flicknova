@@ -207,6 +207,24 @@ abstract class S {
   /// **' and '**
   String get and;
 
+  /// No description provided for @error.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
+
+  /// No description provided for @success.
+  ///
+  /// In en, this message translates to:
+  /// **'Success'**
+  String get success;
+
+  /// No description provided for @sign_in_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in successful'**
+  String get sign_in_success;
+
   /// No description provided for @no_id_token.
   ///
   /// In en, this message translates to:
@@ -219,11 +237,29 @@ abstract class S {
   /// **'Sign in failed'**
   String get sign_in_failed;
 
+  /// No description provided for @something_went_wrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get something_went_wrong;
+
   /// No description provided for @continue_text.
   ///
   /// In en, this message translates to:
   /// **'Continue'**
   String get continue_text;
+
+  /// No description provided for @choose_favorite_genres.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your favorite\ngenres'**
+  String get choose_favorite_genres;
+
+  /// No description provided for @choose_favorite_genres_content.
+  ///
+  /// In en, this message translates to:
+  /// **'Select at least 3 to personalize your\nrecommendations.'**
+  String get choose_favorite_genres_content;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {
