@@ -52,8 +52,10 @@ class AuthNotifier extends Notifier<AuthState> {
 
     // Listen to auth state changes
     _repository.currentUser.listen((user) {
-      state = state.copyWith(user: user);
+      final profile = state.profile;
+      state = state.copyWith(user: user, profile: profile);
     });
+    Future.microtask(() => getCurrentProfile());
 
     return AuthState();
   }
@@ -171,9 +173,10 @@ class AuthNotifier extends Notifier<AuthState> {
       }
     }
 
-    // Update state with new profile
-    var updatedProfile = state.profile!;
-    updatedProfile.favoriteGenres = updatedGenres;
+    // Create a new updated profile using copyWith (State Immutability)
+    final updatedProfile = state.profile!.copyWith(
+      favoriteGenres: updatedGenres,
+    );
     state = state.copyWith(profile: updatedProfile);
 
     if (kDebugMode) {
@@ -207,9 +210,9 @@ class AuthNotifier extends Notifier<AuthState> {
     state = state.copyWith(isLoading: true);
     try {
       final profile = await _repository.getCurrentProfile();
-      state = state.copyWith(profile: profile, isLoading: false);
+      state = state.copyWith(user: state.user, profile: profile, isLoading: false);
     } catch (e) {
-      state = state.copyWith(error: e.toString(), isLoading: false);
+      state = state.copyWith(user: state.user, error: e.toString(), isLoading: false);
       if (kDebugMode) {
         print('Get profile error: $e');
       }

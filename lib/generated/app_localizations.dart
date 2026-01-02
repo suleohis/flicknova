@@ -327,6 +327,12 @@ abstract class S {
   /// **'All'**
   String get all;
 
+  /// No description provided for @home.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home;
+
   /// No description provided for @overview.
   ///
   /// In en, this message translates to:
@@ -488,6 +494,12 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Trending'**
   String get trending;
+
+  /// No description provided for @watchlist.
+  ///
+  /// In en, this message translates to:
+  /// **'Watchlist'**
+  String get watchlist;
 
   /// No description provided for @my_watchlist.
   ///

@@ -10,6 +10,22 @@ class ProfileModel extends ProfileEntity {
     super.favoriteGenres,
   });
 
+  ProfileModel copyWith({
+    String? id,
+    String? displayName,
+    String? avatarUrl,
+    DateTime? updatedAt,
+    List<GenreModel>? favoriteGenres,
+  }) {
+    return ProfileModel(
+      id: id ?? this.id,
+      displayName: displayName ?? this.displayName,
+      avatarUrl: avatarUrl ?? this.avatarUrl,
+      updatedAt: updatedAt ?? this.updatedAt,
+      favoriteGenres: favoriteGenres ?? this.favoriteGenres,
+    );
+  }
+
   factory ProfileModel.fromJson(Map<String, dynamic> json) {
     return ProfileModel(
       id: json['id'] as String,
@@ -18,9 +34,9 @@ class ProfileModel extends ProfileEntity {
       updatedAt: json['updated_at'] != null
           ? DateTime.parse(json['updated_at'] as String)
           : null,
-      favoriteGenres: json['favorite_genres']?.map(
-        (genre) => GenreModel.fromJson(genre as Map<String, dynamic>),
-      ),
+      favoriteGenres: (json['favorite_genres'] as List?)
+          ?.map((genre) => GenreModel.fromJson(genre as Map<String, dynamic>))
+          .toList(),
     );
   }
 

@@ -45,6 +45,7 @@
   "anime": "Anime",
   "all": "All",
 
+  "home": "Home",
   "overview": "Overview",
   "cast": "Cast",
   "you_may_also_like": "You May Also Like",
@@ -74,6 +75,7 @@
   "romance": "Romance",
   "trending": "Trending",
 
+  "watchlist": "Watchlist",
   "my_watchlist": "My Watchlist",
   "hours_saved": "{hours} hours saved",
   "episodes_watched": "{watched} of {total} episodes watched",

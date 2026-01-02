@@ -7,5 +7,5 @@ abstract class AuthRepository {
   Future<void> signOut();
   Stream<UserEntity?> get currentUser;
   Future<ProfileModel?> getCurrentProfile();
-  Future<ProfileModel?> updateProfile(ProfileModel profile);
+  Future<void> updateProfile(ProfileModel profile);
 }

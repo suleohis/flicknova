@@ -131,6 +131,9 @@ class SEn extends S {
   String get all => 'All';
 
   @override
+  String get home => 'Home';
+
+  @override
   String get overview => 'Overview';
 
   @override
@@ -212,6 +215,9 @@ class SEn extends S {
 
   @override
   String get trending => 'Trending';
+
+  @override
+  String get watchlist => 'Watchlist';
 
   @override
   String get my_watchlist => 'My Watchlist';

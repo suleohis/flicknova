@@ -42,6 +42,7 @@ class ChooseFavoriteGenresScreen extends ConsumerWidget {
                   .watch(movieGenresProvider)
                   .when(
                     data: (genres) => SingleChildScrollView(
+                      padding: EdgeInsets.only(bottom: 20.h),
                       child: Wrap(
                         runSpacing: 15.w,
                         spacing: 15.h,
@@ -51,14 +52,19 @@ class ChooseFavoriteGenresScreen extends ConsumerWidget {
                         children: genres.map((g) {
                           GenreModel genre = GenreModel(id: g.id, name: g.name);
                           bool isSelected =
-                              authNotifier.profile?.favoriteGenres?.contains(
-                                genre,
+                              authNotifier.profile?.favoriteGenres?.any(
+                                (fav) => fav.id == genre.id,
                               ) ??
                               false;
+                          int index =
+                              (authNotifier.profile?.favoriteGenres?.indexOf(
+                                    genre,
+                              ) ?? 0) %
+                                  3;
                           return GenreButton(
                             label: genre.name,
                             isSelected: isSelected,
-                            index: genres.indexOf(g) % 3,
+                            index: index,
                             onPressed: () => ref
                                 .read(authProvider.notifier)
                                 .toggleFavoriteGenre(genre),
@@ -72,7 +78,13 @@ class ChooseFavoriteGenresScreen extends ConsumerWidget {
                     ),
                   ),
             ),
-            PrimaryButton(text: s.continue_text, onPressed: () {}),
+            PrimaryButton(
+              text: s.continue_text,
+              onPressed: () =>  ref.read(authProvider.notifier).saveFavoriteGenres(context),
+              isLoading: authNotifier.isLoading,
+              isEnabled:
+                  authNotifier.profile?.favoriteGenres?.isNotEmpty ?? true,
+            ),
             SizedBox(height: 25.h),
           ],
         ),

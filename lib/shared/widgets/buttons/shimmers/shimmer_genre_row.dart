@@ -13,7 +13,7 @@ class ShimmerGenreRow extends StatelessWidget {
       period: const Duration(milliseconds: 1500),
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+        padding: EdgeInsets.zero,
         child: Wrap(
           runSpacing: 15.w,
           spacing: 15.h,
@@ -21,7 +21,7 @@ class ShimmerGenreRow extends StatelessWidget {
           crossAxisAlignment: .center,
           alignment: .center,
           children: List.generate(
-            8, // Show 8 placeholder pills (covers most genres)
+            12, // Show 8 placeholder pills (covers most genres)
             (_) => const _ShimmerGenreButton(),
           ),
         ),

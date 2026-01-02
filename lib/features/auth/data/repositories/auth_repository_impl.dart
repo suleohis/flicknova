@@ -112,13 +112,14 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<ProfileModel?> updateProfile(ProfileModel profile) async {
+  Future<void> updateProfile(ProfileModel profile) async {
     final user = _client.auth.currentUser;
-    if (user == null) return null;
-    final response = await _client
+    if (user == null) return;
+     await _client
         .from(ApiConst.profiles)
-        .update(profile.toJson());
+        .update(profile.toJson())
+        .eq(ApiConst.id, profile.id);
 
-    return ProfileModel.fromJson(response);
+    return;
   }
 }

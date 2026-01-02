@@ -46,6 +46,7 @@ class AppColors {
 
   // Linear Gradient
   static const buttonGradient = [Color(0xFF4A90E2), Color(0xFFA076F9)];
+  static const isDisabledButtonGradient = [Color(0x1AFFFFFF), Color(0xFF000000)];
 
   // Flush Bar
   static const flushBarSuccess = Color(0xFF81C784);
