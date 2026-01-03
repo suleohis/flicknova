@@ -1,15 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/models/trending_movie_entity.dart';
-import '../../../../core/models/trending_person_entity.dart';
-import '../../../../core/models/trending_tv_entity.dart';
+import '../../../../core/models/movie_entity.dart';
+import '../../../../core/models/person_entity.dart';
+import '../../../../core/models/tv_show_entity.dart';
 import '../../../../core/network/tmdb_service.dart';
 
 class TrendingState {
-  final List<TrendingMovieEntity> trendingMovies;
-  final List<TrendingTVEntity> trendingTV;
-  final List<TrendingPersonEntity> trendingPeople;
+  final List<MovieEntity> trendingMovies;
+  final List<TVShowEntity> trendingTV;
+  final List<PersonEntity> trendingPeople;
   final bool isLoading;
   final String? error;
 
@@ -22,9 +22,9 @@ class TrendingState {
   });
 
   TrendingState copyWith({
-    List<TrendingMovieEntity>? trendingMovies,
-    List<TrendingTVEntity>? trendingTV,
-    List<TrendingPersonEntity>? trendingPeople,
+    List<MovieEntity>? trendingMovies,
+    List<TVShowEntity>? trendingTV,
+    List<PersonEntity>? trendingPeople,
     bool? isLoading,
     String? error,
   }) {
@@ -73,7 +73,7 @@ class TrendingNotifier extends Notifier<TrendingState> {
       final movies = (data['results'] as List)
           .map(
             (json) =>
-                TrendingMovieEntity.fromJson(json as Map<String, dynamic>),
+                MovieEntity.fromJson(json as Map<String, dynamic>),
           )
           .toList();
       state = state.copyWith(trendingMovies: movies);
@@ -89,7 +89,7 @@ class TrendingNotifier extends Notifier<TrendingState> {
       final data = await _tmdbService.getTrendingTV(timeWindow: 'day');
       final tvShows = (data['results'] as List)
           .map(
-            (json) => TrendingTVEntity.fromJson(json as Map<String, dynamic>),
+            (json) => TVShowEntity.fromJson(json as Map<String, dynamic>),
           )
           .toList();
       state = state.copyWith(trendingTV: tvShows);
@@ -106,7 +106,7 @@ class TrendingNotifier extends Notifier<TrendingState> {
       final people = (data['results'] as List)
           .map(
             (json) =>
-                TrendingPersonEntity.fromJson(json as Map<String, dynamic>),
+                PersonEntity.fromJson(json as Map<String, dynamic>),
           )
           .toList();
       state = state.copyWith(trendingPeople: people);

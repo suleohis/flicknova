@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flicknova/core/extensions/context_extension.dart';
 import 'package:flicknova/core/extensions/context_theme_extension.dart';
-import 'package:flicknova/core/models/trending_tv_entity.dart';
+import 'package:flicknova/core/models/tv_show_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -63,7 +63,7 @@ class TrendingTVWidget extends ConsumerWidget {
 }
 
 class _TrendingTVCard extends StatelessWidget {
-  final TrendingTVEntity tvShow;
+  final TVShowEntity tvShow;
 
   const _TrendingTVCard({required this.tvShow});
 

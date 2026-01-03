@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flicknova/core/extensions/context_extension.dart';
 import 'package:flicknova/core/extensions/context_theme_extension.dart';
-import 'package:flicknova/core/models/trending_person_entity.dart';
+import 'package:flicknova/core/models/person_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -48,7 +48,7 @@ class TrendingPeopleWidget extends ConsumerWidget {
 }
 
 class _TrendingPersonCard extends StatelessWidget {
-  final TrendingPersonEntity person;
+  final PersonEntity person;
 
   const _TrendingPersonCard({required this.person});
 

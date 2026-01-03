@@ -1,4 +1,4 @@
-class TrendingPersonEntity {
+class PersonEntity {
   final bool adult;
   final int id;
   final String name;
@@ -10,7 +10,7 @@ class TrendingPersonEntity {
   final String? profilePath;
   final List<Map<String, dynamic>> knownFor; // Movies/TV they're known for
 
-  TrendingPersonEntity({
+  PersonEntity({
     required this.adult,
     required this.id,
     required this.name,
@@ -23,8 +23,8 @@ class TrendingPersonEntity {
     required this.knownFor,
   });
 
-  factory TrendingPersonEntity.fromJson(Map<String, dynamic> json) {
-    return TrendingPersonEntity(
+  factory PersonEntity.fromJson(Map<String, dynamic> json) {
+    return PersonEntity(
       adult: json['adult'] as bool? ?? false,
       id: json['id'] as int,
       name: json['name'] as String,
