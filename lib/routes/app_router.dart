@@ -21,6 +21,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       splashRoute,
       welcomeRoute,
       onboardingRoute,
+      ...mainRoutes,
       ...authRoutes,
       ...mainRoutes,
     ],

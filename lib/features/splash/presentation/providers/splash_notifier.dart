@@ -35,9 +35,9 @@ class SplashNotifier extends Notifier<SplashState> {
       if (profile == null) {
         context.push(AppRouter.welcome);
       } else if (profile.favoriteGenres == null) {
-        context.push(AppRouter.favoriteGenre);
+        context.go(AppRouter.favoriteGenre);
       } else {
-        context.push(AppRouter.dashboard);
+        context.go(AppRouter.dashboard);
       }
     } catch (e) {
       state = SplashState(error: e.toString());
