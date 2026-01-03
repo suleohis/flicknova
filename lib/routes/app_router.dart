@@ -1,5 +1,6 @@
 // lib/routes/app_router.dart
 import 'package:flicknova/routes/routes/auth_route.dart';
+import 'package:flicknova/routes/routes/detail_routes.dart';
 import 'package:flicknova/routes/routes/main_route.dart';
 import 'package:flicknova/routes/routes/splash_route.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       onboardingRoute,
       ...mainRoutes,
       ...authRoutes,
-      ...mainRoutes,
+      ...detailRoutes,
     ],
     errorPageBuilder: (context, state) => MaterialPage(
       key: state.pageKey,
@@ -52,4 +53,9 @@ class AppRouter {
   static const String favoriteGenre = '/favoriteGenre';
   static const String welcome = '/welcome';
   static const String dashboard = '/dashboard';
+
+  // Detail screens
+  static const String movieDetail = '/movie-detail';
+  static const String tvDetail = '/tv-detail';
+  static const String personDetail = '/person-detail';
 }

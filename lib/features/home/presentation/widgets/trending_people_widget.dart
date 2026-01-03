@@ -5,9 +5,11 @@ import 'package:flicknova/core/models/person_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../generated/app_localizations.dart';
+import '../../../../routes/app_router.dart';
 import '../providers/trending_notifier.dart';
 
 class TrendingPeopleWidget extends ConsumerWidget {
@@ -56,7 +58,7 @@ class _TrendingPersonCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // TODO: Navigate to person detail screen
+        context.push(AppRouter.personDetail, extra: person.id);
       },
       child: Container(
         width: 100.w,

@@ -42,12 +42,82 @@ class TmdbService {
     return (response.data['genres'] as List).cast<Map<String, dynamic>>();
   }
 
-  Future<Map<String, dynamic>> getMovieDetails(int movieId) async {
+  // ============================================================================
+  // DETAIL API METHODS
+  // ============================================================================
+
+  /// Get detailed movie information by ID
+  /// Includes: credits (cast/crew), videos, images, and recommendations
+  Future<Map<String, dynamic>> getMovieDetails(
+    int movieId, {
+    String language = 'en-US',
+  }) async {
     final response = await _client.get<Map<String, dynamic>>(
       '/movie/$movieId',
       queryParameters: {
+        'language': language,
         'append_to_response': 'credits,videos,images,recommendations',
       },
+    );
+    return response.data as Map<String, dynamic>;
+  }
+
+  /// Get detailed person information by ID
+  /// Includes: TV credits (cast/crew)
+  Future<Map<String, dynamic>> getPersonDetails(
+    int personId, {
+    String language = 'en-US',
+  }) async {
+    final response = await _client.get<Map<String, dynamic>>(
+      '/person/$personId',
+      queryParameters: {
+        'language': language,
+        'append_to_response': 'tv_credits,movie_credits',
+      },
+    );
+    return response.data as Map<String, dynamic>;
+  }
+
+  /// Get detailed TV series information by ID
+  /// Includes: credits (cast/crew), videos, and images
+  Future<Map<String, dynamic>> getTVSeriesDetails(
+    int seriesId, {
+    String language = 'en-US',
+  }) async {
+    final response = await _client.get<Map<String, dynamic>>(
+      '/tv/$seriesId',
+      queryParameters: {
+        'language': language,
+        'append_to_response': 'credits,videos,images',
+      },
+    );
+    return response.data as Map<String, dynamic>;
+  }
+
+  /// Get detailed season information for a TV series
+  /// Includes all episodes with their crew and guest stars
+  Future<Map<String, dynamic>> getSeasonDetails(
+    int seriesId,
+    int seasonNumber, {
+    String language = 'en-US',
+  }) async {
+    final response = await _client.get<Map<String, dynamic>>(
+      '/tv/$seriesId/season/$seasonNumber',
+      queryParameters: {'language': language},
+    );
+    return response.data as Map<String, dynamic>;
+  }
+
+  /// Get detailed episode information
+  Future<Map<String, dynamic>> getEpisodeDetails(
+    int seriesId,
+    int seasonNumber,
+    int episodeNumber, {
+    String language = 'en-US',
+  }) async {
+    final response = await _client.get<Map<String, dynamic>>(
+      '/tv/$seriesId/season/$seasonNumber/episode/$episodeNumber',
+      queryParameters: {'language': language},
     );
     return response.data as Map<String, dynamic>;
   }
