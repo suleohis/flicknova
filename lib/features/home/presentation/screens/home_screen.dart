@@ -1,3 +1,5 @@
+import 'package:flicknova/core/widgets/youtube_player_widget.dart';
+import 'package:flicknova/features/watchlist/data/watchlist_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,11 +34,64 @@ class HomeScreen extends ConsumerWidget {
               SliverToBoxAdapter(
                 child: HeroSection(
                   movie: homeState.trendingMovies.first,
-                  onPlayTrailerTap: () {
-                    // TODO: Navigate to trailer player
+                  hasTrailer: homeState.hasHeroTrailer,
+                  onPlayTrailerTap: homeState.heroVideoKey != null
+                      ? () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => YouTubePlayerWidget(
+                                videoKey: homeState.heroVideoKey!,
+                                title: homeState.trendingMovies.first.title,
+                              ),
+                            ),
+                          );
+                        }
+                      : null,
+                  onAddTap: () async {
+                    final watchlistService = WatchlistService();
+                    final movie = homeState.trendingMovies.first;
+
+                    try {
+                      final isInWatchlist = await watchlistService
+                          .isInWatchlist(movie.id);
+
+                      if (isInWatchlist) {
+                        await watchlistService.removeFromWatchlist(movie.id);
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Removed from watchlist')),
+                          );
+                        }
+                      } else {
+                        await watchlistService.addToWatchlist(
+                          movieId: movie.id,
+                          movieTitle: movie.title,
+                          posterPath: movie.posterPath,
+                        );
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Added to watchlist')),
+                          );
+                        }
+                      }
+                    } catch (e) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Error: ${e.toString()}')),
+                        );
+                      }
+                    }
                   },
-                  onAddTap: () {
-                    // TODO: Add to watchlist
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MovieDetailScreen(
+                          movieId: homeState.trendingMovies.first.id,
+                        ),
+                      ),
+                    );
                   },
                 ),
               )
@@ -53,7 +108,9 @@ class HomeScreen extends ConsumerWidget {
               child: SectionHeader(
                 title: s.trending_now,
                 onSeeAllTap: () {
-                  // TODO: Navigate to see all trending
+                  context.push(
+                    '${AppRouter.seeAll}?contentType=movie&category=trending&title=Trending Movies',
+                  );
                 },
               ),
             ),
@@ -82,26 +139,20 @@ class HomeScreen extends ConsumerWidget {
 
             SliverToBoxAdapter(child: SizedBox(height: 24.h)),
 
-            // Popular on Crackshaft
-            SliverToBoxAdapter(
-              child: SectionHeader(
-                title: s.popular_on_crackshaft,
-                onSeeAllTap: () {
-                  // TODO: Navigate to see all popular
-                },
-              ),
-            ),
+            // Popular on FlickNova
             if (homeState.isLoadingPopular)
               SliverToBoxAdapter(
                 child: SizedBox(
                   height: 300.h,
-                  child: Center(child: AppLoading()),
+                  child: const Center(child: AppLoading()),
                 ),
               )
             else
               SliverToBoxAdapter(
                 child: PopularSection(
-                  movies: homeState.popularMovies,
+                  popularMovies: homeState.popularMovies,
+                  popularTVShows: homeState.popularTVShows,
+                  popularPeople: homeState.popularPeople,
                   onMovieTap: (movie) {
                     Navigator.push(
                       context,
@@ -110,6 +161,12 @@ class HomeScreen extends ConsumerWidget {
                             MovieDetailScreen(movieId: movie.id),
                       ),
                     );
+                  },
+                  onTVTap: (tvShow) {
+                    // TODO: Navigate to TV detail
+                  },
+                  onPersonTap: (person) {
+                    // TODO: Navigate to person detail
                   },
                 ),
               ),
@@ -121,37 +178,47 @@ class HomeScreen extends ConsumerWidget {
               child: SectionHeader(
                 title: s.top_10_in_your_country,
                 onSeeAllTap: () {
-                  // TODO: Navigate to see all top 10
+                  context.push(
+                    '${AppRouter.seeAll}?contentType=movie&category=top_rated&title=Top Rated Movies',
+                  );
                 },
               ),
             ),
             if (homeState.isLoadingTopRated)
               SliverToBoxAdapter(
                 child: SizedBox(
-                  height: 200.h,
-                  child: Center(child: AppLoading()),
+                  height: 210.h,
+                  child: const Center(child: AppLoading()),
                 ),
               )
             else
-              SliverPadding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                sliver: SliverList(
-                  delegate: SliverChildBuilderDelegate((context, index) {
-                    final movie = homeState.topRatedMovies[index];
-                    return TopTenItem(
-                      rank: index + 1,
-                      movie: movie,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                MovieDetailScreen(movieId: movie.id),
-                          ),
-                        );
-                      },
-                    );
-                  }, childCount: homeState.topRatedMovies.take(10).length),
+              SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 210.h,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    itemCount: homeState.topRatedMovies.take(10).length,
+                    itemBuilder: (context, index) {
+                      final movie = homeState.topRatedMovies[index];
+                      return Padding(
+                        padding: EdgeInsets.only(right: 12.w),
+                        child: TopTenItem(
+                          rank: index + 1,
+                          movie: movie,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    MovieDetailScreen(movieId: movie.id),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
 
@@ -162,7 +229,9 @@ class HomeScreen extends ConsumerWidget {
               child: SectionHeader(
                 title: s.new_releases,
                 onSeeAllTap: () {
-                  // TODO: Navigate to see all new releases
+                  context.push(
+                    '${AppRouter.seeAll}?contentType=movie&category=upcoming&title=Upcoming Movies',
+                  );
                 },
               ),
             ),

@@ -1,69 +1,72 @@
-import '../../domain/entities/movie_detail_entity.dart';
-import 'genre_model.dart';
+import '../../../../core/models/movie_detail_entity.dart';
 
 class MovieDetailModel extends MovieDetailEntity {
   MovieDetailModel({
-    required super.id,
-    required super.title,
-    super.overview,
-    super.posterPath,
+    required super.adult,
     super.backdropPath,
+    super.belongsToCollection,
+    required super.budget,
+    required super.genres,
+    required super.homepage,
+    required super.id,
+    super.imdbId,
+    required super.originCountry,
+    required super.originalLanguage,
+    required super.originalTitle,
+    required super.overview,
+    required super.popularity,
+    super.posterPath,
+    required super.productionCompanies,
+    required super.productionCountries,
+    super.releaseDate,
+    required super.revenue,
+    super.runtime,
+    required super.spokenLanguages,
+    required super.status,
+    required super.tagline,
+    required super.title,
+    required super.video,
     required super.voteAverage,
     required super.voteCount,
-    super.releaseDate,
-    super.genreIds,
-    super.runtime,
-    super.budget,
-    super.revenue,
-    super.tagline,
-    super.genres,
-    super.status,
+    super.credits,
+    super.videos,
+    super.images,
+    super.recommendations,
   });
 
   factory MovieDetailModel.fromJson(Map<String, dynamic> json) {
-    final genreList =
-        (json['genres'] as List?)
-            ?.map((g) => GenreModel.fromJson(g as Map<String, dynamic>))
-            .toList() ??
-        [];
-
+    final entity = MovieDetailEntity.fromJson(json);
     return MovieDetailModel(
-      id: json['id'] as int,
-      title: json['title'] as String? ?? json['name'] as String? ?? '',
-      overview: json['overview'] as String?,
-      posterPath: json['poster_path'] as String?,
-      backdropPath: json['backdrop_path'] as String?,
-      voteAverage: (json['vote_average'] as num?)?.toDouble() ?? 0.0,
-      voteCount: json['vote_count'] as int? ?? 0,
-      releaseDate:
-          json['release_date'] as String? ?? json['first_air_date'] as String?,
-      genreIds: genreList.map((g) => g.id).toList(),
-      runtime: json['runtime'] as int?,
-      budget: json['budget'] as int?,
-      revenue: json['revenue'] as int?,
-      tagline: json['tagline'] as String?,
-      genres: genreList,
-      status: json['status'] as String? ?? '',
+      adult: entity.adult,
+      backdropPath: entity.backdropPath,
+      belongsToCollection: entity.belongsToCollection,
+      budget: entity.budget,
+      genres: entity.genres,
+      homepage: entity.homepage,
+      id: entity.id,
+      imdbId: entity.imdbId,
+      originCountry: entity.originCountry,
+      originalLanguage: entity.originalLanguage,
+      originalTitle: entity.originalTitle,
+      overview: entity.overview,
+      popularity: entity.popularity,
+      posterPath: entity.posterPath,
+      productionCompanies: entity.productionCompanies,
+      productionCountries: entity.productionCountries,
+      releaseDate: entity.releaseDate,
+      revenue: entity.revenue,
+      runtime: entity.runtime,
+      spokenLanguages: entity.spokenLanguages,
+      status: entity.status,
+      tagline: entity.tagline,
+      title: entity.title,
+      video: entity.video,
+      voteAverage: entity.voteAverage,
+      voteCount: entity.voteCount,
+      credits: entity.credits,
+      videos: entity.videos,
+      images: entity.images,
+      recommendations: entity.recommendations,
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'title': title,
-      'overview': overview,
-      'poster_path': posterPath,
-      'backdrop_path': backdropPath,
-      'vote_average': voteAverage,
-      'vote_count': voteCount,
-      'release_date': releaseDate,
-      'genre_ids': genreIds,
-      'runtime': runtime,
-      'budget': budget,
-      'revenue': revenue,
-      'tagline': tagline,
-      'genres': genres.map((g) => {'id': g.id, 'name': g.name}).toList(),
-      'status': status,
-    };
   }
 }

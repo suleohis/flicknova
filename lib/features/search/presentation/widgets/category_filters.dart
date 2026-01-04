@@ -18,15 +18,14 @@ class CategoryFilters extends StatelessWidget {
   Widget build(BuildContext context) {
     final categories = [
       {'id': 'all', 'label': 'All'},
-      {'id': 'movie', 'label': 'Movies'},
-      {'id': 'tv', 'label': 'TV'},
       {'id': 'action', 'label': 'Action'},
       {'id': 'drama', 'label': 'Drama'},
       {'id': 'sci_fi', 'label': 'Sci-Fi'},
     ];
 
-    return SizedBox(
-      height: 50.h,
+    return Container(
+      height: 44.h,
+      padding: EdgeInsets.symmetric(vertical: 8.h),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -39,12 +38,12 @@ class CategoryFilters extends StatelessWidget {
             onTap: () => onCategorySelected(category['id']!),
             child: Container(
               margin: EdgeInsets.only(right: 12.w),
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+              padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 8.h),
               decoration: BoxDecoration(
                 color: isSelected
-                    ? AppColors.chipSelected
+                    ? AppColors.trendingBadge
                     : AppColors.chipBackground,
-                borderRadius: BorderRadius.circular(20.r),
+                borderRadius: BorderRadius.circular(18.r),
               ),
               child: Center(
                 child: Text(
@@ -52,6 +51,7 @@ class CategoryFilters extends StatelessWidget {
                   style: context.bodyMedium.copyWith(
                     color: isSelected ? AppColors.background : AppColors.white,
                     fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                    fontSize: 13.sp,
                   ),
                 ),
               ),

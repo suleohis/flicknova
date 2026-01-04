@@ -1,6 +1,8 @@
+import 'package:flicknova/features/watchlist/data/watchlist_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/models/movie_entity.dart';
 import '../../../home/domain/entities/movie_entity.dart';
 import '../../data/repositories/movie_detail_repository_impl.dart';
 import '../../domain/entities/cast_entity.dart';
@@ -13,6 +15,8 @@ class MovieDetailState {
   final List<MovieEntity> recommendations;
   final bool isLoading;
   final String? error;
+  final bool isInWatchlist;
+  final bool isTogglingWatchlist;
 
   MovieDetailState({
     this.movie,
@@ -20,6 +24,8 @@ class MovieDetailState {
     this.recommendations = const [],
     this.isLoading = false,
     this.error,
+    this.isInWatchlist = false,
+    this.isTogglingWatchlist = false,
   });
 
   MovieDetailState copyWith({
@@ -28,6 +34,8 @@ class MovieDetailState {
     List<MovieEntity>? recommendations,
     bool? isLoading,
     String? error,
+    bool? isInWatchlist,
+    bool? isTogglingWatchlist,
   }) {
     return MovieDetailState(
       movie: movie ?? this.movie,
@@ -35,16 +43,20 @@ class MovieDetailState {
       recommendations: recommendations ?? this.recommendations,
       isLoading: isLoading ?? this.isLoading,
       error: error,
+      isInWatchlist: isInWatchlist ?? this.isInWatchlist,
+      isTogglingWatchlist: isTogglingWatchlist ?? this.isTogglingWatchlist,
     );
   }
 }
 
 class MovieDetailNotifier extends Notifier<MovieDetailState> {
   late final MovieDetailRepository _repository;
+  late final WatchlistService _watchlistService;
 
   @override
   MovieDetailState build() {
     _repository = MovieDetailRepositoryImpl();
+    _watchlistService = WatchlistService();
     return MovieDetailState();
   }
 
@@ -56,18 +68,48 @@ class MovieDetailNotifier extends Notifier<MovieDetailState> {
         _repository.getMovieDetail(movieId),
         _repository.getMovieCast(movieId),
         _repository.getRecommendations(movieId),
+        _watchlistService.isInWatchlist(movieId),
       ]);
 
       state = state.copyWith(
         movie: results[0] as MovieDetailEntity,
         cast: results[1] as List<CastEntity>,
         recommendations: results[2] as List<MovieEntity>,
+        isInWatchlist: results[3] as bool,
         isLoading: false,
       );
     } catch (e) {
       state = state.copyWith(error: e.toString(), isLoading: false);
       if (kDebugMode) {
         print('Error loading movie detail: $e');
+      }
+    }
+  }
+
+  Future<void> toggleWatchlist() async {
+    if (state.movie == null) return;
+
+    state = state.copyWith(isTogglingWatchlist: true);
+
+    try {
+      if (state.isInWatchlist) {
+        await _watchlistService.removeFromWatchlist(state.movie!.id);
+        state = state.copyWith(
+          isInWatchlist: false,
+          isTogglingWatchlist: false,
+        );
+      } else {
+        await _watchlistService.addToWatchlist(
+          movieId: state.movie!.id,
+          movieTitle: state.movie!.title,
+          posterPath: state.movie!.posterPath,
+        );
+        state = state.copyWith(isInWatchlist: true, isTogglingWatchlist: false);
+      }
+    } catch (e) {
+      state = state.copyWith(isTogglingWatchlist: false);
+      if (kDebugMode) {
+        print('Error toggling watchlist: $e');
       }
     }
   }

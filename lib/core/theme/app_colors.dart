@@ -46,7 +46,10 @@ class AppColors {
 
   // Linear Gradient
   static const buttonGradient = [Color(0xFF4A90E2), Color(0xFFA076F9)];
-  static const isDisabledButtonGradient = [Color(0x1AFFFFFF), Color(0xFF000000)];
+  static const isDisabledButtonGradient = [
+    Color(0x1AFFFFFF),
+    Color(0xFF000000),
+  ];
 
   // Flush Bar
   static const flushBarSuccess = Color(0xFF81C784);
@@ -74,4 +77,14 @@ class AppColors {
   static const trendingBadge = Color(0xFF00D4FF);
   static const rankBadge = Color(0xFFFFB800);
   static const recentlyViewedBorder = Color(0xFF00D4FF);
+
+  // Movie detail - Watchlist
+  static const watchlistButtonBorder = Color(0xFF2C2C2C);
+  static const watchlistButtonText = Color(0xFFFFFFFF);
+
+  // Movie detail - Links & Stars
+  static const linkColor = Color(0xFF00D4FF);
+  static const starFilled = Color(0xFF00D4FF);
+  static const starEmpty = Color(0xFF4A4A4A);
+  static const ratingLabel = Color(0xFF9E9E9E);
 }

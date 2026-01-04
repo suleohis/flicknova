@@ -101,7 +101,7 @@ class SEn extends S {
   String get trending_now => 'Trending Now';
 
   @override
-  String get popular_on_crackshaft => 'Popular on Crackshaft';
+  String get popular_on_flcik_nova => 'Popular on FlickNova';
 
   @override
   String get for_you => 'For You';
@@ -164,6 +164,9 @@ class SEn extends S {
 
   @override
   String get no_overview => 'No overview available';
+
+  @override
+  String get synopsis => 'Synopsis';
 
   @override
   String get search => 'Search';

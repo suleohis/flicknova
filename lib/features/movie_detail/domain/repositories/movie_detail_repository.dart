@@ -1,3 +1,4 @@
+import '../../../../core/models/movie_entity.dart';
 import '../../../home/domain/entities/movie_entity.dart';
 import '../entities/cast_entity.dart';
 import '../entities/movie_detail_entity.dart';

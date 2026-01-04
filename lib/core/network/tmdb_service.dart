@@ -182,10 +182,17 @@ class TmdbService {
   Future<List<Map<String, dynamic>>> getTopRatedMovies({
     String language = 'en-US',
     int page = 1,
+    String? region, // ISO-3166-1 country code
   }) async {
+    final queryParams = {
+      'language': language,
+      'page': page,
+      if (region != null) 'region': region,
+    };
+
     final response = await _client.get(
       '/movie/top_rated',
-      queryParameters: {'language': language, 'page': page},
+      queryParameters: queryParams,
     );
     return (response.data['results'] as List).cast<Map<String, dynamic>>();
   }
@@ -210,6 +217,28 @@ class TmdbService {
       queryParameters: {'language': language, 'page': page},
     );
     return (response.data['results'] as List).cast<Map<String, dynamic>>();
+  }
+
+  Future<Map<String, dynamic>> getPopularTV({
+    String language = 'en-US',
+    int page = 1,
+  }) async {
+    final response = await _client.get(
+      '/tv/popular',
+      queryParameters: {'language': language, 'page': page},
+    );
+    return response.data as Map<String, dynamic>;
+  }
+
+  Future<Map<String, dynamic>> getPopularPeople({
+    String language = 'en-US',
+    int page = 1,
+  }) async {
+    final response = await _client.get(
+      '/person/popular',
+      queryParameters: {'language': language, 'page': page},
+    );
+    return response.data as Map<String, dynamic>;
   }
 
   Future<List<Map<String, dynamic>>> getMovieVideos(int movieId) async {

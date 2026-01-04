@@ -1,31 +1,33 @@
+import '../../../../core/models/movie_entity.dart';
+import '../../../../core/models/person_entity.dart';
+import '../../../../core/models/tv_show_entity.dart';
 import '../../../../core/network/tmdb_service.dart';
-import '../../../home/data/models/movie_model.dart';
-import '../../../home/domain/entities/movie_entity.dart';
 import '../../domain/repositories/search_repository.dart';
 
 class SearchRepositoryImpl implements SearchRepository {
   final TmdbService _tmdbService = TmdbService();
 
   @override
-  Future<List<MovieEntity>> searchContent({
-    required String query,
-    String category = 'all',
-  }) async {
+  Future<List<MovieEntity>> searchMovies({required String query}) async {
     if (query.isEmpty) return [];
 
-    List<Map<String, dynamic>> results;
+    final results = await _tmdbService.searchMovies(query: query);
+    return results.map((json) => MovieEntity.fromJson(json)).toList();
+  }
 
-    switch (category) {
-      case 'movie':
-        results = await _tmdbService.searchMovies(query: query);
-        break;
-      case 'tv':
-        results = await _tmdbService.searchTVShows(query: query);
-        break;
-      default:
-        results = await _tmdbService.searchMulti(query: query);
-    }
+  @override
+  Future<List<TVShowEntity>> searchTVShows({required String query}) async {
+    if (query.isEmpty) return [];
 
-    return results.map((json) => MovieModel.fromJson(json)).toList();
+    final results = await _tmdbService.searchTVShows(query: query);
+    return results.map((json) => TVShowEntity.fromJson(json)).toList();
+  }
+
+  @override
+  Future<List<PersonEntity>> searchPeople({required String query}) async {
+    if (query.isEmpty) return [];
+
+    final results = await _tmdbService.searchPeople(query: query);
+    return results.map((json) => PersonEntity.fromJson(json)).toList();
   }
 }

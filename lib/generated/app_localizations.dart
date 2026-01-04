@@ -267,11 +267,11 @@ abstract class S {
   /// **'Trending Now'**
   String get trending_now;
 
-  /// No description provided for @popular_on_crackshaft.
+  /// No description provided for @popular_on_flcik_nova.
   ///
   /// In en, this message translates to:
-  /// **'Popular on Crackshaft'**
-  String get popular_on_crackshaft;
+  /// **'Popular on FlickNova'**
+  String get popular_on_flcik_nova;
 
   /// No description provided for @for_you.
   ///
@@ -392,6 +392,12 @@ abstract class S {
   /// In en, this message translates to:
   /// **'No overview available'**
   String get no_overview;
+
+  /// No description provided for @synopsis.
+  ///
+  /// In en, this message translates to:
+  /// **'Synopsis'**
+  String get synopsis;
 
   /// No description provided for @search.
   ///

@@ -1,5 +1,7 @@
 import 'package:flicknova/core/widgets/placeholder_detail_screen.dart';
 import 'package:flicknova/features/movie_detail/presentation/screens/movie_detail_screen.dart';
+import 'package:flicknova/features/person_detail/presentation/screens/person_detail_screen.dart';
+import 'package:flicknova/features/tv_detail/presentation/screens/tv_detail_screen.dart';
 import 'package:go_router/go_router.dart';
 
 import '../app_router.dart';
@@ -14,33 +16,21 @@ List<GoRoute> detailRoutes = [
     },
   ),
 
-  // TV Detail (Placeholder)
+  // TV Detail
   GoRoute(
     path: AppRouter.tvDetail,
     pageBuilder: (context, state) {
       final seriesId = state.extra as int;
-      return NoTransitionPage(
-        child: PlaceholderDetailScreen(
-          title: 'TV Show Detail',
-          message: 'TV detail screen\ncoming soon',
-          id: seriesId,
-        ),
-      );
+      return NoTransitionPage(child: TVDetailScreen(seriesId: seriesId));
     },
   ),
 
-  // Person Detail (Placeholder)
+  // Person Detail
   GoRoute(
     path: AppRouter.personDetail,
     pageBuilder: (context, state) {
       final personId = state.extra as int;
-      return NoTransitionPage(
-        child: PlaceholderDetailScreen(
-          title: 'Person Detail',
-          message: 'Person detail screen\ncoming soon',
-          id: personId,
-        ),
-      );
+      return NoTransitionPage(child: PersonDetailScreen(personId: personId));
     },
   ),
 ];

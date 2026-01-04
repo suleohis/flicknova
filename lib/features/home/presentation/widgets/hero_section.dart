@@ -4,15 +4,16 @@ import 'package:flicknova/core/extensions/context_theme_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/models/movie_entity.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../generated/app_localizations.dart';
-import '../../domain/entities/movie_entity.dart';
 
 class HeroSection extends StatelessWidget {
   final MovieEntity movie;
   final VoidCallback? onPlayTrailerTap;
   final VoidCallback? onAddTap;
   final VoidCallback? onTap;
+  final bool hasTrailer;
 
   const HeroSection({
     super.key,
@@ -20,6 +21,7 @@ class HeroSection extends StatelessWidget {
     this.onPlayTrailerTap,
     this.onAddTap,
     this.onTap,
+    this.hasTrailer = false,
   });
 
   @override
@@ -29,7 +31,7 @@ class HeroSection extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: SizedBox(
-        height: 500.h,
+        height: MediaQuery.of(context).size.height * .8.h,
         width: double.infinity,
         child: Stack(
           children: [
@@ -120,48 +122,66 @@ class HeroSection extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 20.h),
-                  // Buttons
-                  Row(
-                    children: [
-                      Expanded(
-                        child: ElevatedButton.icon(
-                          onPressed: onPlayTrailerTap,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.playButton,
-                            foregroundColor: AppColors.background,
-                            padding: EdgeInsets.symmetric(vertical: 14.h),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.r),
+                  // Buttons - Conditional layout based on trailer availability
+                  if (hasTrailer)
+                    // Both buttons when trailer exists
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton.icon(
+                            onPressed: onPlayTrailerTap,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.playButton,
+                              foregroundColor: AppColors.background,
+                              padding: EdgeInsets.symmetric(vertical: 14.h),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                              elevation: 0,
                             ),
-                            elevation: 0,
-                          ),
-                          icon: Icon(Icons.play_arrow, size: 24.sp),
-                          label: Text(
-                            s.play_trailer,
-                            style: context.button.copyWith(
-                              color: AppColors.background,
+                            icon: Icon(Icons.play_arrow, size: 24.sp),
+                            label: Text(
+                              s.play_trailer,
+                              style: context.button.copyWith(
+                                color: AppColors.background,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(width: 12.w),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.cardBackground,
+                        SizedBox(width: 12.w),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.cardBackground,
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          child: IconButton(
+                            onPressed: onAddTap,
+                            icon: Icon(
+                              Icons.add,
+                              color: AppColors.white,
+                              size: 24.sp,
+                            ),
+                            padding: EdgeInsets.all(14.sp),
+                          ),
+                        ),
+                      ],
+                    )
+                  else
+                    // Only watchlist button when no trailer
+                    ElevatedButton.icon(
+                      onPressed: onAddTap,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.cardBackground,
+                        foregroundColor: AppColors.white,
+                        padding: EdgeInsets.symmetric(vertical: 14.h),
+                        shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.r),
                         ),
-                        child: IconButton(
-                          onPressed: onAddTap,
-                          icon: Icon(
-                            Icons.add,
-                            color: AppColors.white,
-                            size: 24.sp,
-                          ),
-                          padding: EdgeInsets.all(14.sp),
-                        ),
+                        elevation: 0,
                       ),
-                    ],
-                  ),
+                      icon: Icon(Icons.add, size: 24.sp),
+                      label: Text(s.add_to_watchlist, style: context.button),
+                    ),
                 ],
               ),
             ),

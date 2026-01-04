@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/models/movie_entity.dart';
 import '../../../home/domain/entities/movie_entity.dart';
 
 // Simple provider to track recently viewed movies

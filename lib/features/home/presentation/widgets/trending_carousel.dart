@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../domain/entities/movie_entity.dart';
+import '../../../../core/models/movie_entity.dart';
 import 'movie_card.dart';
 
 class TrendingCarousel extends StatelessWidget {

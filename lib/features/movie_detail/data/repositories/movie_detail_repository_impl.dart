@@ -1,3 +1,4 @@
+import '../../../../core/models/movie_entity.dart';
 import '../../../../core/network/tmdb_service.dart';
 import '../../../home/data/models/movie_model.dart';
 import '../../../home/domain/entities/movie_entity.dart';

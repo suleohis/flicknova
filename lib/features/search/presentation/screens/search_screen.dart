@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/models/movie_entity.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../home/domain/entities/movie_entity.dart';
 import '../../../home/presentation/providers/home_notifier.dart';
@@ -89,17 +90,11 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           SliverToBoxAdapter(
             child: SearchResultsGrid(
               results: searchState.results,
-              onMovieTap: (movie) {
-                // Add to recently viewed
-                ref.read(recentlyViewedProvider.notifier).addMovie(movie);
-
-                // Navigate to detail
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MovieDetailScreen(movieId: movie.id),
-                  ),
-                );
+              onItemTap: (item) {
+                // Add to recently viewed if it's a movie
+                if (item is MovieEntity) {
+                  ref.read(recentlyViewedProvider.notifier).addMovie(item);
+                }
               },
             ),
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/models/movie_entity.dart';
 import '../../../home/domain/entities/movie_entity.dart';
 import '../../data/repositories/watchlist_repository_impl.dart';
 import '../../domain/entities/watchlist_item_entity.dart';

@@ -34,7 +34,7 @@
   "choose_favorite_genres_content": "Select at least 3 to personalize your\nrecommendations.",
 
   "trending_now": "Trending Now",
-  "popular_on_crackshaft": "Popular on Crackshaft",
+  "popular_on_flcik_nova": "Popular on FlickNova",
   "for_you": "For You",
   "top_10_in_your_country": "Top 10 in Your Country",
   "new_releases": "New Releases",
@@ -56,6 +56,7 @@
   "revenue": "Revenue",
   "runtime_minutes": "{minutes} min",
   "no_overview": "No overview available",
+  "synopsis": "Synopsis",
 
   "search": "Search",
   "search_movies_shows_actors": "Search movies, shows, actors...",

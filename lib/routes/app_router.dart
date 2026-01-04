@@ -2,6 +2,7 @@
 import 'package:flicknova/routes/routes/auth_route.dart';
 import 'package:flicknova/routes/routes/detail_routes.dart';
 import 'package:flicknova/routes/routes/main_route.dart';
+import 'package:flicknova/routes/routes/see_all_routes.dart';
 import 'package:flicknova/routes/routes/splash_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,6 +26,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       ...mainRoutes,
       ...authRoutes,
       ...detailRoutes,
+      ...seeAllRoutes,
     ],
     errorPageBuilder: (context, state) => MaterialPage(
       key: state.pageKey,
@@ -54,8 +56,13 @@ class AppRouter {
   static const String welcome = '/welcome';
   static const String dashboard = '/dashboard';
 
-  // Detail screens
-  static const String movieDetail = '/movie-detail';
-  static const String tvDetail = '/tv-detail';
-  static const String personDetail = '/person-detail';
+  // Detail Routes
+  static const String movieDetail = '/movie';
+  static const String tvDetail = '/tv';
+  static const String personDetail = '/person';
+  static const String seasonDetail = '/season';
+  static const String episodeDetail = '/episode';
+
+  // See All Route
+  static const String seeAll = '/see-all';
 }
