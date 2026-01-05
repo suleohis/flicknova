@@ -134,6 +134,18 @@ class TmdbService {
     return (response.data['results'] as List).cast<Map<String, dynamic>>();
   }
 
+  Future<Map<String, dynamic>> getTrendingMap({
+    String mediaType = 'movie',
+    String timeWindow = 'week',
+    String language = 'en-US',
+  }) async {
+    final response = await _client.get(
+      '/trending/$mediaType/$timeWindow',
+      queryParameters: {'language': language},
+    );
+    return response.data as Map<String, dynamic>;
+  }
+
   // Specific trending methods
   Future<Map<String, dynamic>> getTrendingMovies({
     String timeWindow = 'day', // 'day' or 'week'
@@ -279,6 +291,19 @@ class TmdbService {
   }) async {
     final response = await _client.get<Map<String, dynamic>>(
       '/search/tv',
+      queryParameters: {'query': query, 'language': language, 'page': page},
+    );
+    return ((response.data as Map<String, dynamic>)['results'] as List)
+        .cast<Map<String, dynamic>>();
+  }
+
+  Future<List<Map<String, dynamic>>> searchPeople({
+    required String query,
+    String language = 'en-US',
+    int page = 1,
+  }) async {
+    final response = await _client.get<Map<String, dynamic>>(
+      '/search/person',
       queryParameters: {'query': query, 'language': language, 'page': page},
     );
     return ((response.data as Map<String, dynamic>)['results'] as List)

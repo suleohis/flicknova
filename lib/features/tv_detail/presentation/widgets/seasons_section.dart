@@ -1,6 +1,4 @@
 import 'package:flicknova/core/extensions/context_theme_extension.dart';
-import 'package:flicknova/core/models/common_detail_entities.dart';
-import 'package:flicknova/core/theme/app_colors.dart';
 import 'package:flicknova/features/tv_detail/presentation/widgets/season_card.dart';
 import 'package:flicknova/routes/app_router.dart';
 import 'package:flutter/material.dart';

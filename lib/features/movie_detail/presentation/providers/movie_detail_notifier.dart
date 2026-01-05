@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/models/movie_entity.dart';
-import '../../../home/domain/entities/movie_entity.dart';
 import '../../data/repositories/movie_detail_repository_impl.dart';
 import '../../domain/entities/cast_entity.dart';
 import '../../domain/entities/movie_detail_entity.dart';

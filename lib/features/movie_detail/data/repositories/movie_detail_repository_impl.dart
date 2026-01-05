@@ -1,7 +1,6 @@
 import '../../../../core/models/movie_entity.dart';
 import '../../../../core/network/tmdb_service.dart';
 import '../../../home/data/models/movie_model.dart';
-import '../../../home/domain/entities/movie_entity.dart';
 import '../../domain/entities/cast_entity.dart';
 import '../../domain/entities/movie_detail_entity.dart';
 import '../../domain/repositories/movie_detail_repository.dart';

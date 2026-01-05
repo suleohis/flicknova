@@ -3,8 +3,10 @@ import 'package:flicknova/features/watchlist/data/watchlist_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../generated/app_localizations.dart';
+import '../../../../routes/app_router.dart';
 import '../../../../shared/app_loading.dart';
 import '../../../movie_detail/presentation/screens/movie_detail_screen.dart';
 import '../providers/home_notifier.dart';

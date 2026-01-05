@@ -49,12 +49,20 @@ class SeeAllState {
   }
 }
 
-class SeeAllNotifier extends StateNotifier<SeeAllState> {
+class SeeAllNotifier extends Notifier<SeeAllState> {
   final TmdbService _tmdbService;
   ContentType? _contentType;
   ContentCategory? _category;
 
-  SeeAllNotifier(this._tmdbService) : super(SeeAllState());
+  SeeAllNotifier(this._tmdbService);
+
+
+
+  @override
+  SeeAllState build() {
+    return SeeAllState();
+  }
+
 
   void initialize(ContentType contentType, ContentCategory category) {
     _contentType = contentType;
@@ -123,7 +131,7 @@ class SeeAllNotifier extends StateNotifier<SeeAllState> {
   Future<List<MovieEntity>> _fetchMovies(int page) async {
     switch (_category!) {
       case ContentCategory.trending:
-        final response = await _tmdbService.getTrending(
+        final response = await _tmdbService.getTrendingMap(
           mediaType: 'movie',
           timeWindow: 'week',
         );
@@ -144,7 +152,7 @@ class SeeAllNotifier extends StateNotifier<SeeAllState> {
         final results = await _tmdbService.getNowPlayingMovies(page: page);
         return results.map((json) => MovieEntity.fromJson(json)).toList();
       default:
-        final response = await _tmdbService.getTrending(
+        final response = await _tmdbService.getTrendingMap(
           mediaType: 'movie',
           timeWindow: 'week',
         );
@@ -160,7 +168,7 @@ class SeeAllNotifier extends StateNotifier<SeeAllState> {
 
     switch (_category!) {
       case ContentCategory.trending:
-        response = await _tmdbService.getTrending(
+        response = await _tmdbService.getTrendingMap(
           mediaType: 'tv',
           timeWindow: 'week',
         );
@@ -188,6 +196,6 @@ class SeeAllNotifier extends StateNotifier<SeeAllState> {
 }
 
 final seeAllProvider =
-    StateNotifierProvider.autoDispose<SeeAllNotifier, SeeAllState>(
-      (ref) => SeeAllNotifier(TmdbService()),
+    NotifierProvider.autoDispose<SeeAllNotifier, SeeAllState>(
+      () => SeeAllNotifier(TmdbService()),
     );

@@ -8,7 +8,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_colors.dart';
-import '../../../../generated/app_localizations.dart';
 import '../../../../routes/app_router.dart';
 import '../providers/trending_notifier.dart';
 

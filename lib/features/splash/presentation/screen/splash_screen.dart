@@ -2,12 +2,10 @@ import 'package:flicknova/shared/app_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../core/extensions/context_theme_extension.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../../generated/app_localizations.dart';
-import '../../../../routes/app_router.dart';
 import '../providers/splash_notifier.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {

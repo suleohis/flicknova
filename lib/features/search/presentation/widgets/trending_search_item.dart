@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/models/movie_entity.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../home/domain/entities/movie_entity.dart';
 
 class TrendingSearchItem extends StatelessWidget {
   final MovieEntity movie;

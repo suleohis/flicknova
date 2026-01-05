@@ -1,4 +1,3 @@
-import 'package:flicknova/core/widgets/placeholder_detail_screen.dart';
 import 'package:flicknova/features/movie_detail/presentation/screens/movie_detail_screen.dart';
 import 'package:flicknova/features/person_detail/presentation/screens/person_detail_screen.dart';
 import 'package:flicknova/features/tv_detail/presentation/screens/tv_detail_screen.dart';

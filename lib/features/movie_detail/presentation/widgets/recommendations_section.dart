@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/models/movie_entity.dart';
 import '../../../../generated/app_localizations.dart';
-import '../../../home/domain/entities/movie_entity.dart';
 import '../../../home/presentation/widgets/movie_card.dart';
 import '../../../home/presentation/widgets/section_header.dart';
 

@@ -1,5 +1,4 @@
 import '../../../../core/models/movie_entity.dart';
-import '../../../home/domain/entities/movie_entity.dart';
 
 class WatchlistItemEntity {
   final int id;

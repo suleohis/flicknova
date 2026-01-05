@@ -1,5 +1,4 @@
 import 'package:flicknova/core/extensions/context_theme_extension.dart';
-import 'package:flicknova/core/theme/app_colors.dart';
 import 'package:flicknova/features/movie_detail/presentation/widgets/expandable_synopsis.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
