@@ -24,9 +24,9 @@ class TopTenItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 120.h,
+        height: 140.h,
         margin: EdgeInsets.only(bottom: 16.h),
-        child: Row(
+        child: Stack(
           children: [
             // Rank number
             Container(
@@ -52,56 +52,60 @@ class TopTenItem extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(width: 12.w),
-            // Poster
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8.r),
-              child: Container(
-                width: 80.w,
-                height: 120.h,
-                color: AppColors.cardBackground,
-                child: movie.posterPath != null
-                    ? CachedNetworkImage(
-                        imageUrl: context.tmdbPosterUrl(movie.posterPath),
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) =>
-                            Container(color: AppColors.cardBackground),
-                        errorWidget: (context, url, error) =>
-                            Icon(Icons.movie, color: AppColors.white400),
-                      )
-                    : Icon(Icons.movie, color: AppColors.white400),
-              ),
-            ),
-            SizedBox(width: 12.w),
-            // Info
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    movie.title,
-                    style: context.bodyLarge.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+            Row(
+              children: [
+                SizedBox(width: 50.w),
+                // Poster
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8.r),
+                  child: Container(
+                    width: 100.w,
+                    height: 140.h,
+                    color: AppColors.cardBackground,
+                    child: movie.posterPath != null
+                        ? CachedNetworkImage(
+                            imageUrl: context.tmdbPosterUrl(movie.posterPath),
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) =>
+                                Container(color: AppColors.cardBackground),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.movie, color: AppColors.white400),
+                          )
+                        : Icon(Icons.movie, color: AppColors.white400),
                   ),
-                  SizedBox(height: 8.h),
-                  Row(
+                ),
+                SizedBox(width: 12.w),
+                // Info
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.star, color: AppColors.rating, size: 16.sp),
-                      SizedBox(width: 4.w),
                       Text(
-                        movie.voteAverage.toStringAsFixed(1),
-                        style: context.bodyMedium.copyWith(
-                          color: AppColors.white600,
+                        movie.title,
+                        style: context.bodyLarge.copyWith(
+                          fontWeight: FontWeight.w600,
                         ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(height: 8.h),
+                      Row(
+                        children: [
+                          Icon(Icons.star, color: AppColors.rating, size: 16.sp),
+                          SizedBox(width: 4.w),
+                          Text(
+                            movie.voteAverage.toStringAsFixed(1),
+                            style: context.bodyMedium.copyWith(
+                              color: AppColors.white600,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),

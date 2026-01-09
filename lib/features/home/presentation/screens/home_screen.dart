@@ -203,20 +203,23 @@ class HomeScreen extends ConsumerWidget {
                     itemCount: homeState.topRatedMovies.take(10).length,
                     itemBuilder: (context, index) {
                       final movie = homeState.topRatedMovies[index];
-                      return Padding(
-                        padding: EdgeInsets.only(right: 12.w),
-                        child: TopTenItem(
-                          rank: index + 1,
-                          movie: movie,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    MovieDetailScreen(movieId: movie.id),
-                              ),
-                            );
-                          },
+                      return Flexible(
+                        child: Container(
+                          width: 340.w,
+                          padding: EdgeInsets.only(right: 12.w),
+                          child: TopTenItem(
+                            rank: index + 1,
+                            movie: movie,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      MovieDetailScreen(movieId: movie.id),
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       );
                     },
