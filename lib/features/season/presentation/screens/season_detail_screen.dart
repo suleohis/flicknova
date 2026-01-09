@@ -53,12 +53,12 @@ class _SeasonDetailScreenState extends ConsumerState<SeasonDetailScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.more_vert, color: AppColors.white),
-            onPressed: () {
-              // TODO: Show options menu
-            },
-          ),
+          // IconButton(
+          //   icon: Icon(Icons.more_vert, color: AppColors.white),
+          //   onPressed: () {
+          //     // TODO: Show options menu
+          //   },
+          // ),
         ],
       ),
       body: seasonState.isLoading

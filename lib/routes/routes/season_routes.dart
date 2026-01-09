@@ -5,11 +5,13 @@ import '../app_router.dart';
 
 final seasonRoutes = [
   GoRoute(
-    path: '${AppRouter.seasonDetail}/:tvId/:seasonNumber',
+    path: AppRouter.seasonDetail,
     builder: (context, state) {
-      final tvId = int.parse(state.pathParameters['tvId']!);
-      final seasonNumber = int.parse(state.pathParameters['seasonNumber']!);
-      final showName = state.uri.queryParameters['showName'];
+      Map extra = state.extra as Map;
+
+      final tvId = extra['seriesId'];
+      final seasonNumber  =extra['seasonNumber'];
+      final showName = extra['seriesTitle'];
 
       return SeasonDetailScreen(
         tvId: tvId,

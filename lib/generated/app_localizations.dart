@@ -489,6 +489,18 @@ abstract class S {
   /// **'Horror'**
   String get horror;
 
+  /// No description provided for @about.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get about;
+
+  /// No description provided for @watch_trailer.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch Trailer'**
+  String get watch_trailer;
+
   /// No description provided for @romance.
   ///
   /// In en, this message translates to:
@@ -512,6 +524,42 @@ abstract class S {
   /// In en, this message translates to:
   /// **'My Watchlist'**
   String get my_watchlist;
+
+  /// No description provided for @episodes.
+  ///
+  /// In en, this message translates to:
+  /// **'Episodes'**
+  String get episodes;
+
+  /// No description provided for @guest_stars.
+  ///
+  /// In en, this message translates to:
+  /// **'Guest Stars'**
+  String get guest_stars;
+
+  /// No description provided for @season.
+  ///
+  /// In en, this message translates to:
+  /// **'Season'**
+  String get season;
+
+  /// No description provided for @seasons.
+  ///
+  /// In en, this message translates to:
+  /// **'Seasons'**
+  String get seasons;
+
+  /// No description provided for @air_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Air Date'**
+  String get air_date;
+
+  /// No description provided for @episode.
+  ///
+  /// In en, this message translates to:
+  /// **'Episode'**
+  String get episode;
 
   /// No description provided for @hours_saved.
   ///

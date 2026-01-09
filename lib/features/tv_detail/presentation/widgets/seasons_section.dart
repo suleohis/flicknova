@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/models/tv_series_detail_entity.dart';
+import '../../../../generated/app_localizations.dart';
 
 class SeasonsSection extends StatelessWidget {
   final List<SeasonSummaryEntity> seasons;
@@ -34,7 +35,7 @@ class SeasonsSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Seasons',
+            S.of(context).seasons,
             style: context.h4.copyWith(fontWeight: FontWeight.w700),
           ),
           SizedBox(height: 12.h),

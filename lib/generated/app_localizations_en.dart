@@ -214,6 +214,12 @@ class SEn extends S {
   String get horror => 'Horror';
 
   @override
+  String get about => 'About';
+
+  @override
+  String get watch_trailer => 'Watch Trailer';
+
+  @override
   String get romance => 'Romance';
 
   @override
@@ -224,6 +230,24 @@ class SEn extends S {
 
   @override
   String get my_watchlist => 'My Watchlist';
+
+  @override
+  String get episodes => 'Episodes';
+
+  @override
+  String get guest_stars => 'Guest Stars';
+
+  @override
+  String get season => 'Season';
+
+  @override
+  String get seasons => 'Seasons';
+
+  @override
+  String get air_date => 'Air Date';
+
+  @override
+  String get episode => 'Episode';
 
   @override
   String hours_saved(Object hours) {
