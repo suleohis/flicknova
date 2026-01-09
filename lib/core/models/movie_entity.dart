@@ -52,4 +52,24 @@ class MovieEntity {
       voteCount: json['vote_count'] as int? ?? 0,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'overview': overview,
+      'poster_path': posterPath,
+      'backdrop_path': backdropPath,
+      'vote_average': voteAverage,
+      'vote_count': voteCount,
+      'release_date': releaseDate,
+      'genre_ids': genreIds,
+      'adult': adult,
+      'original_language': originalLanguage,
+      'original_title': originalTitle,
+      'media_type': mediaType,
+      'popularity': popularity,
+      'video': video,
+    };
+  }
 }

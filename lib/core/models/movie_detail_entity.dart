@@ -133,4 +133,43 @@ class MovieDetailEntity {
           : null,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'adult': adult,
+      'backdrop_path': backdropPath,
+      'belongs_to_collection': belongsToCollection,
+      'budget': budget,
+      'genres': genres.map((e) => e.toJson()).toList(),
+      'homepage': homepage,
+      'id': id,
+      'imdb_id': imdbId,
+      'origin_country': originCountry,
+      'original_language': originalLanguage,
+      'original_title': originalTitle,
+      'overview': overview,
+      'popularity': popularity,
+      'poster_path': posterPath,
+      'production_companies': productionCompanies
+          .map((e) => e.toJson())
+          .toList(),
+      'production_countries': productionCountries
+          .map((e) => e.toJson())
+          .toList(),
+      'release_date': releaseDate,
+      'revenue': revenue,
+      'runtime': runtime,
+      'spoken_languages': spokenLanguages.map((e) => e.toJson()).toList(),
+      'status': status,
+      'tagline': tagline,
+      'title': title,
+      'video': video,
+      'vote_average': voteAverage,
+      'vote_count': voteCount,
+      'credits': credits?.toJson(),
+      'videos': videos?.toJson(),
+      'images': images?.toJson(),
+      'recommendations': recommendations?.toJson(),
+    };
+  }
 }

@@ -21,7 +21,7 @@ class CustomBottomNavBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final s = S.of(context);
     final authState = ref.watch(authProvider);
-    final avatarUrl = authState.profile?.avatarUrl;
+    // final avatarUrl = authState.profile?.avatarUrl;
 
     return Container(
       height: 80.h,
@@ -59,13 +59,13 @@ class CustomBottomNavBar extends ConsumerWidget {
             isActive: currentIndex == 2,
             onTap: () => onTap(2),
           ),
-          _NavBarItem(
-            avatarUrl: avatarUrl,
-            label: s.profile,
-            isActive: currentIndex == 3,
-            onTap: () => onTap(3),
-            isProfile: true,
-          ),
+          // _NavBarItem(
+          //   avatarUrl: avatarUrl,
+          //   label: s.profile,
+          //   isActive: currentIndex == 3,
+          //   onTap: () => onTap(3),
+          //   isProfile: true,
+          // ),
         ],
       ),
     );

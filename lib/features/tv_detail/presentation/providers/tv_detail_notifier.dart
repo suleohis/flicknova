@@ -1,7 +1,9 @@
 import 'package:flicknova/core/models/tv_series_detail_entity.dart';
 import 'package:flicknova/core/network/tmdb_service.dart';
+import 'package:flicknova/features/auth/presentation/providers/auth_notifier.dart';
 import 'package:flicknova/features/watchlist/data/watchlist_service.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TVDetailState {
@@ -58,7 +60,10 @@ class TVDetailNotifier extends Notifier<TVDetailState> {
 
       final seriesData = results[0] as Map<String, dynamic>;
       final series = TVSeriesDetailEntity.fromJson(seriesData);
-      final isInWatchlist = results[1] as bool;
+      final isInWatchlist = ref.read(authProvider).profile?.watchList?.contains(
+        series.toJson(),
+      ) ??
+          false;
 
       state = state.copyWith(
         series: series,
@@ -73,26 +78,22 @@ class TVDetailNotifier extends Notifier<TVDetailState> {
     }
   }
 
-  Future<void> toggleWatchlist() async {
+  Future<void> toggleWatchlist(BuildContext context) async {
     if (state.series == null) return;
 
     state = state.copyWith(isTogglingWatchlist: true);
 
     try {
-      if (state.isInWatchlist) {
-        await _watchlistService.removeTVShowFromWatchlist(state.series!.id);
+
+        final isInWatchlist = await ref
+            .read(authProvider.notifier)
+            .addWatchList(state.series!.toJson());
+        ref.read(authProvider.notifier).saveProfile(context, false);
+
         state = state.copyWith(
-          isInWatchlist: false,
+          isInWatchlist: isInWatchlist,
           isTogglingWatchlist: false,
         );
-      } else {
-        await _watchlistService.addTVShowToWatchlist(
-          seriesId: state.series!.id,
-          seriesTitle: state.series!.name,
-          posterPath: state.series!.posterPath,
-        );
-        state = state.copyWith(isInWatchlist: true, isTogglingWatchlist: false);
-      }
     } catch (e) {
       state = state.copyWith(isTogglingWatchlist: false);
       if (kDebugMode) {

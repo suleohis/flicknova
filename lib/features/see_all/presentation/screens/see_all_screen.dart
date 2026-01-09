@@ -139,7 +139,7 @@ class _SeeAllScreenState extends ConsumerState<SeeAllScreen> {
 
   Widget _buildGrid(SeeAllState state) {
     final crossAxisCount = widget.contentType == 'person' ? 3 : 2;
-    final childAspectRatio = widget.contentType == 'person' ? 0.65: 0.6;
+    // final childAspectRatio = widget.contentType == 'person' ? 0.65: 0.6;
 
     return AlignedGridView.count(
       controller: _scrollController,

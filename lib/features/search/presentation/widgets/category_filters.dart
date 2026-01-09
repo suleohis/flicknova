@@ -75,7 +75,7 @@ class CategoryFilters extends StatelessWidget {
               ),
               child: Center(
                 child: Text(
-                  genre.name!,
+                  genre.name,
                   style: context.bodyMedium.copyWith(
                     color: isSelected ? AppColors.background : AppColors.white,
                     fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,

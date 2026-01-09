@@ -27,6 +27,17 @@ class CreatorEntity {
       profilePath: json['profile_path'] as String?,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'credit_id': creditId,
+      'name': name,
+      'original_name': originalName,
+      'gender': gender,
+      'profile_path': profilePath,
+    };
+  }
 }
 
 class NetworkEntity {
@@ -49,6 +60,15 @@ class NetworkEntity {
       name: json['name'] as String,
       originCountry: json['origin_country'] as String? ?? '',
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'logo_path': logoPath,
+      'name': name,
+      'origin_country': originCountry,
+    };
   }
 }
 
@@ -84,6 +104,19 @@ class SeasonSummaryEntity {
       seasonNumber: json['season_number'] as int,
       voteAverage: (json['vote_average'] as num?)?.toDouble() ?? 0.0,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'air_date': airDate,
+      'episode_count': episodeCount,
+      'id': id,
+      'name': name,
+      'overview': overview,
+      'poster_path': posterPath,
+      'season_number': seasonNumber,
+      'vote_average': voteAverage,
+    };
   }
 }
 
@@ -134,6 +167,24 @@ class LastEpisodeToAirEntity {
       showId: json['show_id'] as int,
       stillPath: json['still_path'] as String?,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'overview': overview,
+      'vote_average': voteAverage,
+      'vote_count': voteCount,
+      'air_date': airDate,
+      'episode_number': episodeNumber,
+      'episode_type': episodeType,
+      'production_code': productionCode,
+      'runtime': runtime,
+      'season_number': seasonNumber,
+      'show_id': showId,
+      'still_path': stillPath,
+    };
   }
 }
 
@@ -298,5 +349,49 @@ class TVSeriesDetailEntity {
           ? ImagesEntity.fromJson(json['images'] as Map<String, dynamic>)
           : null,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'adult': adult,
+      'backdrop_path': backdropPath,
+      'created_by': createdBy.map((e) => e.toJson()).toList(),
+      'episode_run_time': episodeRunTime,
+      'first_air_date': firstAirDate,
+      'genres': genres.map((e) => e.toJson()).toList(),
+      'homepage': homepage,
+      'id': id,
+      'in_production': inProduction,
+      'languages': languages,
+      'last_air_date': lastAirDate,
+      'last_episode_to_air': lastEpisodeToAir?.toJson(),
+      'name': name,
+      'next_episode_to_air': nextEpisodeToAir,
+      'networks': networks.map((e) => e.toJson()).toList(),
+      'number_of_episodes': numberOfEpisodes,
+      'number_of_seasons': numberOfSeasons,
+      'origin_country': originCountry,
+      'original_language': originalLanguage,
+      'original_name': originalName,
+      'overview': overview,
+      'popularity': popularity,
+      'poster_path': posterPath,
+      'production_companies': productionCompanies
+          .map((e) => e.toJson())
+          .toList(),
+      'production_countries': productionCountries
+          .map((e) => e.toJson())
+          .toList(),
+      'seasons': seasons.map((e) => e.toJson()).toList(),
+      'spoken_languages': spokenLanguages.map((e) => e.toJson()).toList(),
+      'status': status,
+      'tagline': tagline,
+      'type': type,
+      'vote_average': voteAverage,
+      'vote_count': voteCount,
+      'credits': credits?.toJson(),
+      'videos': videos?.toJson(),
+      'images': images?.toJson(),
+    };
   }
 }

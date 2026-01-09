@@ -14,6 +14,7 @@ class HeroSection extends StatelessWidget {
   final VoidCallback? onAddTap;
   final VoidCallback? onTap;
   final bool hasTrailer;
+  final bool isAddedToWatchList;
 
   const HeroSection({
     super.key,
@@ -22,6 +23,7 @@ class HeroSection extends StatelessWidget {
     this.onAddTap,
     this.onTap,
     this.hasTrailer = false,
+    this.isAddedToWatchList = false,
   });
 
   @override
@@ -148,40 +150,41 @@ class HeroSection extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(width: 12.w),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: AppColors.cardBackground,
-                            borderRadius: BorderRadius.circular(8.r),
-                          ),
-                          child: IconButton(
-                            onPressed: onAddTap,
-                            icon: Icon(
-                              Icons.add,
-                              color: AppColors.white,
-                              size: 24.sp,
-                            ),
-                            padding: EdgeInsets.all(14.sp),
-                          ),
-                        ),
+                        // SizedBox(width: 12.w),
+                        // Container(
+                        //   decoration: BoxDecoration(
+                        //     color: AppColors.cardBackground,
+                        //     borderRadius: BorderRadius.circular(8.r),
+                        //   ),
+                        //   child: IconButton(
+                        //     onPressed: onAddTap,
+                        //     icon: Icon(
+                        //       isAddedToWatchList ? Icons.check : Icons.add,
+                        //       color: AppColors.white,
+                        //       size: 24.sp,
+                        //     ),
+                        //     padding: EdgeInsets.all(14.sp),
+                        //   ),
+                        // ),
                       ],
                     )
                   else
                     // Only watchlist button when no trailer
-                    ElevatedButton.icon(
-                      onPressed: onAddTap,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.cardBackground,
-                        foregroundColor: AppColors.white,
-                        padding: EdgeInsets.symmetric(vertical: 14.h),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        elevation: 0,
-                      ),
-                      icon: Icon(Icons.add, size: 24.sp),
-                      label: Text(s.add_to_watchlist, style: context.button),
-                    ),
+                    // ElevatedButton.icon(
+                    //   onPressed: onAddTap,
+                    //   style: ElevatedButton.styleFrom(
+                    //     backgroundColor: AppColors.cardBackground,
+                    //     foregroundColor: AppColors.white,
+                    //     padding: EdgeInsets.symmetric(vertical: 14.h),
+                    //     shape: RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(8.r),
+                    //     ),
+                    //     elevation: 0,
+                    //   ),
+                    //   icon: Icon(Icons.add, size: 24.sp),
+                    //   label: Text(s.add_to_watchlist, style: context.button),
+                    // ),
+                    SizedBox()
                 ],
               ),
             ),

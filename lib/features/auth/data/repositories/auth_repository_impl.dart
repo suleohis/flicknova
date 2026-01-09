@@ -19,8 +19,8 @@ class AuthRepositoryImpl implements AuthRepository {
       '996389293594-58f48nr2m2ajrv3v5p4osiaqdjaf1kv8.apps.googleusercontent.com';
 
   // Optional: iOS-specific client ID for better native flow
-  static const String? _iosClientId =
-      'YOUR_IOS_CLIENT_ID.apps.googleusercontent.com';
+  // static const String? _iosClientId =
+  //     'YOUR_IOS_CLIENT_ID.apps.googleusercontent.com';
 
   @override
   Future<UserEntity> signInWithGoogle() async {

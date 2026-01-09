@@ -7,6 +7,14 @@ class GenreEntity {
   factory GenreEntity.fromJson(Map<String, dynamic> json) {
     return GenreEntity(id: json['id'] as int, name: json['name'] as String);
   }
+
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+    };
+  }
 }
 
 class ProductionCompanyEntity {
@@ -30,6 +38,15 @@ class ProductionCompanyEntity {
       originCountry: json['origin_country'] as String? ?? '',
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'logo_path': logoPath,
+      'name': name,
+      'origin_country': originCountry,
+    };
+  }
 }
 
 class ProductionCountryEntity {
@@ -43,6 +60,14 @@ class ProductionCountryEntity {
       iso31661: json['iso_3166_1'] as String,
       name: json['name'] as String,
     );
+  }
+
+
+  Map<String, dynamic> toJson() {
+    return {
+      'iso_3166_1': iso31661,
+      'name': name,
+    };
   }
 }
 
@@ -63,6 +88,14 @@ class SpokenLanguageEntity {
       iso6391: json['iso_639_1'] as String,
       name: json['name'] as String? ?? '',
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'english_name': englishName,
+      'iso_639_1': iso6391,
+      'name': name,
+    };
   }
 }
 
@@ -111,6 +144,23 @@ class CastMemberEntity {
       order: json['order'] as int,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'adult': adult,
+      'gender': gender,
+      'id': id,
+      'known_for_department': knownForDepartment,
+      'name': name,
+      'original_name': originalName,
+      'popularity': popularity,
+      'profile_path': profilePath,
+      'cast_id': castId,
+      'character': character,
+      'credit_id': creditId,
+      'order': order,
+    };
+  }
 }
 
 class CrewMemberEntity {
@@ -155,6 +205,22 @@ class CrewMemberEntity {
       job: json['job'] as String,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'adult': adult,
+      'gender': gender,
+      'id': id,
+      'known_for_department': knownForDepartment,
+      'name': name,
+      'original_name': originalName,
+      'popularity': popularity,
+      'profile_path': profilePath,
+      'credit_id': creditId,
+      'department': department,
+      'job': job,
+    };
+  }
 }
 
 class CreditsEntity {
@@ -176,6 +242,13 @@ class CreditsEntity {
               .toList() ??
           [],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'cast': cast.map((e) => e.toJson()).toList(),
+      'crew': crew.map((e) => e.toJson()).toList(),
+    };
   }
 }
 
@@ -218,6 +291,21 @@ class VideoEntity {
       id: json['id'] as String,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'iso_639_1': iso6391,
+      'iso_3166_1': iso31661,
+      'name': name,
+      'key': key,
+      'site': site,
+      'size': size,
+      'type': type,
+      'official': official,
+      'published_at': publishedAt,
+      'id': id,
+    };
+  }
 }
 
 class VideosEntity {
@@ -233,6 +321,12 @@ class VideosEntity {
               .toList() ??
           [],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'results': results.map((e) => e.toJson()).toList(),
+    };
   }
 }
 
@@ -269,6 +363,19 @@ class ImageEntity {
       width: json['width'] as int,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'aspect_ratio': aspectRatio,
+      'height': height,
+      'iso_3166_1': iso31661,
+      'iso_639_1': iso6391,
+      'file_path': filePath,
+      'vote_average': voteAverage,
+      'vote_count': voteCount,
+      'width': width,
+    };
+  }
 }
 
 class ImagesEntity {
@@ -300,6 +407,14 @@ class ImagesEntity {
               .toList() ??
           [],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'backdrops': backdrops.map((e) => e.toJson()).toList(),
+      'logos': logos.map((e) => e.toJson()).toList(),
+      'posters': posters.map((e) => e.toJson()).toList(),
+    };
   }
 }
 
@@ -361,6 +476,26 @@ class RecommendationEntity {
       voteCount: json['vote_count'] as int? ?? 0,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'adult': adult,
+      'backdrop_path': backdropPath,
+      'id': id,
+      'title': title,
+      'original_title': originalTitle,
+      'overview': overview,
+      'poster_path': posterPath,
+      'media_type': mediaType,
+      'original_language': originalLanguage,
+      'genre_ids': genreIds,
+      'popularity': popularity,
+      'release_date': releaseDate,
+      'video': video,
+      'vote_average': voteAverage,
+      'vote_count': voteCount,
+    };
+  }
 }
 
 class RecommendationsEntity {
@@ -389,5 +524,14 @@ class RecommendationsEntity {
       totalPages: json['total_pages'] as int?,
       totalResults: json['total_results'] as int?,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'page': page,
+      'results': results.map((e) => e.toJson()).toList(),
+      'total_pages': totalPages,
+      'total_results': totalResults,
+    };
   }
 }

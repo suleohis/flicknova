@@ -8,6 +8,7 @@ class ProfileModel extends ProfileEntity {
     super.avatarUrl,
     super.updatedAt,
     super.favoriteGenres,
+    super.watchList,
   });
 
   ProfileModel copyWith({
@@ -16,6 +17,7 @@ class ProfileModel extends ProfileEntity {
     String? avatarUrl,
     DateTime? updatedAt,
     List<GenreModel>? favoriteGenres,
+    List<Map<String, dynamic>>? watchList,
   }) {
     return ProfileModel(
       id: id ?? this.id,
@@ -23,6 +25,7 @@ class ProfileModel extends ProfileEntity {
       avatarUrl: avatarUrl ?? this.avatarUrl,
       updatedAt: updatedAt ?? this.updatedAt,
       favoriteGenres: favoriteGenres ?? this.favoriteGenres,
+      watchList: watchList ?? this.watchList,
     );
   }
 
@@ -37,6 +40,7 @@ class ProfileModel extends ProfileEntity {
       favoriteGenres: (json['favorite_genres'] as List?)
           ?.map((genre) => GenreModel.fromJson(genre as Map<String, dynamic>))
           .toList(),
+      watchList: json['watch_list'] as List<Map<String, dynamic>>?,
     );
   }
 
@@ -47,6 +51,7 @@ class ProfileModel extends ProfileEntity {
       'avatar_url': avatarUrl,
       'updated_at': updatedAt?.toIso8601String(),
       'favorite_genres': favoriteGenres,
+      'watch_list': watchList,
     };
   }
 }

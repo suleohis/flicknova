@@ -28,8 +28,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final splashState = ref.watch(splashNotifier);
-
     return Scaffold(
       body: Container(
         width: .infinity,

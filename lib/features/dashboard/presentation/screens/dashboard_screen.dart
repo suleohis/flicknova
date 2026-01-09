@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../home/presentation/screens/home_screen.dart';
-import '../../../profile/presentation/screens/profile_screen.dart';
 import '../../../search/presentation/screens/search_screen.dart';
 import '../../../watchlist/presentation/screens/watchlist_screen.dart';
 import '../widgets/custom_bottom_nav_bar.dart';
@@ -23,7 +22,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     HomeScreen(),
     SearchScreen(),
     WatchlistScreen(),
-    ProfileScreen(),
+    // ProfileScreen(),
   ];
 
   @override

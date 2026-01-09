@@ -1,5 +1,6 @@
 import 'package:flicknova/core/widgets/youtube_player_widget.dart';
-import 'package:flicknova/features/watchlist/data/watchlist_service.dart';
+import 'package:flicknova/features/auth/presentation/providers/auth_notifier.dart';
+// import 'package:flicknova/features/watchlist/data/watchlist_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,6 +26,7 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final s = S.of(context);
     final homeState = ref.watch(homeProvider);
+    final authState = ref.watch(authProvider);
 
     return Scaffold(
       body: RefreshIndicator(
@@ -39,6 +41,11 @@ class HomeScreen extends ConsumerWidget {
                 child: HeroSection(
                   movie: homeState.trendingMovies.first,
                   hasTrailer: homeState.hasHeroTrailer,
+                  isAddedToWatchList:
+                      authState.profile?.watchList?.contains(
+                        homeState.trendingMovies.first.toJson(),
+                      ) ??
+                      false,
                   onPlayTrailerTap: homeState.heroVideoKey != null
                       ? () {
                           Navigator.push(
@@ -53,40 +60,46 @@ class HomeScreen extends ConsumerWidget {
                         }
                       : null,
                   onAddTap: () async {
-                    final watchlistService = WatchlistService();
-                    final movie = homeState.trendingMovies.first;
-
-                    try {
-                      final isInWatchlist = await watchlistService
-                          .isInWatchlist(movie.id);
-
-                      if (isInWatchlist) {
-                        await watchlistService.removeFromWatchlist(movie.id);
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Removed from watchlist')),
-                          );
-                        }
-                      } else {
-                        await watchlistService.addToWatchlist(
-                          movieId: movie.id,
-                          movieTitle: movie.title,
-                          posterPath: movie.posterPath,
-                        );
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Added to watchlist')),
-                          );
-                        }
-                      }
-                    } catch (e) {
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Error: ${e.toString()}')),
-                        );
-                      }
-                    }
+                    ref
+                        .read(authProvider.notifier)
+                        .addWatchList(homeState.trendingMovies.first.toJson());
+                    ref.read(authProvider.notifier).saveProfile(context, false);
                   },
+                  // onAddTap: () async {
+                  //   final watchlistService = WatchlistService();
+                  //   final movie = homeState.trendingMovies.first;
+                  //
+                  //   try {
+                  //     final isInWatchlist = await watchlistService
+                  //         .isInWatchlist(movie.id);
+                  //
+                  //     if (isInWatchlist) {
+                  //       await watchlistService.removeFromWatchlist(movie.id);
+                  //       if (context.mounted) {
+                  //         ScaffoldMessenger.of(context).showSnackBar(
+                  //           SnackBar(content: Text('Removed from watchlist')),
+                  //         );
+                  //       }
+                  //     } else {
+                  //       await watchlistService.addToWatchlist(
+                  //         movieId: movie.id,
+                  //         movieTitle: movie.title,
+                  //         posterPath: movie.posterPath,
+                  //       );
+                  //       if (context.mounted) {
+                  //         ScaffoldMessenger.of(context).showSnackBar(
+                  //           SnackBar(content: Text('Added to watchlist')),
+                  //         );
+                  //       }
+                  //     }
+                  //   } catch (e) {
+                  //     if (context.mounted) {
+                  //       ScaffoldMessenger.of(context).showSnackBar(
+                  //         SnackBar(content: Text('Error: ${e.toString()}')),
+                  //       );
+                  //     }
+                  //   }
+                  // },
                   onTap: () {
                     Navigator.push(
                       context,

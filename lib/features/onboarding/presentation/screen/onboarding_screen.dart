@@ -19,7 +19,7 @@ class OnboardingScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final s = S.of(context);
-    final onBoardState = ref.watch(onboardingProvider);
+    // final onBoardState = ref.watch(onboardingProvider);
     List<OnboardingEntity> onboardingList = [
       OnboardingEntity(
         title: s.onboarding_title1,

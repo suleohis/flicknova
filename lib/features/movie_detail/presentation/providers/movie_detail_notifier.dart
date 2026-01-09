@@ -1,8 +1,9 @@
-import 'package:flicknova/features/watchlist/data/watchlist_service.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/models/movie_entity.dart';
+import '../../../auth/presentation/providers/auth_notifier.dart';
 import '../../data/repositories/movie_detail_repository_impl.dart';
 import '../../domain/entities/cast_entity.dart';
 import '../../domain/entities/movie_detail_entity.dart';
@@ -50,12 +51,12 @@ class MovieDetailState {
 
 class MovieDetailNotifier extends Notifier<MovieDetailState> {
   late final MovieDetailRepository _repository;
-  late final WatchlistService _watchlistService;
+  // late final WatchlistService _watchlistService;
 
   @override
   MovieDetailState build() {
     _repository = MovieDetailRepositoryImpl();
-    _watchlistService = WatchlistService();
+    // _watchlistService = WatchlistService();
     return MovieDetailState();
   }
 
@@ -67,14 +68,18 @@ class MovieDetailNotifier extends Notifier<MovieDetailState> {
         _repository.getMovieDetail(movieId),
         _repository.getMovieCast(movieId),
         _repository.getRecommendations(movieId),
-        _watchlistService.isInWatchlist(movieId),
       ]);
+
+      final isInWatchlist = ref.read(authProvider).profile?.watchList?.contains(
+        (results[0]  as MovieDetailEntity).toJson(),
+      ) ??
+          false;
 
       state = state.copyWith(
         movie: results[0] as MovieDetailEntity,
         cast: results[1] as List<CastEntity>,
         recommendations: results[2] as List<MovieEntity>,
-        isInWatchlist: results[3] as bool,
+        isInWatchlist: isInWatchlist,
         isLoading: false,
       );
     } catch (e) {
@@ -85,26 +90,23 @@ class MovieDetailNotifier extends Notifier<MovieDetailState> {
     }
   }
 
-  Future<void> toggleWatchlist() async {
+  Future<void> toggleWatchlist(BuildContext context) async {
+    print('working');
     if (state.movie == null) return;
+    print('working');
 
     state = state.copyWith(isTogglingWatchlist: true);
 
     try {
-      if (state.isInWatchlist) {
-        await _watchlistService.removeFromWatchlist(state.movie!.id);
-        state = state.copyWith(
-          isInWatchlist: false,
-          isTogglingWatchlist: false,
-        );
-      } else {
-        await _watchlistService.addToWatchlist(
-          movieId: state.movie!.id,
-          movieTitle: state.movie!.title,
-          posterPath: state.movie!.posterPath,
-        );
-        state = state.copyWith(isInWatchlist: true, isTogglingWatchlist: false);
-      }
+      final isInWatchlist = await ref
+          .read(authProvider.notifier)
+          .addWatchList(state.movie!.toJson());
+      ref.read(authProvider.notifier).saveProfile(context, false);
+
+      state = state.copyWith(
+        isInWatchlist: isInWatchlist,
+        isTogglingWatchlist: false,
+      );
     } catch (e) {
       state = state.copyWith(isTogglingWatchlist: false);
       if (kDebugMode) {

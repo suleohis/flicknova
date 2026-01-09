@@ -187,7 +187,35 @@ class AuthNotifier extends Notifier<AuthState> {
     }
   }
 
-  Future<void> saveFavoriteGenres(BuildContext context) async {
+  Future<bool> addWatchList(Map<String, dynamic> item) async {
+    if (state.profile == null) return false;
+
+    if (state.profile!.watchList == null || state.profile!.watchList!.isEmpty) {
+      state = state.copyWith(
+        profile: state.profile!.copyWith(watchList: [item]),
+      );
+      return true;
+    } else if (!state.profile!.watchList!.contains(item)) {
+      state = state.copyWith(
+        profile: state.profile!.copyWith(
+          watchList: [...state.profile!.watchList!, item],
+        ),
+      );
+      return true;
+    } else if (state.profile!.watchList!.contains(item)) {
+      state = state.copyWith(
+        profile: state.profile!.copyWith(
+          watchList: state.profile!.watchList!
+              .where((element) => element != item)
+              .toList(),
+        ),
+      );
+    }
+
+    return false;
+  }
+
+  Future<void> saveProfile(BuildContext context, bool isSignUp) async {
     state = state.copyWith(isLoading: true);
     try {
       // Save the profile with updated genres
@@ -197,12 +225,15 @@ class AuthNotifier extends Notifier<AuthState> {
         state = state.copyWith(isLoading: false);
 
         if (!context.mounted) return;
-        context.go(AppRouter.dashboard);
+        if (isSignUp) {
+          context.go(AppRouter.dashboard);
+        }
+        getCurrentProfile();
       }
     } catch (e) {
       state = state.copyWith(error: e.toString(), isLoading: false);
       if (kDebugMode) {
-        print('Save genres error: $e');
+        print('Save profile error: $e');
       }
     }
   }
@@ -211,9 +242,17 @@ class AuthNotifier extends Notifier<AuthState> {
     state = state.copyWith(isLoading: true);
     try {
       final profile = await _repository.getCurrentProfile();
-      state = state.copyWith(user: state.user, profile: profile, isLoading: false);
+      state = state.copyWith(
+        user: state.user,
+        profile: profile,
+        isLoading: false,
+      );
     } catch (e) {
-      state = state.copyWith(user: state.user, error: e.toString(), isLoading: false);
+      state = state.copyWith(
+        user: state.user,
+        error: e.toString(),
+        isLoading: false,
+      );
       if (kDebugMode) {
         print('Get profile error: $e');
       }

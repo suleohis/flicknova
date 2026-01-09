@@ -64,24 +64,24 @@ class ActionButtonsRow extends StatelessWidget {
   }
 }
 
-class _IconButton extends StatelessWidget {
-  final IconData icon;
-  final VoidCallback? onTap;
-
-  const _IconButton({required this.icon, this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.cardBackground,
-        borderRadius: BorderRadius.circular(8.r),
-      ),
-      child: IconButton(
-        onPressed: onTap,
-        icon: Icon(icon, color: AppColors.white, size: 24.sp),
-        padding: EdgeInsets.all(14.sp),
-      ),
-    );
-  }
-}
+// class _IconButton extends StatelessWidget {
+//   final IconData icon;
+//   final VoidCallback? onTap;
+//
+//   const _IconButton({required this.icon, this.onTap});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       decoration: BoxDecoration(
+//         color: AppColors.cardBackground,
+//         borderRadius: BorderRadius.circular(8.r),
+//       ),
+//       child: IconButton(
+//         onPressed: onTap,
+//         icon: Icon(icon, color: AppColors.white, size: 24.sp),
+//         padding: EdgeInsets.all(14.sp),
+//       ),
+//     );
+//   }
+// }

@@ -80,7 +80,7 @@ class ChooseFavoriteGenresScreen extends ConsumerWidget {
             ),
             PrimaryButton(
               text: s.continue_text,
-              onPressed: () =>  ref.read(authProvider.notifier).saveFavoriteGenres(context),
+              onPressed: () =>  ref.read(authProvider.notifier).saveProfile(context, true),
               isLoading: authNotifier.isLoading,
               isEnabled:
                   authNotifier.profile?.favoriteGenres?.isNotEmpty ?? true,

@@ -181,7 +181,7 @@ class _TVDetailScreenState extends ConsumerState<TVDetailScreen> {
                             isLoading: detailState.isTogglingWatchlist,
                             onTap: () => ref
                                 .read(tvDetailProvider.notifier)
-                                .toggleWatchlist(),
+                                .toggleWatchlist(context),
                           ),
                         ),
                       ],
