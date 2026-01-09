@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flicknova/core/network/tmdb_service.dart';
 import 'package:flicknova/core/services/notification_service.dart';
 import 'package:flutter/foundation.dart';
@@ -238,7 +239,18 @@ final authProvider = NotifierProvider<AuthNotifier, AuthState>(
 );
 
 final movieGenresProvider = FutureProvider<List<GenreModel>>((ref) async {
-  final genresJson = await TmdbService().getMovieGenres();
-  // Convert to GenreModel list
-  return genresJson.map((json) => GenreModel.fromJson(json)).toList();
+  final movies = await TmdbService().getMovieGenres();
+  final tvShows = await TmdbService().getTVShowGenres();
+  final genresJson = movies + tvShows;
+  // Convert to GenreModel list'
+  final genres = genresJson.map((json) => GenreModel.fromJson(json)).toList();
+  final List<GenreModel> duplicateRemove = [];
+  genres.sortBy((element) => element.name);
+
+  var uniqueIDs = genres.map((e) => e.id).toSet();
+
+  for (var id in uniqueIDs) {
+    duplicateRemove.add(genres.firstWhere((i) => i.id == id));
+  }
+  return duplicateRemove;
 });

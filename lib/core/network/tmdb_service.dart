@@ -32,6 +32,16 @@ class TmdbService {
     return (response.data['genres'] as List).cast<Map<String, dynamic>>();
   }
 
+  Future<List<Map<String, dynamic>>> getTVShowGenres({
+    String language = 'en-US',
+  }) async {
+    final response = await _client.get(
+      '/genre/tv/list',
+      queryParameters: {'language': language},
+    );
+    return (response.data['genres'] as List).cast<Map<String, dynamic>>();
+  }
+
   Future<List<Map<String, dynamic>>> getTvGenres({
     String language = 'en-US',
   }) async {

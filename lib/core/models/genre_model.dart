@@ -5,6 +5,7 @@ class GenreModel  extends GenreEntity{
     required super.id,
     required super.name,
 });
+
   factory GenreModel.fromJson(Map<String, dynamic> json) {
     return GenreModel(
       id: json['id'] as int,

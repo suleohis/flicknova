@@ -107,28 +107,28 @@ class SignInScreen extends ConsumerWidget {
                       ),
                     ),
                     SizedBox(height: 15.h),
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: .circular(24.r),
-                        color: AppColors.white.withValues(alpha: .15),
-                        border: Border.all(
-                            color: AppColors.white.withValues(alpha: .2), )
-                      ),
-                      child: Center(
-                        child: Row(
-                          mainAxisSize: .min,
-                          children: [
-                            Assets.icons.appleIcon.svg(
-                              height: 24.h,
-                              width: 24.w,
-                            ),
-                            SizedBox(width: 12.w),
-                            Text(s.sign_in_with_apple, style: context.bodyLarge),
-                          ],
-                        ),
-                      ),
-                    ),
+                    // Container(
+                    //   width: double.infinity,
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: .circular(24.r),
+                    //     color: AppColors.white.withValues(alpha: .15),
+                    //     border: Border.all(
+                    //         color: AppColors.white.withValues(alpha: .2), )
+                    //   ),
+                    //   child: Center(
+                    //     child: Row(
+                    //       mainAxisSize: .min,
+                    //       children: [
+                    //         Assets.icons.appleIcon.svg(
+                    //           height: 24.h,
+                    //           width: 24.w,
+                    //         ),
+                    //         SizedBox(width: 12.w),
+                    //         Text(s.sign_in_with_apple, style: context.bodyLarge),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
                 Column(
