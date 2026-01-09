@@ -72,6 +72,33 @@ class TmdbService {
     return response.data as Map<String, dynamic>;
   }
 
+  Future<Map<String, dynamic>> getTVShowDetails({
+    required int tvId,
+    String language = 'en-US',
+  }) async {
+    final response = await _client.get(
+      '/tv/$tvId',
+      queryParameters: {
+        'language': language,
+        'append_to_response': 'credits,videos,images,recommendations',
+      },
+    );
+    return response.data as Map<String, dynamic>;
+  }
+
+  // // Get season details with episodes
+  // Future<Map<String, dynamic>> getSeasonDetails({
+  //   required int tvId,
+  //   required int seasonNumber,
+  //   String language = 'en-US',
+  // }) async {
+  //   final response = await _client.get(
+  //     '/tv/$tvId/season/$seasonNumber',
+  //     queryParameters: {'language': language},
+  //   );
+  //   return response.data as Map<String, dynamic>;
+  // }
+
   /// Get detailed person information by ID
   /// Includes: TV credits (cast/crew)
   Future<Map<String, dynamic>> getPersonDetails(

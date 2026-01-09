@@ -1,4 +1,5 @@
 import 'package:flicknova/core/extensions/context_theme_extension.dart';
+import 'package:flicknova/features/movie_detail/presentation/widgets/watchlist_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -9,12 +10,16 @@ class ActionButtonsRow extends StatelessWidget {
   final VoidCallback? onPlayTap;
   final VoidCallback? onWatchlistTap;
   final VoidCallback? onShareTap;
+  final bool isInWatchlist;
+  final bool isLoading;
 
   const ActionButtonsRow({
     super.key,
     this.onPlayTap,
     this.onWatchlistTap,
     this.onShareTap,
+    this.isInWatchlist = false,
+    this.isLoading = false,
   });
 
   @override
@@ -25,6 +30,7 @@ class ActionButtonsRow extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Row(
         children: [
+          if (onPlayTap != null)
           Expanded(
             child: ElevatedButton.icon(
               onPressed: onPlayTap,
@@ -45,9 +51,13 @@ class ActionButtonsRow extends StatelessWidget {
             ),
           ),
           SizedBox(width: 12.w),
-          _IconButton(icon: Icons.add, onTap: onWatchlistTap),
-          SizedBox(width: 12.w),
-          _IconButton(icon: Icons.share, onTap: onShareTap),
+          Expanded(
+            child: WatchlistButton(
+              isInWatchlist: isInWatchlist,
+              isLoading: isLoading,
+              onTap: () =>  onWatchlistTap
+            ),
+          ),
         ],
       ),
     );

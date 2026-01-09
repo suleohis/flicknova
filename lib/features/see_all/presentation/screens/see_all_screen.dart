@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/models/movie_entity.dart';
@@ -137,18 +138,16 @@ class _SeeAllScreenState extends ConsumerState<SeeAllScreen> {
   }
 
   Widget _buildGrid(SeeAllState state) {
-    final crossAxisCount = widget.contentType == 'person' ? 3 : 3;
-    final childAspectRatio = widget.contentType == 'person' ? 0.65 : 0.6;
+    final crossAxisCount = widget.contentType == 'person' ? 3 : 2;
+    final childAspectRatio = widget.contentType == 'person' ? 0.65: 0.6;
 
-    return GridView.builder(
+    return AlignedGridView.count(
       controller: _scrollController,
       padding: EdgeInsets.all(16.w),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: crossAxisCount,
-        childAspectRatio: childAspectRatio,
         crossAxisSpacing: 12.w,
         mainAxisSpacing: 16.h,
-      ),
+
       itemCount: state.items.length + (state.hasMore ? 1 : 0),
       itemBuilder: (context, index) {
         if (index >= state.items.length) {

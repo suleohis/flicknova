@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/widgets/youtube_player_widget.dart';
 import '../../../../shared/app_loading.dart';
+import '../../../tv_detail/presentation/providers/tv_detail_notifier.dart';
 import '../providers/movie_detail_notifier.dart';
 import '../widgets/action_buttons_row.dart';
 import '../widgets/cast_list.dart';
@@ -72,11 +74,31 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
                 // Action buttons
                 SliverToBoxAdapter(
                   child: ActionButtonsRow(
-                    onPlayTap: () {
-                      // TODO: Play trailer
-                    },
+                    onPlayTap:
+                        (detailState.movie?.videos?.results.last.key != null)
+                        ? () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => YouTubePlayerWidget(
+                                  videoKey:
+                                      detailState
+                                          .movie
+                                          ?.videos
+                                          ?.results
+                                          .last
+                                          .key ??
+                                      '',
+                                  title: detailState.movie?.title ?? '',
+                                ),
+                              ),
+                            );
+                          }
+                        : null,
                     onWatchlistTap: () {
-                      // TODO: Add to watchlist
+                      ref
+                          .read(tvDetailProvider.notifier)
+                          .toggleWatchlist();
                     },
                     onShareTap: () {
                       // TODO: Share movie

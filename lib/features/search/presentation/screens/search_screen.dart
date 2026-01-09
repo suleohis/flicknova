@@ -1,4 +1,5 @@
 import 'package:flicknova/core/models/tv_show_entity.dart';
+import 'package:flicknova/features/tv_detail/presentation/screens/tv_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -176,6 +177,17 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   ),
                 );
               },
+              onTVShowTap: (tvShow) {
+                // ref.read(recentlyViewedProvider.notifier).add(movie);
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TVDetailScreen(seriesId: tvShow.id),
+                  ),
+                );
+              },
+
             ),
             SizedBox(height: 32.h),
           ],

@@ -45,12 +45,12 @@ class _PersonDetailScreenState extends ConsumerState<PersonDetailScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.share, color: AppColors.white),
-            onPressed: () {
-              // TODO: Share person
-            },
-          ),
+          // IconButton(
+          //   icon: const Icon(Icons.share, color: AppColors.white),
+          //   onPressed: () {
+          //     // TODO: Share person
+          //   },
+          // ),
         ],
       ),
       body: detailState.isLoading

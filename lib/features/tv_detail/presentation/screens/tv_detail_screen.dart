@@ -15,6 +15,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flicknova/core/extensions/context_extension.dart';
 
+import '../../../../core/widgets/youtube_player_widget.dart';
+import '../../../person_detail/presentation/screens/person_detail_screen.dart';
+
 class TVDetailScreen extends ConsumerStatefulWidget {
   final int seriesId;
 
@@ -49,12 +52,12 @@ class _TVDetailScreenState extends ConsumerState<TVDetailScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.share, color: AppColors.white),
-            onPressed: () {
-              // TODO: Share TV series
-            },
-          ),
+          // IconButton(
+          //   icon: const Icon(Icons.share, color: AppColors.white),
+          //   onPressed: () {
+          //     // TODO: Share TV series
+          //   },
+          // ),
         ],
       ),
       body: detailState.isLoading
@@ -145,10 +148,19 @@ class _TVDetailScreenState extends ConsumerState<TVDetailScreen> {
                     padding: EdgeInsets.all(16.w),
                     child: Row(
                       children: [
+                        if (detailState.series?.videos?.results.last.key!= null)
                         Expanded(
                           child: ElevatedButton.icon(
                             onPressed: () {
-                              // TODO: Play trailer
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => YouTubePlayerWidget(
+                                    videoKey: detailState.series?.videos?.results.last.key ??'',
+                                    title: detailState.series?.name ??''
+                                  ),
+                                ),
+                              );
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.playButton,
@@ -284,40 +296,51 @@ class _TVDetailScreenState extends ConsumerState<TVDetailScreen> {
   }
 
   Widget _buildCastCard(BuildContext context, CastMemberEntity actor) {
-    return Container(
-      width: 80.w,
-      margin: EdgeInsets.only(right: 12.w),
-      child: Column(
-        children: [
-          Container(
-            width: 80.r,
-            height: 80.r,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: AppColors.white400.withValues(alpha: 0.2),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                PersonDetailScreen(personId: actor.id),
+          ),
+        );
+      },
+      child: Container(
+        width: 80.w,
+        margin: EdgeInsets.only(right: 12.w),
+        child: Column(
+          children: [
+            Container(
+              width: 80.r,
+              height: 80.r,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: AppColors.white400.withValues(alpha: 0.2),
+                ),
+              ),
+              child: ClipOval(
+                child: actor.profilePath != null
+                    ? CachedNetworkImage(
+                        imageUrl: context.tmdbPosterUrl(actor.profilePath),
+                        fit: BoxFit.cover,
+                        errorWidget: (context, url, error) =>
+                            Icon(Icons.person, color: AppColors.white400),
+                      )
+                    : Icon(Icons.person, color: AppColors.white400),
               ),
             ),
-            child: ClipOval(
-              child: actor.profilePath != null
-                  ? CachedNetworkImage(
-                      imageUrl: context.tmdbPosterUrl(actor.profilePath),
-                      fit: BoxFit.cover,
-                      errorWidget: (context, url, error) =>
-                          Icon(Icons.person, color: AppColors.white400),
-                    )
-                  : Icon(Icons.person, color: AppColors.white400),
+            SizedBox(height: 8.h),
+            Text(
+              actor.name,
+              style: context.bodySmall.copyWith(fontSize: 11.sp),
+              maxLines: 2,
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
             ),
-          ),
-          SizedBox(height: 8.h),
-          Text(
-            actor.name,
-            style: context.bodySmall.copyWith(fontSize: 11.sp),
-            maxLines: 2,
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

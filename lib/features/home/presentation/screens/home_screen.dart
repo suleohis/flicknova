@@ -9,6 +9,8 @@ import '../../../../generated/app_localizations.dart';
 import '../../../../routes/app_router.dart';
 import '../../../../shared/app_loading.dart';
 import '../../../movie_detail/presentation/screens/movie_detail_screen.dart';
+import '../../../person_detail/presentation/screens/person_detail_screen.dart';
+import '../../../tv_detail/presentation/screens/tv_detail_screen.dart';
 import '../providers/home_notifier.dart';
 import '../widgets/hero_section.dart';
 import '../widgets/popular_section.dart';
@@ -165,10 +167,22 @@ class HomeScreen extends ConsumerWidget {
                     );
                   },
                   onTVTap: (tvShow) {
-                    // TODO: Navigate to TV detail
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            TVDetailScreen(seriesId: tvShow.id),
+                      ),
+                    );
                   },
                   onPersonTap: (person) {
-                    // TODO: Navigate to person detail
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            PersonDetailScreen(personId: person.id),
+                      ),
+                    );
                   },
                 ),
               ),

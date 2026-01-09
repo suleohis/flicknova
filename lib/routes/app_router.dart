@@ -2,6 +2,7 @@
 import 'package:flicknova/routes/routes/auth_route.dart';
 import 'package:flicknova/routes/routes/detail_routes.dart';
 import 'package:flicknova/routes/routes/main_route.dart';
+import 'package:flicknova/routes/routes/season_routes.dart';
 import 'package:flicknova/routes/routes/see_all_routes.dart';
 import 'package:flicknova/routes/routes/splash_route.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       ...mainRoutes,
       ...authRoutes,
       ...detailRoutes,
+      ...seasonRoutes,
       ...seeAllRoutes,
     ],
     errorPageBuilder: (context, state) => MaterialPage(

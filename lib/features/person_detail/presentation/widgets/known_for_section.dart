@@ -89,7 +89,7 @@ class _KnownForCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(12.r),
               child: Container(
                 width: 120.w,
-                height: 160.h,
+                height: 155.h,
                 color: AppColors.cardBackground,
                 child: movie.posterPath != null
                     ? CachedNetworkImage(
