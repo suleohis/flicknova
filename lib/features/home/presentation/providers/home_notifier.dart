@@ -8,11 +8,13 @@ import '../../data/repositories/home_repository_impl.dart';
 import '../../domain/repositories/home_repository.dart';
 
 class HomeState {
+  final List<Map<String, dynamic>> trendingAll;
   final List<MovieEntity> trendingMovies;
   final List<MovieEntity> popularMovies;
   final List<MovieEntity> topRatedMovies;
   final List<MovieEntity> newReleases;
   final List<TVShowEntity> popularTVShows;
+  final List<TVShowEntity> trendingTVShows;
   final List<PersonEntity> popularPeople;
   final bool isLoadingTrending;
   final bool isLoadingPopular;
@@ -23,11 +25,13 @@ class HomeState {
   final bool hasHeroTrailer;
 
   HomeState({
+    this.trendingAll = const [],
     this.trendingMovies = const [],
     this.popularMovies = const [],
     this.topRatedMovies = const [],
     this.newReleases = const [],
     this.popularTVShows = const [],
+    this.trendingTVShows = const [],
     this.popularPeople = const [],
     this.isLoadingTrending = false,
     this.isLoadingPopular = false,
@@ -39,11 +43,13 @@ class HomeState {
   });
 
   HomeState copyWith({
+    List<Map<String, dynamic>>? trendingAll,
     List<MovieEntity>? trendingMovies,
     List<MovieEntity>? popularMovies,
     List<MovieEntity>? topRatedMovies,
     List<MovieEntity>? newReleases,
     List<TVShowEntity>? popularTVShows,
+    List<TVShowEntity>? trendingTVShows,
     List<PersonEntity>? popularPeople,
     bool? isLoadingTrending,
     bool? isLoadingPopular,
@@ -54,11 +60,13 @@ class HomeState {
     bool? hasHeroTrailer,
   }) {
     return HomeState(
+      trendingAll: trendingAll ?? this.trendingAll,
       trendingMovies: trendingMovies ?? this.trendingMovies,
       popularMovies: popularMovies ?? this.popularMovies,
       topRatedMovies: topRatedMovies ?? this.topRatedMovies,
       newReleases: newReleases ?? this.newReleases,
       popularTVShows: popularTVShows ?? this.popularTVShows,
+      trendingTVShows: trendingTVShows ?? this.trendingTVShows,
       popularPeople: popularPeople ?? this.popularPeople,
       isLoadingTrending: isLoadingTrending ?? this.isLoadingTrending,
       isLoadingPopular: isLoadingPopular ?? this.isLoadingPopular,
@@ -83,13 +91,39 @@ class HomeNotifier extends Notifier<HomeState> {
 
   Future<void> loadAllData() async {
     await Future.wait([
+      loadTrendingAll(),
       loadTrendingMovies(),
+      loadTrendingTVShows(),
       loadPopularMovies(),
       loadPopularTVShows(),
       loadPopularPeople(),
       loadTopRatedMovies(),
       loadNewReleases(),
     ]);
+  }
+
+  Future<void> loadTrendingAll() async {
+    state = state.copyWith(isLoadingTrending: true);
+    try {
+      final all = await _repository.getTrendingAll();
+      state = state.copyWith(trendingAll: all, isLoadingTrending: false);
+      print('show result');
+      print(all);
+
+      // Load video for hero movie (first trending movie)
+      if (all.isNotEmpty) {
+        if (all.first['media_type'] == 'movie') {
+          await _loadHeroVideo(all.first['id']);
+        } else {
+          await _loadTVShowHeroVideo(all.first['id']);
+        }
+      }
+    } catch (e) {
+      state = state.copyWith(error: e.toString(), isLoadingTrending: false);
+      if (kDebugMode) {
+        print('Error loading trending movies: $e');
+      }
+    }
   }
 
   Future<void> loadTrendingMovies() async {
@@ -132,6 +166,28 @@ class HomeNotifier extends Notifier<HomeState> {
     }
   }
 
+  Future<void> _loadTVShowHeroVideo(int tvShowId) async {
+    try {
+      final videos = await _repository.getTVShowVideos(tvShowId);
+      // Find trailer video
+      final trailer = videos.firstWhere(
+        (video) => video['type'] == 'Trailer' && video['site'] == 'YouTube',
+        orElse: () => {},
+      );
+
+      if (trailer.isNotEmpty) {
+        state = state.copyWith(
+          heroVideoKey: trailer['key'] as String?,
+          hasHeroTrailer: true,
+        );
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error loading hero video: $e');
+      }
+    }
+  }
+
   Future<void> loadPopularMovies() async {
     state = state.copyWith(isLoadingPopular: true);
     try {
@@ -155,6 +211,26 @@ class HomeNotifier extends Notifier<HomeState> {
     } catch (e) {
       if (kDebugMode) {
         print('Error loading popular TV shows: $e');
+      }
+    }
+  }
+
+
+
+  Future<void> loadTrendingTVShows() async {
+    state = state.copyWith(isLoadingTrending: true);
+    try {
+      final movies = await _repository.getTrendingTVShows();
+      state = state.copyWith(trendingTVShows: movies, isLoadingTrending: false);
+
+      // Load video for hero movie (first trending movie)
+      if (movies.isNotEmpty) {
+        await _loadHeroVideo(movies.first.id);
+      }
+    } catch (e) {
+      state = state.copyWith(error: e.toString(), isLoadingTrending: false);
+      if (kDebugMode) {
+        print('Error loading trending movies: $e');
       }
     }
   }

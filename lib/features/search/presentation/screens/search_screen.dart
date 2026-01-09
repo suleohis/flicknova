@@ -1,3 +1,4 @@
+import 'package:flicknova/core/models/tv_show_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,26 +32,34 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Search bar
-            SearchBarWidget(
-              onChanged: (query) {
-                ref.read(searchProvider.notifier).updateQuery(query);
-              },
-              onVoiceSearch: () {
-                // TODO: Implement voice search
-              },
-            ),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          ref.read(homeProvider.notifier).loadAllData();
+          ref.read(searchProvider.notifier).loadAllData();
+        },
+        triggerMode: RefreshIndicatorTriggerMode.anywhere,
+        child: SafeArea(
+          child: Column(
+            children: [
+              // Search bar
+              SearchBarWidget(
+                onChanged: (query) {
+                  ref.read(searchProvider.notifier).updateQuery(query);
+                },
+              ),
 
-            // Show different content based on search state
-            Expanded(
-              child: searchState.showResults
-                  ? _buildSearchResults(searchState)
-                  : _buildInitialState(recentlyViewed, homeState),
-            ),
-          ],
+              // Show different content based on search state
+              Expanded(
+                child: searchState.showResults
+                    ? _buildSearchResults(searchState)
+                    : _buildInitialState(
+                        recentlyViewed,
+                        homeState,
+                        searchState,
+                      ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -62,10 +71,11 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         // Category filters
         SliverToBoxAdapter(
           child: CategoryFilters(
-            selectedCategory: searchState.selectedCategory,
+            searchState: searchState,
             onCategorySelected: (category) {
-              ref.read(searchProvider.notifier).selectCategory(category);
+              ref.read(searchProvider.notifier).selectedGenreOnTap(category);
             },
+
           ),
         ),
 
@@ -88,7 +98,25 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         else
           SliverToBoxAdapter(
             child: SearchResultsGrid(
-              results: searchState.results,
+              results: searchState.results.where((genre) {
+                if (searchState.selectedGenres.isEmpty)
+                  {
+                    return true;
+                  }
+                else {
+                  if (genre is MovieEntity) {
+                    return searchState.selectedGenres.any((selectedGenre) {
+                      return genre.genreIds.contains(selectedGenre.id);
+                    });
+                  }
+                  if (genre is TVShowEntity) {
+                    return searchState.selectedGenres.any((selectedGenre) {
+                      return genre.genreIds.contains(selectedGenre.id);
+                    });
+                  }
+                  return false;
+                }
+              }).toList(),
               onItemTap: (item) {
                 // Add to recently viewed if it's a movie
                 if (item is MovieEntity) {
@@ -104,6 +132,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   Widget _buildInitialState(
     List<MovieEntity> recentlyViewed,
     HomeState homeState,
+    SearchState searchState,
   ) {
     return SingleChildScrollView(
       child: Column(
@@ -129,9 +158,14 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           ],
 
           // Trending searches (using trending movies from home)
-          if (homeState.trendingMovies.isNotEmpty) ...[
+          if (homeState.trendingMovies.isNotEmpty ||
+              homeState.trendingTVShows.isNotEmpty ||
+              homeState.trendingAll.isNotEmpty) ...[
             TrendingSearchesSection(
+              trendingAll: homeState.trendingAll,
               trendingMovies: homeState.trendingMovies,
+              trendingTVShows: homeState.trendingTVShows,
+
               onMovieTap: (movie) {
                 ref.read(recentlyViewedProvider.notifier).addMovie(movie);
 
@@ -148,8 +182,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
           // Browse by genre
           GenreBrowseSection(
+            genres: searchState.genres,
+            selectedGenres: searchState.selectedGenres,
             onGenreSelected: (genre) {
-              // TODO: Navigate to genre-specific page
+             ref.read(searchProvider.notifier).selectedGenreOnTap(genre);
             },
           ),
 

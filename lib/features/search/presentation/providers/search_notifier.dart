@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flicknova/core/models/genre_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,37 +12,49 @@ import '../../domain/repositories/search_repository.dart';
 
 class SearchState {
   final String query;
-  final String selectedCategory;
+  final GenreModel? selectedGenre;
   final List<dynamic>
   results; // Can contain MovieEntity, TVShowEntity, PersonEntity
   final bool isSearching;
+  final bool isLoading;
   final bool showResults;
   final String? error;
+  final List<GenreModel> genres;
+  final List<GenreModel> selectedGenres;
 
   SearchState({
     this.query = '',
-    this.selectedCategory = 'all',
+    this.selectedGenre,
     this.results = const [],
     this.isSearching = false,
+    this.isLoading = false,
     this.showResults = false,
     this.error,
+    this.genres = const [],
+    this.selectedGenres = const [],
   });
 
   SearchState copyWith({
     String? query,
-    String? selectedCategory,
+    GenreModel? selectedGenre,
     List<dynamic>? results,
     bool? isSearching,
+    bool? isLoading,
     bool? showResults,
     String? error,
+    List<GenreModel>? genres,
+    List<GenreModel>? selectedGenres,
   }) {
     return SearchState(
       query: query ?? this.query,
-      selectedCategory: selectedCategory ?? this.selectedCategory,
+      selectedGenre: selectedGenre ?? this.selectedGenre,
       results: results ?? this.results,
       isSearching: isSearching ?? this.isSearching,
+      isLoading: isLoading ?? this.isLoading,
       showResults: showResults ?? this.showResults,
       error: error,
+      genres: genres ?? this.genres,
+      selectedGenres: selectedGenres ?? this.selectedGenres,
     );
   }
 }
@@ -53,7 +66,40 @@ class SearchNotifier extends Notifier<SearchState> {
   @override
   SearchState build() {
     _repository = SearchRepositoryImpl();
+    Future.delayed(Duration(seconds: 1), () => loadAllData());
     return SearchState();
+  }
+
+  Future<void> loadAllData() async {
+    await Future.wait([loadFavorites()]);
+  }
+
+  Future<void> loadFavorites() async {
+    state = state.copyWith(isLoading: true);
+    try {
+      final genres = await _repository.getGenres();
+      state = state.copyWith(genres: genres ?? [], isLoading: false);
+    } catch (e) {
+      state = state.copyWith(error: e.toString(), isLoading: false);
+      if (kDebugMode) {
+        print('Error loading trending movies: $e');
+      }
+    }
+  }
+
+  void selectedGenreOnTap(GenreModel genre) {
+    if  (genre.id == 0) {
+      state = state.copyWith(selectedGenres: [], selectedGenre: null);
+    }
+    else if (state.selectedGenres.contains(genre)) {
+      state = state.copyWith(
+        selectedGenres: state.selectedGenres.where((g) => g != genre).toList(),
+      );
+    } else {
+      state = state.copyWith(
+        selectedGenres: [...state.selectedGenres, genre],
+      );
+    }
   }
 
   void updateQuery(String query) {
@@ -70,13 +116,6 @@ class SearchNotifier extends Notifier<SearchState> {
     _debounce = Timer(const Duration(milliseconds: 300), () {
       search();
     });
-  }
-
-  void selectCategory(String category) {
-    state = state.copyWith(selectedCategory: category);
-    if (state.query.isNotEmpty) {
-      search();
-    }
   }
 
   Future<void> search() async {
@@ -100,7 +139,7 @@ class SearchNotifier extends Notifier<SearchState> {
       List<dynamic> combinedResults = [];
 
       // Filter based on selected category
-      switch (state.selectedCategory) {
+      switch (state.selectedGenre) {
         case 'all':
           // Interleave results for better variety
           combinedResults = _interleaveResults(movies, tvShows, people);

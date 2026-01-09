@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import '../../../../core/models/movie_entity.dart';
+import '../../../../core/models/tv_show_entity.dart';
 import '../../../../core/network/tmdb_service.dart';
 import '../../domain/repositories/home_repository.dart';
 import '../models/movie_model.dart';
@@ -9,12 +10,39 @@ class HomeRepositoryImpl implements HomeRepository {
   final TmdbService _tmdbService = TmdbService();
 
   @override
+  Future<List<Map<String, dynamic>>> getTrendingAll() async {
+    final jsonList = await _tmdbService.getTrending(
+      mediaType: 'all',
+      timeWindow: 'week',
+    );
+    List<Map<String, dynamic>> removeListNull = jsonList.map((value) {
+      if (value['media_type'] == 'movie') {
+        return value;
+      } else if (value['media_type'] == 'tv') {
+        return value;
+      } else {
+        return {'null':'null'};
+      }
+    }).toList();
+    removeListNull.removeWhere((element) => element == {'null':'null'});
+    return removeListNull;
+  }
+  @override
   Future<List<MovieEntity>> getTrendingMovies() async {
     final jsonList = await _tmdbService.getTrending(
       mediaType: 'movie',
       timeWindow: 'week',
     );
     return jsonList.map((json) => MovieModel.fromJson(json)).toList();
+  }
+
+  @override
+  Future<List<TVShowEntity>> getTrendingTVShows() async {
+    final jsonList = await _tmdbService.getTrending(
+      mediaType: 'tv',
+      timeWindow: 'week',
+    );
+    return jsonList.map((json) => TVShowEntity.fromJson(json)).toList();
   }
 
   @override
@@ -59,6 +87,11 @@ class HomeRepositoryImpl implements HomeRepository {
   @override
   Future<List<Map<String, dynamic>>> getMovieVideos(int movieId) async {
     return await _tmdbService.getMovieVideos(movieId);
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> getTVShowVideos(int tvShowId) async {
+    return await _tmdbService.getTVShowVideo(tvShowId);
   }
 
   @override

@@ -258,6 +258,11 @@ class TmdbService {
     return (response.data['results'] as List).cast<Map<String, dynamic>>();
   }
 
+  Future<List<Map<String, dynamic>>> getTVShowVideo(int tvShowId) async {
+    final response = await _client.get('/tv/$tvShowId/videos');
+    return (response.data['results'] as List).cast<Map<String, dynamic>>();
+  }
+
   Future<List<Map<String, dynamic>>> searchMulti({
     required String query,
     String language = 'en-US',

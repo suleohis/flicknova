@@ -1,3 +1,4 @@
+import 'package:flicknova/core/extensions/context_theme_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -6,9 +7,8 @@ import '../../../../generated/app_localizations.dart';
 
 class SearchBarWidget extends StatefulWidget {
   final ValueChanged<String>? onChanged;
-  final VoidCallback? onVoiceSearch;
 
-  const SearchBarWidget({super.key, this.onChanged, this.onVoiceSearch});
+  const SearchBarWidget({super.key, this.onChanged,});
 
   @override
   State<SearchBarWidget> createState() => _SearchBarWidgetState();
@@ -42,7 +42,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-      height: 48.h,
+      height: 60.h,
       padding: EdgeInsets.symmetric(horizontal: 12.w),
       decoration: BoxDecoration(
         color: AppColors.searchBarBackground,
@@ -61,24 +61,19 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
               controller: _controller,
               focusNode: _focusNode,
               onChanged: widget.onChanged,
-              style: TextStyle(color: AppColors.white, fontSize: 14.sp),
+              style: context.body.copyWith(
+                color: AppColors.textTertiary,
+              ),
               decoration: InputDecoration(
                 hintText: s.search_movies_shows_actors,
-                hintStyle: TextStyle(
-                  color: AppColors.white600,
-                  fontSize: 14.sp,
+                hintStyle: context.body.copyWith(
+                  color: AppColors.textTertiary.withValues(alpha: .5),
                 ),
                 border: InputBorder.none,
                 isDense: true,
-                contentPadding: EdgeInsets.zero,
+                contentPadding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
               ),
             ),
-          ),
-          IconButton(
-            onPressed: widget.onVoiceSearch,
-            icon: Icon(Icons.mic, color: AppColors.white600, size: 20.sp),
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(),
           ),
         ],
       ),

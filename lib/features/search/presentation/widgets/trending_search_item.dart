@@ -1,20 +1,26 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flicknova/core/extensions/context_extension.dart';
 import 'package:flicknova/core/extensions/context_theme_extension.dart';
+import 'package:flicknova/features/search/presentation/widgets/trending_searches_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/models/movie_entity.dart';
+import '../../../../core/models/tv_show_entity.dart';
 import '../../../../core/theme/app_colors.dart';
 
 class TrendingSearchItem extends StatelessWidget {
-  final MovieEntity movie;
+  final MovieEntity? movie;
+  final TVShowEntity? ser;
+  final SearchType type;
   final int rank;
   final VoidCallback? onTap;
 
   const TrendingSearchItem({
     super.key,
-    required this.movie,
+    this.movie,
+    this.ser,
+    required this.type,
     required this.rank,
     this.onTap,
   });
@@ -22,6 +28,7 @@ class TrendingSearchItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final showTrendingBadge = rank <= 2;
+    final isMovie = type == SearchType.movie;
 
     return GestureDetector(
       onTap: onTap,
@@ -49,28 +56,7 @@ class TrendingSearchItem extends StatelessWidget {
             ),
             SizedBox(width: 12.w),
             // Poster
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8.r),
-              child: SizedBox(
-                width: 80.w,
-                height: 120.h,
-                child: movie.posterPath != null
-                    ? CachedNetworkImage(
-                        imageUrl: context.tmdbPosterUrl(movie.posterPath),
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) =>
-                            Container(color: AppColors.cardBackground),
-                        errorWidget: (context, url, error) => Container(
-                          color: AppColors.cardBackground,
-                          child: Icon(Icons.movie, color: AppColors.white400),
-                        ),
-                      )
-                    : Container(
-                        color: AppColors.cardBackground,
-                        child: Icon(Icons.movie, color: AppColors.white400),
-                      ),
-              ),
-            ),
+            _posterImage(context),
             SizedBox(width: 12.w),
             // Info
             Expanded(
@@ -78,7 +64,7 @@ class TrendingSearchItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    movie.title,
+                    isMovie ? movie!.title : ser!.name,
                     style: context.h4,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -93,7 +79,7 @@ class TrendingSearchItem extends StatelessWidget {
                       ),
                       SizedBox(width: 4.w),
                       Text(
-                        '${(movie.voteAverage * 10).toStringAsFixed(0)}%',
+                        '${(isMovie ? movie!.voteAverage * 10 : ser!.voteAverage * 10).toStringAsFixed(0)}%',
                         style: context.bodySmall.copyWith(
                           color: AppColors.white600,
                         ),
@@ -123,7 +109,9 @@ class TrendingSearchItem extends StatelessWidget {
                   ),
                   SizedBox(height: 4.h),
                   Text(
-                    movie.releaseDate?.split('-').first ?? 'N/A',
+                    isMovie
+                        ? movie!.releaseDate?.split('-').first ?? 'N/A'
+                        : ser!.firstAirDate?.split('-').first ?? 'N/A',
                     style: context.caption.copyWith(color: AppColors.white600),
                   ),
                 ],
@@ -133,5 +121,57 @@ class TrendingSearchItem extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  ClipRRect _posterImage(BuildContext context) {
+    if (type == SearchType.movie) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(8.r),
+        child: SizedBox(
+          width: 80.w,
+          height: 120.h,
+          child: movie!.posterPath != null
+              ? CachedNetworkImage(
+                  imageUrl: context.tmdbPosterUrl(movie!.posterPath),
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) =>
+                      Container(color: AppColors.cardBackground),
+                  errorWidget: (context, url, error) => Container(
+                    color: AppColors.cardBackground,
+                    child: Icon(Icons.movie, color: AppColors.white400),
+                  ),
+                )
+              : Container(
+                  color: AppColors.cardBackground,
+                  child: Icon(Icons.movie, color: AppColors.white400),
+                ),
+        ),
+      );
+    } else if (type == SearchType.tvShow) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(8.r),
+        child: SizedBox(
+          width: 80.w,
+          height: 120.h,
+          child: ser!.posterPath != null
+              ? CachedNetworkImage(
+                  imageUrl: context.tmdbPosterUrl(ser!.posterPath),
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) =>
+                      Container(color: AppColors.cardBackground),
+                  errorWidget: (context, url, error) => Container(
+                    color: AppColors.cardBackground,
+                    child: Icon(Icons.movie, color: AppColors.white400),
+                  ),
+                )
+              : Container(
+                  color: AppColors.cardBackground,
+                  child: Icon(Icons.movie, color: AppColors.white400),
+                ),
+        ),
+      );
+    } else {
+      return ClipRRect();
+    }
   }
 }

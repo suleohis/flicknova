@@ -1,4 +1,5 @@
 import 'package:flicknova/core/extensions/context_theme_extension.dart';
+import 'package:flicknova/core/models/genre_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -6,24 +7,15 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../generated/app_localizations.dart';
 
 class GenreBrowseSection extends StatelessWidget {
-  final Function(String)? onGenreSelected;
+  final Function(GenreModel)? onGenreSelected;
+  final List<GenreModel> genres;
+  final List<GenreModel> selectedGenres;
 
-  const GenreBrowseSection({super.key, this.onGenreSelected});
+  const GenreBrowseSection({super.key, this.onGenreSelected, required this.genres, required this.selectedGenres});
 
   @override
   Widget build(BuildContext context) {
     final s = S.of(context);
-
-    final genres = [
-      'Action',
-      'Sci-Fi',
-      'Comedy',
-      'Drama',
-      'Thriller',
-      'Adventure',
-      'Horror',
-      'Romance',
-    ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,6 +31,7 @@ class GenreBrowseSection extends StatelessWidget {
             spacing: 12.w,
             runSpacing: 12.h,
             children: genres.map((genre) {
+              bool isSelected = selectedGenres.contains(genre);
               return GestureDetector(
                 onTap: () => onGenreSelected?.call(genre),
                 child: Container(
@@ -47,12 +40,16 @@ class GenreBrowseSection extends StatelessWidget {
                     vertical: 12.h,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.chipBackground,
+                    color: isSelected
+                        ? AppColors.trendingBadge
+                        : AppColors.chipBackground,
                     borderRadius: BorderRadius.circular(24.r),
                   ),
                   child: Text(
-                    genre,
-                    style: context.bodyMedium.copyWith(color: AppColors.white),
+                    genre.name,
+                    style: context.bodyMedium.copyWith(
+                      color: isSelected ? AppColors.background : AppColors.white,
+                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,),
                   ),
                 ),
               );
