@@ -11,7 +11,7 @@ List<GoRoute> detailRoutes = [
     path: AppRouter.movieDetail,
     pageBuilder: (context, state) {
       final movieId = state.extra as int;
-      return NoTransitionPage(child: MovieDetailScreen(movieId: movieId));
+      return NoTransitionPage(child: MovieDetailScreen(movieId: movieId, mediaType: 'movie',));
     },
   ),
 

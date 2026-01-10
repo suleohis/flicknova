@@ -3,6 +3,9 @@ import 'package:flicknova/core/network/tmdb_service.dart';
 import 'package:flicknova/features/watchlist/data/watchlist_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../../watchlist/domain/entities/watchlist_item_entity.dart';
 
 class TVDetailState {
   final TVSeriesDetailEntity? series;
@@ -47,13 +50,13 @@ class TVDetailNotifier extends Notifier<TVDetailState> {
     return TVDetailState();
   }
 
-  Future<void> loadTVSeriesDetail(int seriesId) async {
+  Future<void> loadTVSeriesDetail(int seriesId, String mediaType) async {
     state = state.copyWith(isLoading: true);
 
     try {
       final results = await Future.wait([
         _tmdbService.getTVSeriesDetails(seriesId),
-        _watchlistService.isTVShowInWatchlist(seriesId),
+        _watchlistService.isInWatchlist(tmdbId: seriesId, mediaType: mediaType),
       ]);
 
       final seriesData = results[0] as Map<String, dynamic>;
@@ -73,31 +76,49 @@ class TVDetailNotifier extends Notifier<TVDetailState> {
     }
   }
 
-  Future<void> toggleWatchlist() async {
-    if (state.series == null) return;
+  Future<bool> toggleWatchlist() async {
+    if (state.series == null) false;
 
     state = state.copyWith(isTogglingWatchlist: true);
 
     try {
       if (state.isInWatchlist) {
-        await _watchlistService.removeTVShowFromWatchlist(state.series!.id);
+        await _watchlistService.removeFromWatchlist(
+          tmdbId: state.series!.id,
+          mediaType: 'tv',
+        );
         state = state.copyWith(
           isInWatchlist: false,
           isTogglingWatchlist: false,
         );
       } else {
-        await _watchlistService.addTVShowToWatchlist(
-          seriesId: state.series!.id,
-          seriesTitle: state.series!.name,
+        // Create WatchlistItemEntity with proper data
+        final userId = Supabase.instance.client.auth.currentUser?.id;
+        if (userId == null) {
+          throw Exception('User not authenticated');
+        }
+
+        final watchlistItem = WatchlistItemEntity(
+          userId: userId,
+          tmdbId: state.series!.id,
+          mediaType: 'tv',
+          title: state.series!.name,
           posterPath: state.series!.posterPath,
+          addedAt: DateTime.now(),
+          totalEpisodes: state.series!.numberOfEpisodes,
+          episodesWatched: 0,
         );
+
+        await _watchlistService.addToWatchlist(watchlistItem);
         state = state.copyWith(isInWatchlist: true, isTogglingWatchlist: false);
       }
+      return true;
     } catch (e) {
       state = state.copyWith(isTogglingWatchlist: false);
       if (kDebugMode) {
         print('Error toggling watchlist: $e');
       }
+      return false;
     }
   }
 }

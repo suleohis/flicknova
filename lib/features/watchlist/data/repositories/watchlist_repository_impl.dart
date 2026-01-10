@@ -1,78 +1,84 @@
-import 'dart:convert';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
-
+import '../watchlist_service.dart';
 import '../../domain/entities/watchlist_item_entity.dart';
 import '../../domain/repositories/watchlist_repository.dart';
 
 class WatchlistRepositoryImpl implements WatchlistRepository {
-  static const String _watchlistKey = 'watchlist';
+  final WatchlistService _service = WatchlistService();
+  final SupabaseClient _client = Supabase.instance.client;
+
+  String? get _userId => _client.auth.currentUser?.id;
 
   @override
   Future<List<WatchlistItemEntity>> getWatchlist() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final jsonString = prefs.getString(_watchlistKey);
-
-      if (jsonString == null || jsonString.isEmpty) {
-        return [];
-      }
-
-      final List<dynamic> decoded = jsonDecode(jsonString);
-      return decoded
-          .map(
-            (item) =>
-                WatchlistItemEntity.fromJson(item as Map<String, dynamic>),
-          )
-          .toList();
-    } catch (e) {
-      return [];
-    }
+    return await _service.getWatchlist();
   }
 
   @override
   Future<void> addToWatchlist(WatchlistItemEntity item) async {
-    final watchlist = await getWatchlist();
-
-    // Check if already exists
-    if (watchlist.any((i) => i.id == item.id)) {
-      return;
+    if (_userId == null) {
+      throw Exception('User not authenticated');
     }
 
-    // Add new item at the beginning
-    watchlist.insert(0, item);
-
-    // Save to storage
-    await _saveWatchlist(watchlist);
+    // Ensure user ID is set
+    final itemWithUserId = item.copyWith(userId: _userId);
+    await _service.addToWatchlist(itemWithUserId);
   }
 
   @override
   Future<void> removeFromWatchlist(int itemId) async {
-    final watchlist = await getWatchlist();
-
-    // Remove item
-    watchlist.removeWhere((item) => item.id == itemId);
-
-    // Save to storage
-    await _saveWatchlist(watchlist);
+    // This method signature is from the old interface
+    // For backward compatibility, we assume it's a movie
+    // The updated methods should use media type explicitly
+    await _service.removeFromWatchlist(tmdbId: itemId, mediaType: 'movie');
   }
 
   @override
   Future<bool> isInWatchlist(int itemId) async {
-    final watchlist = await getWatchlist();
-    return watchlist.any((item) => item.id == itemId);
+    // Check both movie and TV (for backward compatibility)
+    final isMovie = await _service.isInWatchlist(
+      tmdbId: itemId,
+      mediaType: 'movie',
+    );
+    if (isMovie) return true;
+
+    return await _service.isInWatchlist(tmdbId: itemId, mediaType: 'tv');
   }
 
   @override
   Future<void> clearWatchlist() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_watchlistKey);
+    await _service.clearWatchlist();
   }
 
-  Future<void> _saveWatchlist(List<WatchlistItemEntity> watchlist) async {
-    final prefs = await SharedPreferences.getInstance();
-    final jsonList = watchlist.map((item) => item.toJson()).toList();
-    final jsonString = jsonEncode(jsonList);
-    await prefs.setString(_watchlistKey, jsonString);
+  // New methods with explicit media type
+  Future<void> removeFromWatchlistWithType({
+    required int tmdbId,
+    required String mediaType,
+  }) async {
+    await _service.removeFromWatchlist(tmdbId: tmdbId, mediaType: mediaType);
+  }
+
+  Future<bool> isInWatchlistWithType({
+    required int tmdbId,
+    required String mediaType,
+  }) async {
+    return await _service.isInWatchlist(tmdbId: tmdbId, mediaType: mediaType);
+  }
+
+  Future<List<WatchlistItemEntity>> getWatchlistByType(String mediaType) async {
+    return await _service.getWatchlist(mediaType: mediaType);
+  }
+
+  Future<void> updateTVProgress({
+    required int tmdbId,
+    String? episodeProgress,
+    int? episodesWatched,
+  }) async {
+    await _service.updateTVProgress(
+      tmdbId: tmdbId,
+      episodeProgress: episodeProgress,
+      episodesWatched: episodesWatched,
+    );
   }
 }

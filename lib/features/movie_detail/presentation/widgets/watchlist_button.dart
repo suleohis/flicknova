@@ -40,7 +40,7 @@ class WatchlistButton extends StatelessWidget {
             )
           : Icon(isInWatchlist ? Icons.check : Icons.add, size: 20.sp),
       label: Text(
-        s.add_to_watchlist,
+      isInWatchlist ? s.added_to_watchlist :  s.add_to_watchlist,
         style: context.button.copyWith(
           color: AppColors.watchlistButtonText,
           fontSize: 14.sp,

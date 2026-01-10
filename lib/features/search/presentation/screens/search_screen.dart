@@ -123,6 +123,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 if (item is MovieEntity) {
                   ref.read(recentlyViewedProvider.notifier).addMovie(item);
                 }
+                if (item is TVShowEntity) {
+
+                }
               },
             ),
           ),
@@ -150,7 +153,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MovieDetailScreen(movieId: movie.id),
+                    builder: (context) => MovieDetailScreen(movieId: movie.id, mediaType: movie.mediaType,),
                   ),
                 );
               },
@@ -173,7 +176,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MovieDetailScreen(movieId: movie.id),
+                    builder: (context) => MovieDetailScreen(movieId: movie.id, mediaType: movie.mediaType,),
                   ),
                 );
               },

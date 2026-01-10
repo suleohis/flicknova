@@ -1,8 +1,11 @@
-import 'package:flicknova/features/watchlist/data/watchlist_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/models/movie_entity.dart';
+import '../../../../core/services/notification_service.dart';
+import '../../../watchlist/data/watchlist_service.dart';
+import '../../../watchlist/domain/entities/watchlist_item_entity.dart';
 import '../../data/repositories/movie_detail_repository_impl.dart';
 import '../../domain/entities/cast_entity.dart';
 import '../../domain/entities/movie_detail_entity.dart';
@@ -59,7 +62,7 @@ class MovieDetailNotifier extends Notifier<MovieDetailState> {
     return MovieDetailState();
   }
 
-  Future<void> loadMovieDetail(int movieId) async {
+  Future<void> loadMovieDetail(int movieId, String mediaType) async {
     state = state.copyWith(isLoading: true);
 
     try {
@@ -67,7 +70,7 @@ class MovieDetailNotifier extends Notifier<MovieDetailState> {
         _repository.getMovieDetail(movieId),
         _repository.getMovieCast(movieId),
         _repository.getRecommendations(movieId),
-        _watchlistService.isInWatchlist(movieId),
+        _watchlistService.isInWatchlist(tmdbId: movieId, mediaType: mediaType),
       ]);
 
       state = state.copyWith(
@@ -85,31 +88,48 @@ class MovieDetailNotifier extends Notifier<MovieDetailState> {
     }
   }
 
-  Future<void> toggleWatchlist() async {
-    if (state.movie == null) return;
+  Future<bool> toggleWatchlist() async {
+    if (state.movie == null) return false;
 
     state = state.copyWith(isTogglingWatchlist: true);
 
     try {
       if (state.isInWatchlist) {
-        await _watchlistService.removeFromWatchlist(state.movie!.id);
+        await _watchlistService.removeFromWatchlist(
+          tmdbId: state.movie!.id,
+          mediaType: 'movie',
+        );
         state = state.copyWith(
           isInWatchlist: false,
           isTogglingWatchlist: false,
         );
       } else {
-        await _watchlistService.addToWatchlist(
-          movieId: state.movie!.id,
-          movieTitle: state.movie!.title,
+        // Create WatchlistItemEntity with proper data
+        final userId = Supabase.instance.client.auth.currentUser?.id;
+        if (userId == null) {
+          throw Exception('User not authenticated');
+        }
+
+        final watchlistItem = WatchlistItemEntity(
+          userId: userId,
+          tmdbId: state.movie!.id,
+          mediaType: 'movie',
+          title: state.movie!.title,
           posterPath: state.movie!.posterPath,
+          addedAt: DateTime.now(),
+          runtime: state.movie!.runtime,
         );
+
+        await _watchlistService.addToWatchlist(watchlistItem);
         state = state.copyWith(isInWatchlist: true, isTogglingWatchlist: false);
       }
+      return true;
     } catch (e) {
       state = state.copyWith(isTogglingWatchlist: false);
       if (kDebugMode) {
         print('Error toggling watchlist: $e');
       }
+      return false;
     }
   }
 }

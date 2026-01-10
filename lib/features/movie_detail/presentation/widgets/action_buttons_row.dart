@@ -31,31 +31,34 @@ class ActionButtonsRow extends StatelessWidget {
       child: Row(
         children: [
           if (onPlayTap != null)
-          Expanded(
-            child: ElevatedButton.icon(
-              onPressed: onPlayTap,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.playButton,
-                foregroundColor: AppColors.background,
-                padding: EdgeInsets.symmetric(vertical: 14.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.r),
+            Expanded(
+              child: GestureDetector(
+                child: ElevatedButton.icon(
+                  onPressed: onPlayTap,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.playButton,
+                    foregroundColor: AppColors.background,
+                    padding: EdgeInsets.symmetric(vertical: 14.h),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    elevation: 0,
+                  ),
+                  icon: Icon(Icons.play_arrow, size: 24.sp),
+                  label: Text(
+                    s.play_trailer,
+                    style: context.button.copyWith(color: AppColors.background),
+                  ),
                 ),
-                elevation: 0,
-              ),
-              icon: Icon(Icons.play_arrow, size: 24.sp),
-              label: Text(
-                s.play_trailer,
-                style: context.button.copyWith(color: AppColors.background),
               ),
             ),
-          ),
           SizedBox(width: 12.w),
           Expanded(
             child: WatchlistButton(
               isInWatchlist: isInWatchlist,
               isLoading: isLoading,
-              onTap: () =>  onWatchlistTap
+              // onTap: () => onWatchlistTap,
+              onTap: onWatchlistTap,
             ),
           ),
         ],

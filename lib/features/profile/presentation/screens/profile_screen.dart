@@ -79,7 +79,7 @@ class ProfileScreen extends ConsumerWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                MovieDetailScreen(movieId: movie.id),
+                                MovieDetailScreen(movieId: movie.tmdbId, mediaType: movie.mediaType),
                           ),
                         );
                       },

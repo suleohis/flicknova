@@ -14,6 +14,7 @@ class HeroSection extends StatelessWidget {
   final VoidCallback? onAddTap;
   final VoidCallback? onTap;
   final bool hasTrailer;
+  final bool isInWatchlist;
 
   const HeroSection({
     super.key,
@@ -22,6 +23,7 @@ class HeroSection extends StatelessWidget {
     this.onAddTap,
     this.onTap,
     this.hasTrailer = false,
+    this.isInWatchlist = false,
   });
 
   @override
@@ -157,7 +159,7 @@ class HeroSection extends StatelessWidget {
                           child: IconButton(
                             onPressed: onAddTap,
                             icon: Icon(
-                              Icons.add,
+                              isInWatchlist ? Icons.check : Icons.add,
                               color: AppColors.white,
                               size: 24.sp,
                             ),
