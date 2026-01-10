@@ -15,6 +15,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flicknova/core/extensions/context_extension.dart';
 
+import '../../../../core/services/notification_service.dart';
 import '../../../../core/widgets/youtube_player_widget.dart';
 import '../../../person_detail/presentation/screens/person_detail_screen.dart';
 
@@ -32,7 +33,7 @@ class _TVDetailScreenState extends ConsumerState<TVDetailScreen> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      ref.read(tvDetailProvider.notifier).loadTVSeriesDetail(widget.seriesId);
+      ref.read(tvDetailProvider.notifier).loadTVSeriesDetail(widget.seriesId, 'tv');
     });
   }
 
@@ -148,7 +149,9 @@ class _TVDetailScreenState extends ConsumerState<TVDetailScreen> {
                     padding: EdgeInsets.all(16.w),
                     child: Row(
                       children: [
-                        if (detailState.series?.videos?.results.last.key!= null)
+                        if  (detailState.series?.videos?.results != null &&
+                            (detailState.series?.videos?.results.isNotEmpty ??
+                                false))
                         Expanded(
                           child: ElevatedButton.icon(
                             onPressed: () {
@@ -179,9 +182,30 @@ class _TVDetailScreenState extends ConsumerState<TVDetailScreen> {
                           child: WatchlistButton(
                             isInWatchlist: detailState.isInWatchlist,
                             isLoading: detailState.isTogglingWatchlist,
-                            onTap: () => ref
-                                .read(tvDetailProvider.notifier)
-                                .toggleWatchlist(context),
+                            onTap: () async {
+                              bool value = await ref
+                                  .read(tvDetailProvider.notifier)
+                                  .toggleWatchlist();
+                              final s = S.of(context);
+
+                              if (value) {
+                                NotificationService.showSuccess(
+                                  context: context,
+                                  message:
+                                  '${detailState.series?.name ?? ''} '
+                                      '${ detailState.isInWatchlist ? s.removed:
+                                  s.added}',
+                                  title: s.success,
+                                );
+                              } else {
+                                NotificationService.showError(
+                                  context: context,
+                                  message:
+                                  s.something_went_wrong,
+                                  title: s.error,
+                                );
+                              }
+                            },
                           ),
                         ),
                       ],

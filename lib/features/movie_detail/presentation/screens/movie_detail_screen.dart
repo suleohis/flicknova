@@ -1,10 +1,13 @@
+import 'package:flicknova/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/services/notification_service.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/youtube_player_widget.dart';
 import '../../../../shared/app_loading.dart';
+import '../../../tv_detail/presentation/providers/tv_detail_notifier.dart';
 import '../providers/movie_detail_notifier.dart';
 import '../widgets/action_buttons_row.dart';
 import '../widgets/cast_list.dart';
@@ -15,8 +18,13 @@ import '../widgets/recommendations_section.dart';
 
 class MovieDetailScreen extends ConsumerStatefulWidget {
   final int movieId;
+  final String mediaType;
 
-  const MovieDetailScreen({super.key, required this.movieId});
+  const MovieDetailScreen({
+    super.key,
+    required this.movieId,
+    required this.mediaType,
+  });
 
   @override
   ConsumerState<MovieDetailScreen> createState() => _MovieDetailScreenState();
@@ -28,7 +36,9 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
     super.initState();
     // Load movie details when screen initializes
     Future.microtask(() {
-      ref.read(movieDetailProvider.notifier).loadMovieDetail(widget.movieId);
+      ref
+          .read(movieDetailProvider.notifier)
+          .loadMovieDetail(widget.movieId, widget.mediaType);
     });
   }
 
@@ -73,8 +83,12 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
                 // Action buttons
                 SliverToBoxAdapter(
                   child: ActionButtonsRow(
+                    isInWatchlist: detailState.isInWatchlist,
+                    isLoading: detailState.isTogglingWatchlist,
                     onPlayTap:
-                        (detailState.movie?.videos?.results.last.key != null)
+                        (detailState.movie?.videos?.results != null &&
+                            (detailState.movie?.videos?.results.isNotEmpty ??
+                                false))
                         ? () {
                             Navigator.push(
                               context,
@@ -94,10 +108,29 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
                             );
                           }
                         : null,
-                    onWatchlistTap: () {
-                      ref
+                    onWatchlistTap: () async {
+                      bool value = await ref
                           .read(movieDetailProvider.notifier)
-                          .toggleWatchlist(context);
+                          .toggleWatchlist();
+                      final s = S.of(context);
+
+                      if (value) {
+                        NotificationService.showSuccess(
+                          context: context,
+                          message:
+                              '${detailState.movie?.title ?? ''} '
+                                  '${ detailState.isInWatchlist ? s.removed:
+                              s.added}',
+                          title: s.success,
+                        );
+                      } else {
+                        NotificationService.showError(
+                          context: context,
+                          message:
+                          s.something_went_wrong,
+                          title: s.error,
+                        );
+                      }
                     },
                     onShareTap: () {
                       // TODO: Share movie
@@ -127,8 +160,10 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
                       // Navigate to this movie's detail page
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
-                          builder: (context) =>
-                              MovieDetailScreen(movieId: movie.id),
+                          builder: (context) => MovieDetailScreen(
+                            movieId: movie.id,
+                            mediaType: movie.mediaType,
+                          ),
                         ),
                       );
                     },

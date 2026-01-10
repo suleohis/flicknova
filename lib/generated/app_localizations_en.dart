@@ -143,7 +143,16 @@ class SEn extends S {
   String get you_may_also_like => 'You May Also Like';
 
   @override
+  String get added => 'Added';
+
+  @override
+  String get removed => 'Removed';
+
+  @override
   String get add_to_watchlist => 'Add to Watchlist';
+
+  @override
+  String get added_to_watchlist => 'Added to Watchlist';
 
   @override
   String get share => 'Share';

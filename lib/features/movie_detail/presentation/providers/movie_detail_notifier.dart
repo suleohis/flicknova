@@ -1,9 +1,11 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/models/movie_entity.dart';
-import '../../../auth/presentation/providers/auth_notifier.dart';
+import '../../../../core/services/notification_service.dart';
+import '../../../watchlist/data/watchlist_service.dart';
+import '../../../watchlist/domain/entities/watchlist_item_entity.dart';
 import '../../data/repositories/movie_detail_repository_impl.dart';
 import '../../domain/entities/cast_entity.dart';
 import '../../domain/entities/movie_detail_entity.dart';
@@ -51,16 +53,16 @@ class MovieDetailState {
 
 class MovieDetailNotifier extends Notifier<MovieDetailState> {
   late final MovieDetailRepository _repository;
-  // late final WatchlistService _watchlistService;
+  late final WatchlistService _watchlistService;
 
   @override
   MovieDetailState build() {
     _repository = MovieDetailRepositoryImpl();
-    // _watchlistService = WatchlistService();
+    _watchlistService = WatchlistService();
     return MovieDetailState();
   }
 
-  Future<void> loadMovieDetail(int movieId) async {
+  Future<void> loadMovieDetail(int movieId, String mediaType) async {
     state = state.copyWith(isLoading: true);
 
     try {
@@ -68,18 +70,14 @@ class MovieDetailNotifier extends Notifier<MovieDetailState> {
         _repository.getMovieDetail(movieId),
         _repository.getMovieCast(movieId),
         _repository.getRecommendations(movieId),
+        _watchlistService.isInWatchlist(tmdbId: movieId, mediaType: mediaType),
       ]);
-
-      final isInWatchlist = ref.read(authProvider).profile?.watchList?.contains(
-        (results[0]  as MovieDetailEntity).toJson(),
-      ) ??
-          false;
 
       state = state.copyWith(
         movie: results[0] as MovieDetailEntity,
         cast: results[1] as List<CastEntity>,
         recommendations: results[2] as List<MovieEntity>,
-        isInWatchlist: isInWatchlist,
+        isInWatchlist: results[3] as bool,
         isLoading: false,
       );
     } catch (e) {
@@ -90,28 +88,48 @@ class MovieDetailNotifier extends Notifier<MovieDetailState> {
     }
   }
 
-  Future<void> toggleWatchlist(BuildContext context) async {
-    print('working');
-    if (state.movie == null) return;
-    print('working');
+  Future<bool> toggleWatchlist() async {
+    if (state.movie == null) return false;
 
     state = state.copyWith(isTogglingWatchlist: true);
 
     try {
-      final isInWatchlist = await ref
-          .read(authProvider.notifier)
-          .addWatchList(state.movie!.toJson());
-      ref.read(authProvider.notifier).saveProfile(context, false);
+      if (state.isInWatchlist) {
+        await _watchlistService.removeFromWatchlist(
+          tmdbId: state.movie!.id,
+          mediaType: 'movie',
+        );
+        state = state.copyWith(
+          isInWatchlist: false,
+          isTogglingWatchlist: false,
+        );
+      } else {
+        // Create WatchlistItemEntity with proper data
+        final userId = Supabase.instance.client.auth.currentUser?.id;
+        if (userId == null) {
+          throw Exception('User not authenticated');
+        }
 
-      state = state.copyWith(
-        isInWatchlist: isInWatchlist,
-        isTogglingWatchlist: false,
-      );
+        final watchlistItem = WatchlistItemEntity(
+          userId: userId,
+          tmdbId: state.movie!.id,
+          mediaType: 'movie',
+          title: state.movie!.title,
+          posterPath: state.movie!.posterPath,
+          addedAt: DateTime.now(),
+          runtime: state.movie!.runtime,
+        );
+
+        await _watchlistService.addToWatchlist(watchlistItem);
+        state = state.copyWith(isInWatchlist: true, isTogglingWatchlist: false);
+      }
+      return true;
     } catch (e) {
       state = state.copyWith(isTogglingWatchlist: false);
       if (kDebugMode) {
         print('Error toggling watchlist: $e');
       }
+      return false;
     }
   }
 }

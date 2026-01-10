@@ -12,6 +12,9 @@ import '../../../../routes/app_router.dart';
 import '../../../home/presentation/widgets/movie_card.dart';
 import '../../../home/presentation/widgets/person_card.dart';
 import '../../../home/presentation/widgets/tv_card.dart';
+import '../../../movie_detail/presentation/screens/movie_detail_screen.dart';
+import '../../../person_detail/presentation/screens/person_detail_screen.dart';
+import '../../../tv_detail/presentation/screens/tv_detail_screen.dart';
 
 class SearchResultsGrid extends StatelessWidget {
   final List<dynamic>
@@ -66,7 +69,15 @@ class SearchResultsGrid extends StatelessWidget {
         movie: item,
         onTap: () {
           onTap?.call(item);
-          context.push('${AppRouter.movieDetail}/${item.id}');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MovieDetailScreen(
+                movieId: item.id,
+                mediaType: item.mediaType,
+              ),
+            ),
+          );
         },
       );
     } else if (item is TVShowEntity) {
@@ -76,7 +87,13 @@ class SearchResultsGrid extends StatelessWidget {
         height: 180.h,
         onTap: () {
           onTap?.call(item);
-          context.push('${AppRouter.tvDetail}/${item.id}');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  TVDetailScreen(seriesId: item.id),
+            ),
+          );
         },
       );
     } else if (item is PersonEntity) {
@@ -84,7 +101,13 @@ class SearchResultsGrid extends StatelessWidget {
         person: item,
         onTap: () {
           onTap?.call(item);
-          context.push('${AppRouter.personDetail}/${item.id}');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  PersonDetailScreen(personId: item.id),
+            ),
+          );
         },
       );
     } else {

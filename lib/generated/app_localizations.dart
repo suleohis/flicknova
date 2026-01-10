@@ -351,11 +351,29 @@ abstract class S {
   /// **'You May Also Like'**
   String get you_may_also_like;
 
+  /// No description provided for @added.
+  ///
+  /// In en, this message translates to:
+  /// **'Added'**
+  String get added;
+
+  /// No description provided for @removed.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed'**
+  String get removed;
+
   /// No description provided for @add_to_watchlist.
   ///
   /// In en, this message translates to:
   /// **'Add to Watchlist'**
   String get add_to_watchlist;
+
+  /// No description provided for @added_to_watchlist.
+  ///
+  /// In en, this message translates to:
+  /// **'Added to Watchlist'**
+  String get added_to_watchlist;
 
   /// No description provided for @share.
   ///

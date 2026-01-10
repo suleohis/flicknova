@@ -1,51 +1,51 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../domain/entities/watchlist_item_entity.dart';
+
 class WatchlistService {
   final SupabaseClient _client = Supabase.instance.client;
 
-  /// Add a movie to the user's watchlist
-  Future<void> addToWatchlist({
-    required int movieId,
-    required String movieTitle,
-    String? posterPath,
-  }) async {
-    final userId = _client.auth.currentUser?.id;
-    if (userId == null) {
+  String? get _userId => _client.auth.currentUser?.id;
+
+  /// Add an item (movie or TV show) to the user's watchlist
+  Future<void> addToWatchlist(WatchlistItemEntity item) async {
+    if (_userId == null) {
       throw Exception('User not authenticated');
     }
 
-    await _client.from('watchlist').insert({
-      'user_id': userId,
-      'movie_id': movieId,
-      'movie_title': movieTitle,
-      'poster_path': posterPath,
-    });
+    await _client.from('watchlist').upsert(item.toJson());
   }
 
-  /// Remove a movie from the user's watchlist
-  Future<void> removeFromWatchlist(int movieId) async {
-    final userId = _client.auth.currentUser?.id;
-    if (userId == null) {
+  /// Remove an item from the user's watchlist
+  Future<void> removeFromWatchlist({
+    required int tmdbId,
+    required String mediaType,
+  }) async {
+    if (_userId == null) {
       throw Exception('User not authenticated');
     }
 
     await _client.from('watchlist').delete().match({
-      'user_id': userId,
-      'movie_id': movieId,
+      'user_id': _userId!,
+      'tmdb_id': tmdbId,
+      'media_type': mediaType,
     });
   }
 
-  /// Check if a movie is in the user's watchlist
-  Future<bool> isInWatchlist(int movieId) async {
-    final userId = _client.auth.currentUser?.id;
-    if (userId == null) return false;
+  /// Check if an item is in the user's watchlist
+  Future<bool> isInWatchlist({
+    required int tmdbId,
+    required String mediaType,
+  }) async {
+    if (_userId == null) return false;
 
     try {
       final response = await _client
           .from('watchlist')
           .select()
-          .eq('user_id', userId)
-          .eq('movie_id', movieId)
+          .eq('user_id', _userId!)
+          .eq('tmdb_id', tmdbId)
+          .eq('media_type', mediaType)
           .maybeSingle();
 
       return response != null;
@@ -54,71 +54,81 @@ class WatchlistService {
     }
   }
 
-  /// Get all movies in the user's watchlist
-  Future<List<Map<String, dynamic>>> getWatchlist() async {
-    final userId = _client.auth.currentUser?.id;
-    if (userId == null) {
+  /// Get all items in the user's watchlist
+  Future<List<WatchlistItemEntity>> getWatchlist({String? mediaType}) async {
+    if (_userId == null) {
       throw Exception('User not authenticated');
     }
 
-    final response = await _client
-        .from('watchlist')
-        .select()
-        .eq('user_id', userId)
-        .order('added_at', ascending: false);
+    // Build query with filter if specified
+    dynamic query;
+    if (mediaType != null && mediaType != 'all') {
+      query = await _client
+          .from('watchlist')
+          .select()
+          .eq('user_id', _userId!)
+          .eq('media_type', mediaType)
+          .order('added_at', ascending: false);
+    } else {
+      query = await _client
+          .from('watchlist')
+          .select()
+          .eq('user_id', _userId!)
+          .order('added_at', ascending: false);
+    }
 
-    return List<Map<String, dynamic>>.from(response as List);
+    return (query as List)
+        .map((json) => WatchlistItemEntity.fromSupabase(json))
+        .toList();
   }
 
-  /// Add a TV show to the user's watchlist
-  Future<void> addTVShowToWatchlist({
-    required int seriesId,
-    required String seriesTitle,
-    String? posterPath,
+  /// Update episode progress for a TV show
+  Future<void> updateTVProgress({
+    required int tmdbId,
+    String? episodeProgress,
+    int? episodesWatched,
   }) async {
-    final userId = _client.auth.currentUser?.id;
-    if (userId == null) {
+    if (_userId == null) {
       throw Exception('User not authenticated');
     }
 
-    await _client.from('watchlist').insert({
-      'user_id': userId,
-      'series_id': seriesId,
-      'series_title': seriesTitle,
-      'poster_path': posterPath,
+    final updates = <String, dynamic>{
+      'updated_at': DateTime.now().toIso8601String(),
+    };
+
+    if (episodeProgress != null) {
+      updates['episode_progress'] = episodeProgress;
+    }
+    if (episodesWatched != null) {
+      updates['episodes_watched'] = episodesWatched;
+    }
+
+    await _client.from('watchlist').update(updates).match({
+      'user_id': _userId!,
+      'tmdb_id': tmdbId,
       'media_type': 'tv',
     });
   }
 
-  /// Remove a TV show from the user's watchlist
-  Future<void> removeTVShowFromWatchlist(int seriesId) async {
-    final userId = _client.auth.currentUser?.id;
-    if (userId == null) {
+  /// Clear all watchlist items
+  Future<void> clearWatchlist() async {
+    if (_userId == null) {
       throw Exception('User not authenticated');
     }
 
-    await _client.from('watchlist').delete().match({
-      'user_id': userId,
-      'series_id': seriesId,
-    });
+    await _client.from('watchlist').delete().eq('user_id', _userId!);
   }
 
-  /// Check if a TV show is in the user's watchlist
-  Future<bool> isTVShowInWatchlist(int seriesId) async {
-    final userId = _client.auth.currentUser?.id;
-    if (userId == null) return false;
-
-    try {
-      final response = await _client
-          .from('watchlist')
-          .select()
-          .eq('user_id', userId)
-          .eq('series_id', seriesId)
-          .maybeSingle();
-
-      return response != null;
-    } catch (e) {
-      return false;
+  /// Get watchlist count by media type
+  Future<Map<String, int>> getWatchlistCounts() async {
+    if (_userId == null) {
+      return {'movies': 0, 'tv': 0, 'total': 0};
     }
+
+    final items = await getWatchlist();
+    final movies = items.where((item) => item.mediaType == 'movie').length;
+    final tvShows = items.where((item) => item.mediaType == 'tv').length;
+
+    return {'movies': movies, 'tv': tvShows, 'total': items.length};
   }
 }

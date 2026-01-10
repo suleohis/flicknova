@@ -30,13 +30,25 @@ class WatchlistScreen extends ConsumerWidget {
               },
             ),
 
-            // Hours saved badge
+            // Filter tabs
+            _buildFilterTabs(context, ref, watchlistState),
+
+            // Hours saved badge and counts
             if (watchlistState.items.isNotEmpty)
               Padding(
-                padding: EdgeInsets.only(bottom: 16.h),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: HoursSavedBadge(hours: watchlistState.totalHoursSaved),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                child: Row(
+                  children: [
+                    HoursSavedBadge(hours: watchlistState.totalHoursSaved),
+                    SizedBox(width: 12.w),
+                    if (watchlistState.selectedFilter == 'all') ...[
+                      _buildCountBadge('${watchlistState.movieCount} Movies'),
+                      SizedBox(width: 8.w),
+                      _buildCountBadge(
+                        '${watchlistState.tvShowCount} TV Shows',
+                      ),
+                    ],
+                  ],
                 ),
               ),
 
@@ -44,47 +56,33 @@ class WatchlistScreen extends ConsumerWidget {
             Expanded(
               child: watchlistState.isLoading
                   ? const Center(child: CircularProgressIndicator())
-                  : watchlistState.items.isEmpty
+                  : watchlistState.filteredItems.isEmpty
                   ? const EmptyWatchlist()
                   : WatchlistGrid(
-                      items: watchlistState.items,
+                      items: watchlistState.filteredItems,
                       isGridView: watchlistState.isGridView,
                       onItemTap: (item) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                MovieDetailScreen(movieId: item.id),
-                          ),
-                        );
+                        if (item.isMovie) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  MovieDetailScreen(movieId: item.tmdbId, mediaType: item.mediaType,),
+                            ),
+                          );
+                        } else {
+                          // TODO: Navigate to TV Detail Screen
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'TV show detail screen coming soon',
+                              ),
+                            ),
+                          );
+                        }
                       },
                       onItemRemove: (item) {
-                        // Show confirmation dialog
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            backgroundColor: AppColors.cardBackground,
-                            title: const Text('Remove from Watchlist'),
-                            content: Text(
-                              'Are you sure you want to remove "${item.title}" from your watchlist?',
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: const Text('Cancel'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  ref
-                                      .read(watchlistProvider.notifier)
-                                      .removeItem(item.id);
-                                  Navigator.pop(context);
-                                },
-                                child: const Text('Remove'),
-                              ),
-                            ],
-                          ),
-                        );
+                        _showRemoveDialog(context, ref, item);
                       },
                     ),
             ),
@@ -97,6 +95,101 @@ class WatchlistScreen extends ConsumerWidget {
         },
         backgroundColor: AppColors.primary,
         child: Icon(Icons.add, color: AppColors.background, size: 32.sp),
+      ),
+    );
+  }
+
+  Widget _buildFilterTabs(
+    BuildContext context,
+    WidgetRef ref,
+    WatchlistState state,
+  ) {
+    final filters = [
+      {'id': 'all', 'label': 'All'},
+      {'id': 'movie', 'label': 'Movies'},
+      {'id': 'tv', 'label': 'TV Shows'},
+    ];
+
+    return Container(
+      height: 48.h,
+      padding: EdgeInsets.symmetric(vertical: 8.h),
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        itemCount: filters.length,
+        itemBuilder: (context, index) {
+          final filter = filters[index];
+          final isSelected = state.selectedFilter == filter['id'];
+
+          return GestureDetector(
+            onTap: () {
+              ref.read(watchlistProvider.notifier).setFilter(filter['id']!);
+            },
+            child: Container(
+              margin: EdgeInsets.only(right: 12.w),
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? AppColors.trendingBadge
+                    : AppColors.chipBackground,
+                borderRadius: BorderRadius.circular(20.r),
+              ),
+              child: Center(
+                child: Text(
+                  filter['label']!,
+                  style: TextStyle(
+                    color: isSelected ? AppColors.background : AppColors.white,
+                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                    fontSize: 14.sp,
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildCountBadge(String text) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+      decoration: BoxDecoration(
+        color: AppColors.cardBackground,
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(color: AppColors.white600, fontSize: 12.sp),
+      ),
+    );
+  }
+
+  void _showRemoveDialog(BuildContext context, WidgetRef ref, dynamic item) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.cardBackground,
+        title: const Text('Remove from Watchlist'),
+        content: Text(
+          'Are you sure you want to remove "${item.title}" from your watchlist?',
+          style: TextStyle(color: AppColors.white),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancel', style: TextStyle(color: AppColors.white600)),
+          ),
+          TextButton(
+            onPressed: () {
+              ref
+                  .read(watchlistProvider.notifier)
+                  .removeItem(item.tmdbId, item.mediaType);
+              Navigator.pop(context);
+            },
+            child: Text('Remove', style: TextStyle(color: AppColors.primary)),
+          ),
+        ],
       ),
     );
   }

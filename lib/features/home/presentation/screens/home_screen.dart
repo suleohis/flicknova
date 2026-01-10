@@ -1,10 +1,11 @@
 import 'package:flicknova/core/widgets/youtube_player_widget.dart';
-import 'package:flicknova/features/auth/presentation/providers/auth_notifier.dart';
-// import 'package:flicknova/features/watchlist/data/watchlist_service.dart';
+import 'package:flicknova/features/watchlist/data/watchlist_service.dart';
+import 'package:flicknova/features/watchlist/domain/entities/watchlist_item_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../generated/app_localizations.dart';
 import '../../../../routes/app_router.dart';
@@ -26,7 +27,6 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final s = S.of(context);
     final homeState = ref.watch(homeProvider);
-    final authState = ref.watch(authProvider);
 
     return Scaffold(
       body: RefreshIndicator(
@@ -41,11 +41,6 @@ class HomeScreen extends ConsumerWidget {
                 child: HeroSection(
                   movie: homeState.trendingMovies.first,
                   hasTrailer: homeState.hasHeroTrailer,
-                  isAddedToWatchList:
-                      authState.profile?.watchList?.contains(
-                        homeState.trendingMovies.first.toJson(),
-                      ) ??
-                      false,
                   onPlayTrailerTap: homeState.heroVideoKey != null
                       ? () {
                           Navigator.push(
@@ -60,52 +55,74 @@ class HomeScreen extends ConsumerWidget {
                         }
                       : null,
                   onAddTap: () async {
-                    ref
-                        .read(authProvider.notifier)
-                        .addWatchList(homeState.trendingMovies.first.toJson());
-                    ref.read(authProvider.notifier).saveProfile(context, false);
+                    final watchlistService = WatchlistService();
+                    final movie = homeState.trendingMovies.first;
+
+                    try {
+                      final isInWatchlist = await watchlistService
+                          .isInWatchlist(
+                            tmdbId: movie.id,
+                            mediaType: movie.mediaType,
+                          );
+
+                      if (isInWatchlist) {
+                        await watchlistService.removeFromWatchlist(
+                          tmdbId: movie.id,
+                          mediaType: movie.mediaType,
+                        );
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Removed from watchlist')),
+                          );
+                        }
+                      } else {
+                        // Create WatchlistItemEntity with proper data
+                        final userId =
+                            Supabase.instance.client.auth.currentUser?.id;
+                        if (userId == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'Please sign in to add to watchlist',
+                              ),
+                            ),
+                          );
+                          return;
+                        }
+
+                        final watchlistItem = WatchlistItemEntity(
+                          userId: userId,
+                          tmdbId: movie.id,
+                          mediaType: 'movie',
+                          title: movie.title,
+                          posterPath: movie.posterPath,
+                          addedAt: DateTime.now(),
+                          runtime:
+                              120, // Default runtime, can be updated from details
+                        );
+
+                        await watchlistService.addToWatchlist(watchlistItem);
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Added to watchlist')),
+                          );
+                        }
+                      }
+                    } catch (e) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Error: ${e.toString()}')),
+                        );
+                      }
+                    }
                   },
-                  // onAddTap: () async {
-                  //   final watchlistService = WatchlistService();
-                  //   final movie = homeState.trendingMovies.first;
-                  //
-                  //   try {
-                  //     final isInWatchlist = await watchlistService
-                  //         .isInWatchlist(movie.id);
-                  //
-                  //     if (isInWatchlist) {
-                  //       await watchlistService.removeFromWatchlist(movie.id);
-                  //       if (context.mounted) {
-                  //         ScaffoldMessenger.of(context).showSnackBar(
-                  //           SnackBar(content: Text('Removed from watchlist')),
-                  //         );
-                  //       }
-                  //     } else {
-                  //       await watchlistService.addToWatchlist(
-                  //         movieId: movie.id,
-                  //         movieTitle: movie.title,
-                  //         posterPath: movie.posterPath,
-                  //       );
-                  //       if (context.mounted) {
-                  //         ScaffoldMessenger.of(context).showSnackBar(
-                  //           SnackBar(content: Text('Added to watchlist')),
-                  //         );
-                  //       }
-                  //     }
-                  //   } catch (e) {
-                  //     if (context.mounted) {
-                  //       ScaffoldMessenger.of(context).showSnackBar(
-                  //         SnackBar(content: Text('Error: ${e.toString()}')),
-                  //       );
-                  //     }
-                  //   }
-                  // },
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => MovieDetailScreen(
                           movieId: homeState.trendingMovies.first.id,
+                          mediaType: homeState.trendingMovies.first.mediaType,
                         ),
                       ),
                     );
@@ -146,8 +163,10 @@ class HomeScreen extends ConsumerWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            MovieDetailScreen(movieId: movie.id),
+                        builder: (context) => MovieDetailScreen(
+                          movieId: movie.id,
+                          mediaType: movie.mediaType,
+                        ),
                       ),
                     );
                   },
@@ -174,8 +193,10 @@ class HomeScreen extends ConsumerWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            MovieDetailScreen(movieId: movie.id),
+                        builder: (context) => MovieDetailScreen(
+                          movieId: movie.id,
+                          mediaType: movie.mediaType,
+                        ),
                       ),
                     );
                   },
@@ -241,8 +262,10 @@ class HomeScreen extends ConsumerWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      MovieDetailScreen(movieId: movie.id),
+                                  builder: (context) => MovieDetailScreen(
+                                    movieId: movie.id,
+                                    mediaType: movie.mediaType,
+                                  ),
                                 ),
                               );
                             },
@@ -282,8 +305,10 @@ class HomeScreen extends ConsumerWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            MovieDetailScreen(movieId: movie.id),
+                        builder: (context) => MovieDetailScreen(
+                          movieId: movie.id,
+                          mediaType: movie.mediaType,
+                        ),
                       ),
                     );
                   },
