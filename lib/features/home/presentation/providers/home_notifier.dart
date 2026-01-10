@@ -1,9 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/models/movie_entity.dart';
 import '../../../../core/models/person_entity.dart';
 import '../../../../core/models/tv_show_entity.dart';
+import '../../../watchlist/data/watchlist_service.dart';
+import '../../../watchlist/domain/entities/watchlist_item_entity.dart';
 import '../../data/repositories/home_repository_impl.dart';
 import '../../domain/repositories/home_repository.dart';
 
@@ -23,6 +26,8 @@ class HomeState {
   final String? error;
   final String? heroVideoKey; // YouTube video key for hero movie
   final bool hasHeroTrailer;
+  final bool isInWatchlist;
+  final bool isTogglingWatchlist;
 
   HomeState({
     this.trendingAll = const [],
@@ -40,6 +45,8 @@ class HomeState {
     this.error,
     this.heroVideoKey,
     this.hasHeroTrailer = false,
+    this.isInWatchlist = false,
+    this.isTogglingWatchlist = false,
   });
 
   HomeState copyWith({
@@ -58,6 +65,9 @@ class HomeState {
     String? error,
     String? heroVideoKey,
     bool? hasHeroTrailer,
+    bool? isInWatchlist,
+    bool? isTogglingWatchlist,
+    bool? isLoading,
   }) {
     return HomeState(
       trendingAll: trendingAll ?? this.trendingAll,
@@ -75,16 +85,20 @@ class HomeState {
       error: error ?? this.error,
       heroVideoKey: heroVideoKey ?? this.heroVideoKey,
       hasHeroTrailer: hasHeroTrailer ?? this.hasHeroTrailer,
+      isInWatchlist: isInWatchlist ?? this.isInWatchlist,
+      isTogglingWatchlist: isTogglingWatchlist ?? this.isTogglingWatchlist,
     );
   }
 }
 
 class HomeNotifier extends Notifier<HomeState> {
   late final HomeRepository _repository;
+  late final WatchlistService _watchlistService;
 
   @override
   HomeState build() {
     _repository = HomeRepositoryImpl();
+    _watchlistService = WatchlistService();
     Future.delayed(Duration(seconds: 1), () => loadAllData());
     return HomeState();
   }
@@ -107,8 +121,6 @@ class HomeNotifier extends Notifier<HomeState> {
     try {
       final all = await _repository.getTrendingAll();
       state = state.copyWith(trendingAll: all, isLoadingTrending: false);
-      print('show result');
-      print(all);
 
       // Load video for hero movie (first trending movie)
       if (all.isNotEmpty) {
@@ -135,6 +147,17 @@ class HomeNotifier extends Notifier<HomeState> {
       // Load video for hero movie (first trending movie)
       if (movies.isNotEmpty) {
         await _loadHeroVideo(movies.first.id);
+
+
+        final isInWatchlist = await _watchlistService.isInWatchlist(
+          tmdbId: movies.first.id,
+          mediaType: movies.first.mediaType,
+        );
+
+        state = state.copyWith(
+          isInWatchlist: isInWatchlist,
+          isLoading: false,
+        );
       }
     } catch (e) {
       state = state.copyWith(error: e.toString(), isLoadingTrending: false);
@@ -215,8 +238,6 @@ class HomeNotifier extends Notifier<HomeState> {
     }
   }
 
-
-
   Future<void> loadTrendingTVShows() async {
     state = state.copyWith(isLoadingTrending: true);
     try {
@@ -272,6 +293,50 @@ class HomeNotifier extends Notifier<HomeState> {
       if (kDebugMode) {
         print('Error loading new releases: $e');
       }
+    }
+  }
+
+  Future<bool> toggleWatchlist(MovieEntity movie) async {
+
+    state = state.copyWith(isTogglingWatchlist: true);
+
+    try {
+      if (state.isInWatchlist) {
+        await _watchlistService.removeFromWatchlist(
+          tmdbId: movie.id,
+          mediaType: movie.mediaType,
+        );
+        state = state.copyWith(
+          isInWatchlist: false,
+          isTogglingWatchlist: false,
+        );
+      } else {
+        // Create WatchlistItemEntity with proper data
+        final userId = Supabase.instance.client.auth.currentUser?.id;
+        if (userId == null) {
+          throw Exception('User not authenticated');
+        }
+
+        final watchlistItem = WatchlistItemEntity(
+          userId: userId,
+          tmdbId: movie.id,
+          mediaType: movie.mediaType,
+          title: movie.title,
+          posterPath: movie.posterPath,
+          addedAt: DateTime.now(),
+          runtime: 0,
+        );
+
+        await _watchlistService.addToWatchlist(watchlistItem);
+        state = state.copyWith(isInWatchlist: true, isTogglingWatchlist: false);
+      }
+      return true;
+    } catch (e) {
+      state = state.copyWith(isTogglingWatchlist: false);
+      if (kDebugMode) {
+        print('Error toggling watchlist: $e');
+      }
+      return false;
     }
   }
 }

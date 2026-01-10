@@ -9,26 +9,15 @@ import '../../../../core/extensions/context_theme_extension.dart';
 import '../../../../core/models/common_detail_entities.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../generated/app_localizations.dart';
-import '../../../../shared/app_loading.dart';
-import '../../../home/presentation/widgets/person_card.dart';
 import '../../../person_detail/presentation/screens/person_detail_screen.dart';
 import '../providers/tv_detail_notifier.dart';
 
-class TopCastScreen extends ConsumerStatefulWidget {
+class TopCastScreen extends ConsumerWidget {
 
-const TopCastScreen({
-super.key,
-});
-
-@override
-ConsumerState<TopCastScreen> createState() => _TopCastScreenState();
-}
-
-class _TopCastScreenState extends ConsumerState<TopCastScreen> {
-
+  const TopCastScreen({super.key});
 
   @override
-  build (context,) {
+  build(context, ref) {
     final state = ref.watch(tvDetailProvider);
 
     final s = S.of(context);
@@ -46,19 +35,17 @@ class _TopCastScreenState extends ConsumerState<TopCastScreen> {
 
         itemCount: state.series?.credits?.cast.length ?? 0,
         itemBuilder: (context, index) {
-
           final item = state.series?.credits?.cast[index];
           return _TopCastCard(
             cast: item!,
-            onTap: () =>
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PersonDetailScreen(personId: item!.id
-                    ),
-                  ),
-                ),
-          );;
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PersonDetailScreen(personId: item.id),
+              ),
+            ),
+          );
+          ;
         },
       ),
     );
@@ -93,21 +80,21 @@ class _TopCastCard extends StatelessWidget {
               child: ClipOval(
                 child: cast.profilePath != null
                     ? CachedNetworkImage(
-                  imageUrl: context.tmdbPosterUrl(cast.profilePath),
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) =>
-                      Container(color: AppColors.cardBackground),
-                  errorWidget: (context, url, error) => Icon(
-                    Icons.person,
-                    color: AppColors.white400,
-                    size: 40.sp,
-                  ),
-                )
+                        imageUrl: context.tmdbPosterUrl(cast.profilePath),
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) =>
+                            Container(color: AppColors.cardBackground),
+                        errorWidget: (context, url, error) => Icon(
+                          Icons.person,
+                          color: AppColors.white400,
+                          size: 40.sp,
+                        ),
+                      )
                     : Icon(
-                  Icons.person,
-                  color: AppColors.white400,
-                  size: 40.sp,
-                ),
+                        Icons.person,
+                        color: AppColors.white400,
+                        size: 40.sp,
+                      ),
               ),
             ),
             SizedBox(height: 8.h),

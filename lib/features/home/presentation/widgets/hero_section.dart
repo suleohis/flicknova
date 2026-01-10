@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flicknova/core/extensions/context_extension.dart';
 import 'package:flicknova/core/extensions/context_theme_extension.dart';
+import 'package:flicknova/shared/app_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -15,6 +16,7 @@ class HeroSection extends StatelessWidget {
   final VoidCallback? onTap;
   final bool hasTrailer;
   final bool isInWatchlist;
+  final bool isTogglingWatchlist;
 
   const HeroSection({
     super.key,
@@ -24,6 +26,7 @@ class HeroSection extends StatelessWidget {
     this.onTap,
     this.hasTrailer = false,
     this.isInWatchlist = false,
+    this.isTogglingWatchlist = false,
   });
 
   @override
@@ -156,7 +159,7 @@ class HeroSection extends StatelessWidget {
                             color: AppColors.cardBackground,
                             borderRadius: BorderRadius.circular(8.r),
                           ),
-                          child: IconButton(
+                          child: isTogglingWatchlist ? AppLoading(): IconButton(
                             onPressed: onAddTap,
                             icon: Icon(
                               isInWatchlist ? Icons.check : Icons.add,

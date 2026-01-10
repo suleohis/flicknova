@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../../core/services/notification_service.dart';
 import '../../../../generated/app_localizations.dart';
 import '../../../../routes/app_router.dart';
 import '../../../../shared/app_loading.dart';
@@ -39,6 +40,8 @@ class HomeScreen extends ConsumerWidget {
             if (homeState.trendingMovies.isNotEmpty)
               SliverToBoxAdapter(
                 child: HeroSection(
+                  isInWatchlist: homeState.isInWatchlist,
+                  isTogglingWatchlist: homeState.isTogglingWatchlist,
                   movie: homeState.trendingMovies.first,
                   hasTrailer: homeState.hasHeroTrailer,
                   onPlayTrailerTap: homeState.heroVideoKey != null
@@ -55,65 +58,27 @@ class HomeScreen extends ConsumerWidget {
                         }
                       : null,
                   onAddTap: () async {
-                    final watchlistService = WatchlistService();
-                    final movie = homeState.trendingMovies.first;
+                    bool value = await ref
+                        .read(homeProvider.notifier)
+                        .toggleWatchlist(homeState.trendingMovies.first);
+                    final s = S.of(context);
 
-                    try {
-                      final isInWatchlist = await watchlistService
-                          .isInWatchlist(
-                            tmdbId: movie.id,
-                            mediaType: movie.mediaType,
-                          );
-
-                      if (isInWatchlist) {
-                        await watchlistService.removeFromWatchlist(
-                          tmdbId: movie.id,
-                          mediaType: movie.mediaType,
-                        );
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Removed from watchlist')),
-                          );
-                        }
-                      } else {
-                        // Create WatchlistItemEntity with proper data
-                        final userId =
-                            Supabase.instance.client.auth.currentUser?.id;
-                        if (userId == null) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                'Please sign in to add to watchlist',
-                              ),
-                            ),
-                          );
-                          return;
-                        }
-
-                        final watchlistItem = WatchlistItemEntity(
-                          userId: userId,
-                          tmdbId: movie.id,
-                          mediaType: 'movie',
-                          title: movie.title,
-                          posterPath: movie.posterPath,
-                          addedAt: DateTime.now(),
-                          runtime:
-                              120, // Default runtime, can be updated from details
-                        );
-
-                        await watchlistService.addToWatchlist(watchlistItem);
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Added to watchlist')),
-                          );
-                        }
-                      }
-                    } catch (e) {
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Error: ${e.toString()}')),
-                        );
-                      }
+                    if (value) {
+                      NotificationService.showSuccess(
+                        context: context,
+                        message:
+                        '${homeState.trendingMovies.first?.title ?? ''} '
+                            '${ homeState.isInWatchlist ? s.removed:
+                        s.added}',
+                        title: s.success,
+                      );
+                    } else {
+                      NotificationService.showError(
+                        context: context,
+                        message:
+                        s.something_went_wrong,
+                        title: s.error,
+                      );
                     }
                   },
                   onTap: () {

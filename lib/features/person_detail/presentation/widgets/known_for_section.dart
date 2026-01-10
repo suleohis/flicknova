@@ -5,7 +5,9 @@ import 'package:flicknova/core/models/movie_entity.dart';
 import 'package:flicknova/core/theme/app_colors.dart';
 import 'package:flicknova/routes/app_router.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../generated/app_localizations.dart';
@@ -33,7 +35,12 @@ class KnownForSection extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  // TODO: Navigate to full known for list
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => KnownForListScreen(movies: movies),
+                    ),
+                  );
                 },
                 child: Text(
                   S.of(context).see_all,
@@ -60,6 +67,36 @@ class KnownForSection extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class KnownForListScreen extends ConsumerWidget {
+  final List<MovieEntity> movies;
+
+  const KnownForListScreen({super.key, required this.movies});
+
+  @override
+  build(context, ref) {
+    final s = S.of(context);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(s.known_for),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      body: AlignedGridView.count(
+        padding: EdgeInsets.all(16.w),
+        crossAxisCount: 3,
+        crossAxisSpacing: 12.w,
+        mainAxisSpacing: 16.h,
+
+        itemCount: movies.length,
+        itemBuilder: (context, index) {
+          final movie = movies[index];
+          return _KnownForCard(movie: movie);
+        },
+      ),
     );
   }
 }
