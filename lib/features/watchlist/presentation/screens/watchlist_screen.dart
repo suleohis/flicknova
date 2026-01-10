@@ -28,6 +28,9 @@ class WatchlistScreen extends ConsumerWidget {
               onToggleView: () {
                 ref.read(watchlistProvider.notifier).toggleViewMode();
               },
+              onRefresh: () {
+                ref.read(watchlistProvider.notifier).loadWatchlist();
+              },
             ),
 
             // Filter tabs
@@ -58,44 +61,53 @@ class WatchlistScreen extends ConsumerWidget {
                   ? const Center(child: CircularProgressIndicator())
                   : watchlistState.filteredItems.isEmpty
                   ? const EmptyWatchlist()
-                  : WatchlistGrid(
-                      items: watchlistState.filteredItems,
-                      isGridView: watchlistState.isGridView,
-                      onItemTap: (item) {
-                        if (item.isMovie) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  MovieDetailScreen(movieId: item.tmdbId, mediaType: item.mediaType,),
-                            ),
-                          );
-                        } else {
-                          // TODO: Navigate to TV Detail Screen
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                'TV show detail screen coming soon',
+                  : RefreshIndicator(
+                      onRefresh: () {
+                        return ref
+                            .read(watchlistProvider.notifier)
+                            .loadWatchlist();
+                      },
+                      child: WatchlistGrid(
+                        items: watchlistState.filteredItems,
+                        isGridView: watchlistState.isGridView,
+                        onItemTap: (item) {
+                          if (item.isMovie) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MovieDetailScreen(
+                                  movieId: item.tmdbId,
+                                  mediaType: item.mediaType,
+                                ),
                               ),
-                            ),
-                          );
-                        }
-                      },
-                      onItemRemove: (item) {
-                        _showRemoveDialog(context, ref, item);
-                      },
+                            );
+                          } else {
+                            // TODO: Navigate to TV Detail Screen
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'TV show detail screen coming soon',
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                        onItemRemove: (item) {
+                          _showRemoveDialog(context, ref, item);
+                        },
+                      ),
                     ),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // TODO: Navigate to search/add screen
-        },
-        backgroundColor: AppColors.primary,
-        child: Icon(Icons.add, color: AppColors.background, size: 32.sp),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     // TODO: Navigate to search/add screen
+      //   },
+      //   backgroundColor: AppColors.primary,
+      //   child: Icon(Icons.add, color: AppColors.background, size: 32.sp),
+      // ),
     );
   }
 

@@ -8,12 +8,14 @@ import 'package:flicknova/features/tv_detail/presentation/widgets/seasons_sectio
 import 'package:flicknova/features/tv_detail/presentation/widgets/tv_metadata_row.dart';
 import 'package:flicknova/features/tv_detail/presentation/widgets/tv_series_poster.dart';
 import 'package:flicknova/generated/app_localizations.dart';
+import 'package:flicknova/routes/app_router.dart';
 import 'package:flicknova/shared/app_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flicknova/core/extensions/context_extension.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/services/notification_service.dart';
 import '../../../../core/widgets/youtube_player_widget.dart';
@@ -289,11 +291,11 @@ class _TVDetailScreenState extends ConsumerState<TVDetailScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Top Cast', style: context.h4),
+              Text(S.of(context).top_cast, style: context.h4),
               TextButton(
-                onPressed: () {},
+                onPressed: () => context.push(AppRouter.topCast),
                 child: Text(
-                  'See All',
+                  S.of(context).see_all,
                   style: context.bodyMedium.copyWith(
                     color: AppColors.linkColor,
                   ),

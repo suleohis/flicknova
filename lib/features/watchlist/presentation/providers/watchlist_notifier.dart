@@ -66,7 +66,7 @@ class WatchlistNotifier extends Notifier<WatchlistState> {
   @override
   WatchlistState build() {
     _repository = WatchlistRepositoryImpl();
-    loadWatchlist();
+    Future.delayed(Duration(milliseconds: 500), () => loadWatchlist());
     return WatchlistState();
   }
 

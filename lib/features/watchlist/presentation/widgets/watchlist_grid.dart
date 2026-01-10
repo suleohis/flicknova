@@ -26,6 +26,8 @@ class WatchlistGrid extends StatelessWidget {
     }
 
     return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       padding: EdgeInsets.all(16.w),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: isGridView ? 2 : 1,

@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../generated/app_localizations.dart';
+
 class KnownForSection extends StatelessWidget {
   final List<MovieEntity> movies;
 
@@ -26,15 +28,15 @@ class KnownForSection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Known For',
+                S.of(context).known_for,
                 style: context.h4.copyWith(fontWeight: FontWeight.w700),
               ),
               TextButton(
                 onPressed: () {
-                  // TODO: Navigate to full filmography
+                  // TODO: Navigate to full known for list
                 },
                 child: Text(
-                  'See All',
+                  S.of(context).see_all,
                   style: context.bodyMedium.copyWith(
                     color: AppColors.linkColor,
                     fontWeight: FontWeight.w600,

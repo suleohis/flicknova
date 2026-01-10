@@ -399,6 +399,12 @@ abstract class S {
   /// **'Revenue'**
   String get revenue;
 
+  /// No description provided for @top_cast.
+  ///
+  /// In en, this message translates to:
+  /// **'Top Cast'**
+  String get top_cast;
+
   /// No description provided for @runtime_minutes.
   ///
   /// In en, this message translates to:
@@ -704,6 +710,24 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get cancel;
+
+  /// No description provided for @known_for.
+  ///
+  /// In en, this message translates to:
+  /// **'Known For'**
+  String get known_for;
+
+  /// No description provided for @filmography.
+  ///
+  /// In en, this message translates to:
+  /// **'Filmography'**
+  String get filmography;
+
+  /// No description provided for @view_complete_filmography.
+  ///
+  /// In en, this message translates to:
+  /// **'View Complete Filmography'**
+  String get view_complete_filmography;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

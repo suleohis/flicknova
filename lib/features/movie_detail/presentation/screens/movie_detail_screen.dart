@@ -158,7 +158,7 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
                     recommendations: detailState.recommendations,
                     onMovieTap: (movie) {
                       // Navigate to this movie's detail page
-                      Navigator.of(context).pushReplacement(
+                      Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => MovieDetailScreen(
                             movieId: movie.id,

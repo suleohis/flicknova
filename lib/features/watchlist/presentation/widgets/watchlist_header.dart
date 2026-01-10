@@ -8,11 +8,13 @@ import '../../../../generated/app_localizations.dart';
 class WatchlistHeader extends StatelessWidget {
   final bool isGridView;
   final VoidCallback onToggleView;
+  final VoidCallback onRefresh;
 
   const WatchlistHeader({
     super.key,
     required this.isGridView,
     required this.onToggleView,
+    required this.onRefresh,
   });
 
   @override
@@ -25,14 +27,26 @@ class WatchlistHeader extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(s.my_watchlist, style: context.h2),
-          IconButton(
-            onPressed: onToggleView,
-            icon: Icon(
-              isGridView ? Icons.view_list : Icons.grid_view,
-              color: AppColors.white,
-              size: 24.sp,
-            ),
-          ),
+          Row(
+            children: [
+              IconButton(
+                onPressed: onToggleView,
+                icon: Icon(
+                  isGridView ? Icons.view_list : Icons.grid_view,
+                  color: AppColors.white,
+                  size: 24.sp,
+                ),
+              ),
+              IconButton(
+                onPressed: onRefresh,
+                icon: Icon(
+                  Icons.refresh_outlined,
+                  color: AppColors.white,
+                  size: 24.sp,
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );

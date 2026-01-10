@@ -3,6 +3,7 @@ import 'package:flicknova/features/person_detail/presentation/screens/person_det
 import 'package:flicknova/features/tv_detail/presentation/screens/tv_detail_screen.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/tv_detail/presentation/screens/top_cast_screen.dart';
 import '../app_router.dart';
 
 List<GoRoute> detailRoutes = [
@@ -21,6 +22,13 @@ List<GoRoute> detailRoutes = [
     pageBuilder: (context, state) {
       final seriesId = state.extra as int;
       return NoTransitionPage(child: TVDetailScreen(seriesId: seriesId));
+    },
+  ),
+
+  GoRoute(
+    path: AppRouter.topCast,
+    pageBuilder: (context, state) {
+      return NoTransitionPage(child: TopCastScreen());
     },
   ),
 

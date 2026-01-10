@@ -109,7 +109,8 @@ class TmdbService {
       '/person/$personId',
       queryParameters: {
         'language': language,
-        'append_to_response': 'tv_credits,movie_credits',
+        'append_to_response': 'combined_credits',
+        // 'append_to_response': 'tv_credits,movie_credits',
       },
     );
     return response.data as Map<String, dynamic>;

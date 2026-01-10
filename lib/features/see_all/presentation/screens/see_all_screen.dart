@@ -12,6 +12,9 @@ import '../../../../shared/app_loading.dart';
 import '../../../home/presentation/widgets/movie_card.dart';
 import '../../../home/presentation/widgets/person_card.dart';
 import '../../../home/presentation/widgets/tv_card.dart';
+import '../../../movie_detail/presentation/screens/movie_detail_screen.dart';
+import '../../../person_detail/presentation/screens/person_detail_screen.dart';
+import '../../../tv_detail/presentation/screens/tv_detail_screen.dart';
 import '../providers/see_all_notifier.dart';
 
 class SeeAllScreen extends ConsumerStatefulWidget {
@@ -166,19 +169,43 @@ class _SeeAllScreenState extends ConsumerState<SeeAllScreen> {
         movie: item,
         width: double.infinity,
         height: 180.h,
-        onTap: () => context.push('${AppRouter.movieDetail}/${item.id}'),
+        onTap: () =>
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MovieDetailScreen(
+                movieId: item.id,
+                mediaType: item.mediaType,
+              ),
+            ),
+          ),
       );
     } else if (item is TVShowEntity) {
       return TVCard(
         tvShow: item,
         width: double.infinity,
         height: 180.h,
-        onTap: () => context.push('${AppRouter.tvDetail}/${item.id}'),
+        onTap: () =>
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => TVDetailScreen(
+                    seriesId: item.id
+                ),
+              ),
+            ),
       );
     } else if (item is PersonEntity) {
       return PersonCard(
         person: item,
-        onTap: () => context.push('${AppRouter.personDetail}/${item.id}'),
+        onTap: () =>
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PersonDetailScreen(personId: item.id
+                ),
+              ),
+            ),
       );
     }
 

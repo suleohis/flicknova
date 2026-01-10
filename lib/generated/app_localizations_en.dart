@@ -167,6 +167,9 @@ class SEn extends S {
   String get revenue => 'Revenue';
 
   @override
+  String get top_cast => 'Top Cast';
+
+  @override
   String runtime_minutes(Object minutes) {
     return '$minutes min';
   }
@@ -333,4 +336,13 @@ class SEn extends S {
 
   @override
   String get cancel => 'Cancel';
+
+  @override
+  String get known_for => 'Known For';
+
+  @override
+  String get filmography => 'Filmography';
+
+  @override
+  String get view_complete_filmography => 'View Complete Filmography';
 }

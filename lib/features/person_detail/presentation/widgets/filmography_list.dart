@@ -5,6 +5,8 @@ import 'package:flicknova/features/person_detail/presentation/widgets/filmograph
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../generated/app_localizations.dart';
+
 class FilmographyList extends StatelessWidget {
   final List<FilmographyItem> filmography;
 
@@ -22,7 +24,7 @@ class FilmographyList extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Text(
-            'Filmography',
+            S.of(context).filmography,
             style: context.h4.copyWith(fontWeight: FontWeight.w700),
           ),
         ),
@@ -39,7 +41,7 @@ class FilmographyList extends StatelessWidget {
                   // TODO: Navigate to complete filmography
                 },
                 child: Text(
-                  'View Complete Filmography',
+                  S.of(context).view_complete_filmography,
                   style: context.bodyMedium.copyWith(
                     color: AppColors.linkColor,
                     fontWeight: FontWeight.w600,

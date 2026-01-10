@@ -61,6 +61,7 @@ class AppRouter {
   // Detail Routes
   static const String movieDetail = '/movie';
   static const String tvDetail = '/tv';
+  static const String topCast = '/topCast';
   static const String personDetail = '/person';
   static const String seasonDetail = '/season';
   static const String episodeDetail = '/episode';

@@ -54,11 +54,39 @@ class PersonDetailNotifier extends Notifier<PersonDetailState> {
       final personData = await _tmdbService.getPersonDetails(personId);
       final person = PersonDetailEntity.fromJson(personData);
 
-      // Extract known for movies from TV credits
+      // Extract known for from both movies and TV shows
       final knownForList = <MovieEntity>[];
-      if (person.tvCredits != null) {
-        // Get top shows by popularity and convert to MovieEntity format
-        final topShows = person.tvCredits!.cast
+
+      // Add top movies
+      if (person.combinedCredits?.movieCast != null) {
+        final topMovies = person.combinedCredits!.movieCast
+            .take(10)
+            .map(
+              (movie) => MovieEntity(
+                id: movie.id,
+                title: movie.title,
+                posterPath: movie.posterPath,
+                backdropPath: movie.backdropPath,
+                overview: movie.overview,
+                voteAverage: movie.voteAverage,
+                voteCount: movie.voteCount,
+                popularity: movie.popularity,
+                releaseDate: movie.releaseDate,
+                genreIds: movie.genreIds,
+                originalLanguage: movie.originalLanguage,
+                originalTitle: movie.originalName,
+                adult: movie.adult,
+                video: false,
+                mediaType: 'movie',
+              ),
+            )
+            .toList();
+        knownForList.addAll(topMovies);
+      }
+
+      // Add top TV shows
+      if (person.combinedCredits?.tvCast != null) {
+        final topShows = person.combinedCredits!.tvCast
             .take(10)
             .map(
               (show) => MovieEntity(
@@ -83,10 +111,36 @@ class PersonDetailNotifier extends Notifier<PersonDetailState> {
         knownForList.addAll(topShows);
       }
 
-      // Build filmography from TV credits
+      // Sort by popularity and take top 10
+      knownForList.sort((a, b) => b.popularity.compareTo(a.popularity));
+      final topKnownFor = knownForList.take(10).toList();
+
+      // Build filmography from both movies and TV shows
       final filmographyList = <FilmographyItem>[];
-      if (person.tvCredits != null) {
-        for (var show in person.tvCredits!.cast) {
+
+      // Add movies to filmography
+      if (person.combinedCredits?.movieCast != null) {
+        for (var movie in person.combinedCredits!.movieCast) {
+          final year = movie.releaseDate != null
+              ? int.tryParse(movie.releaseDate!.split('-').first)
+              : null;
+
+          filmographyList.add(
+            FilmographyItem(
+              id: movie.id,
+              title: movie.title,
+              character: movie.character,
+              year: year,
+              mediaType: 'movie',
+              posterPath: movie.posterPath,
+            ),
+          );
+        }
+      }
+
+      // Add TV shows to filmography
+      if (person.combinedCredits?.tvCast != null) {
+        for (var show in person.combinedCredits!.tvCast) {
           final year = show.firstAirDate != null
               ? int.tryParse(show.firstAirDate!.split('-').first)
               : null;
@@ -113,7 +167,7 @@ class PersonDetailNotifier extends Notifier<PersonDetailState> {
 
       state = state.copyWith(
         person: person,
-        knownFor: knownForList,
+        knownFor: topKnownFor,
         filmography: filmographyList,
         isLoading: false,
       );

@@ -1,3 +1,65 @@
+class MovieCreditsShowEntity {
+  final bool adult;
+  final String? backdropPath;
+  final List<int> genreIds;
+  final int id;
+  final List<String> originCountry;
+  final String originalLanguage;
+  final String originalName;
+  final String overview;
+  final double popularity;
+  final String? posterPath;
+  final String? releaseDate;
+  final String title;
+  final double voteAverage;
+  final int voteCount;
+  final String character;
+  final String creditId;
+  final int order;
+
+  MovieCreditsShowEntity({
+    required this.adult,
+    this.backdropPath,
+    required this.genreIds,
+    required this.id,
+    required this.originCountry,
+    required this.originalLanguage,
+    required this.originalName,
+    required this.overview,
+    required this.popularity,
+    this.posterPath,
+    this.releaseDate,
+    required this.title,
+    required this.voteAverage,
+    required this.voteCount,
+    required this.character,
+    required this.creditId,
+    required this.order,
+  });
+
+  factory MovieCreditsShowEntity.fromJson(Map<String, dynamic> json) {
+    return MovieCreditsShowEntity(
+      adult: json['adult'] as bool? ?? false,
+      backdropPath: json['backdrop_path'] as String?,
+      genreIds: (json['genre_ids'] as List?)?.cast<int>() ?? [],
+      id: json['id'] as int,
+      originCountry: (json['origin_country'] as List?)?.cast<String>() ?? [],
+      originalLanguage: json['original_language'] as String? ?? '',
+      originalName: json['original_name'] as String? ?? '',
+      overview: json['overview'] as String? ?? '',
+      popularity: (json['popularity'] as num?)?.toDouble() ?? 0.0,
+      posterPath: json['poster_path'] as String?,
+      releaseDate: json['release_date'] as String?,
+      title: json['title'] as String? ?? '',
+      voteAverage: (json['vote_average'] as num?)?.toDouble() ?? 0.0,
+      voteCount: json['vote_count'] as int? ?? 0,
+      character: json['character'] as String? ?? '',
+      creditId: json['credit_id'] as String,
+      order: json['order'] as int? ?? 0,
+    );
+  }
+}
+
 class TVCreditsShowEntity {
   final bool adult;
   final String? backdropPath;
@@ -63,18 +125,26 @@ class TVCreditsShowEntity {
   }
 }
 
-class PersonTVCreditsEntity {
-  final List<TVCreditsShowEntity> cast;
+class PersonCombinedCreditsEntity {
+  final List<TVCreditsShowEntity> tvCast;
+  final List<MovieCreditsShowEntity> movieCast;
   final List<Map<String, dynamic>> crew; // Can be complex, keeping as Map
 
-  PersonTVCreditsEntity({required this.cast, required this.crew});
+  PersonCombinedCreditsEntity({required this.tvCast, required this.movieCast, required this.crew});
 
-  factory PersonTVCreditsEntity.fromJson(Map<String, dynamic> json) {
-    return PersonTVCreditsEntity(
-      cast:
+  factory PersonCombinedCreditsEntity.fromJson(Map<String, dynamic> json) {
+    return PersonCombinedCreditsEntity(
+      tvCast:
           (json['cast'] as List?)
-              ?.map(
+              ?.where((e) => e['media_type'] == 'tv').map(
                 (e) => TVCreditsShowEntity.fromJson(e as Map<String, dynamic>),
+              )
+              .toList() ??
+          [],
+      movieCast:
+          (json['cast'] as List?)
+              ?.where((e) => e['media_type'] == 'movie').map(
+                (e) => MovieCreditsShowEntity.fromJson(e as Map<String, dynamic>),
               )
               .toList() ??
           [],
@@ -98,7 +168,7 @@ class PersonDetailEntity {
   final String? placeOfBirth;
   final double popularity;
   final String? profilePath;
-  final PersonTVCreditsEntity? tvCredits;
+  final PersonCombinedCreditsEntity? combinedCredits;
 
   PersonDetailEntity({
     required this.adult,
@@ -115,7 +185,7 @@ class PersonDetailEntity {
     this.placeOfBirth,
     required this.popularity,
     this.profilePath,
-    this.tvCredits,
+    this.combinedCredits,
   });
 
   factory PersonDetailEntity.fromJson(Map<String, dynamic> json) {
@@ -134,9 +204,9 @@ class PersonDetailEntity {
       placeOfBirth: json['place_of_birth'] as String?,
       popularity: (json['popularity'] as num?)?.toDouble() ?? 0.0,
       profilePath: json['profile_path'] as String?,
-      tvCredits: json['tv_credits'] != null
-          ? PersonTVCreditsEntity.fromJson(
-              json['tv_credits'] as Map<String, dynamic>,
+      combinedCredits: json['combined_credits'] != null
+          ? PersonCombinedCreditsEntity.fromJson(
+              json['combined_credits'] as Map<String, dynamic>,
             )
           : null,
     );

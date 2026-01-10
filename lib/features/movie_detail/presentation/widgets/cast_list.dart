@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../generated/app_localizations.dart';
 import '../../../home/presentation/widgets/section_header.dart';
+import '../../../person_detail/presentation/screens/person_detail_screen.dart';
 import '../../domain/entities/cast_entity.dart';
 import 'cast_card.dart';
 
@@ -30,7 +31,17 @@ class CastList extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             itemCount: cast.length,
             itemBuilder: (context, index) {
-              return CastCard(cast: cast[index]);
+              return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            PersonDetailScreen(personId: cast[index].id),
+                      ),
+                    );
+                  },
+                  child: CastCard(cast: cast[index]));
             },
           ),
         ),

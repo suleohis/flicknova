@@ -57,6 +57,7 @@
   "director": "Director",
   "budget": "Budget",
   "revenue": "Revenue",
+  "top_cast": "Top Cast",
   "runtime_minutes": "{minutes} min",
   "no_overview": "No overview available",
   "synopsis": "Synopsis",
@@ -110,5 +111,9 @@
   "log_out": "Log Out",
   "other": "Other",
   "logout_confirmation": "Are you sure you want to log out?",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+
+  "known_for": "Known For",
+  "filmography": "Filmography",
+  "view_complete_filmography": "View Complete Filmography"
 }
