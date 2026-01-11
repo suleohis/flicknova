@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/services/firebase_analytics_service.dart';
 import '../../../../core/services/notification_service.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/youtube_player_widget.dart';
@@ -38,6 +39,9 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
       ref
           .read(movieDetailProvider.notifier)
           .loadMovieDetail(widget.movieId, widget.mediaType);
+
+      // Track screen view with movie ID
+      FirebaseAnalyticsService.instance.logScreenView('movie_detail_screen');
     });
   }
 
@@ -118,15 +122,13 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
                           context: context,
                           message:
                               '${detailState.movie?.title ?? ''} '
-                                  '${ detailState.isInWatchlist ? s.removed:
-                              s.added}',
+                              '${detailState.isInWatchlist ? s.removed : s.added}',
                           title: s.success,
                         );
                       } else {
                         NotificationService.showError(
                           context: context,
-                          message:
-                          s.something_went_wrong,
+                          message: s.something_went_wrong,
                           title: s.error,
                         );
                       }
@@ -156,6 +158,13 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
                   child: RecommendationsSection(
                     recommendations: detailState.recommendations,
                     onMovieTap: (movie) {
+                      // Track recommendation tap
+                      FirebaseAnalyticsService.instance.logMovieView(
+                        movieId: movie.id,
+                        title: movie.title,
+                        rating: movie.voteAverage,
+                      );
+
                       // Navigate to this movie's detail page
                       Navigator.of(context).push(
                         MaterialPageRoute(

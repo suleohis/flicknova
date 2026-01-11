@@ -123,13 +123,13 @@ class HomeNotifier extends Notifier<HomeState> {
       state = state.copyWith(trendingAll: all, isLoadingTrending: false);
 
       // Load video for hero movie (first trending movie)
-      if (all.isNotEmpty) {
-        if (all.first['media_type'] == 'movie') {
-          await _loadHeroVideo(all.first['id']);
-        } else {
-          await _loadTVShowHeroVideo(all.first['id']);
-        }
-      }
+      // if (all.isNotEmpty) {
+      //   if (all.first['media_type'] == 'movie') {
+      //     await _loadHeroVideo(all.first['id']);
+      //   } else {
+      //     await _loadTVShowHeroVideo(all.first['id']);
+      //   }
+      // }
     } catch (e) {
       state = state.copyWith(error: e.toString(), isLoadingTrending: false);
       if (kDebugMode) {
@@ -245,9 +245,9 @@ class HomeNotifier extends Notifier<HomeState> {
       state = state.copyWith(trendingTVShows: movies, isLoadingTrending: false);
 
       // Load video for hero movie (first trending movie)
-      if (movies.isNotEmpty) {
-        await _loadHeroVideo(movies.first.id);
-      }
+      // if (movies.isNotEmpty) {
+      //   await _loadHeroVideo(movies.first.id);
+      // }
     } catch (e) {
       state = state.copyWith(error: e.toString(), isLoadingTrending: false);
       if (kDebugMode) {

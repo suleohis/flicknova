@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/services/firebase_analytics_service.dart';
 import '../../../../core/services/notification_service.dart';
 import '../../../../generated/app_localizations.dart';
 import '../../../../routes/app_router.dart';
@@ -25,6 +26,9 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final s = S.of(context);
     final homeState = ref.watch(homeProvider);
+
+    // Track screen view
+    FirebaseAnalyticsService.instance.logScreenView('home_screen');
 
     return Scaffold(
       body: RefreshIndicator(
@@ -64,27 +68,31 @@ class HomeScreen extends ConsumerWidget {
                       NotificationService.showSuccess(
                         context: context,
                         message:
-                        '${homeState.trendingMovies.first.title } '
-                            '${ homeState.isInWatchlist ? s.removed:
-                        s.added}',
+                            '${homeState.trendingMovies.first.title} '
+                            '${homeState.isInWatchlist ? s.removed : s.added}',
                         title: s.success,
                       );
                     } else {
                       NotificationService.showError(
                         context: context,
-                        message:
-                        s.something_went_wrong,
+                        message: s.something_went_wrong,
                         title: s.error,
                       );
                     }
                   },
                   onTap: () {
+                    final movie = homeState.trendingMovies.first;
+                    FirebaseAnalyticsService.instance.logMovieView(
+                      movieId: movie.id,
+                      title: movie.title,
+                      rating: movie.voteAverage,
+                    );
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => MovieDetailScreen(
-                          movieId: homeState.trendingMovies.first.id,
-                          mediaType: homeState.trendingMovies.first.mediaType,
+                          movieId: movie.id,
+                          mediaType: movie.mediaType,
                         ),
                       ),
                     );
@@ -122,6 +130,11 @@ class HomeScreen extends ConsumerWidget {
                 child: TrendingCarousel(
                   movies: homeState.trendingMovies,
                   onMovieTap: (movie) {
+                    FirebaseAnalyticsService.instance.logMovieView(
+                      movieId: movie.id,
+                      title: movie.title,
+                      rating: movie.voteAverage,
+                    );
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -213,25 +226,23 @@ class HomeScreen extends ConsumerWidget {
                     itemCount: homeState.topRatedMovies.take(10).length,
                     itemBuilder: (context, index) {
                       final movie = homeState.topRatedMovies[index];
-                      return Flexible(
-                        child: Container(
-                          width: 340.w,
-                          padding: EdgeInsets.only(right: 12.w),
-                          child: TopTenItem(
-                            rank: index + 1,
-                            movie: movie,
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MovieDetailScreen(
-                                    movieId: movie.id,
-                                    mediaType: movie.mediaType,
-                                  ),
+                      return Container(
+                        width: 340.w,
+                        padding: EdgeInsets.only(right: 12.w),
+                        child: TopTenItem(
+                          rank: index + 1,
+                          movie: movie,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MovieDetailScreen(
+                                  movieId: movie.id,
+                                  mediaType: movie.mediaType,
                                 ),
-                              );
-                            },
-                          ),
+                              ),
+                            );
+                          },
                         ),
                       );
                     },

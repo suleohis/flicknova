@@ -1,4 +1,5 @@
 import 'package:flicknova/core/extensions/context_theme_extension.dart';
+import 'package:flicknova/core/services/firebase_analytics_service.dart';
 import 'package:flicknova/core/theme/app_colors.dart';
 import 'package:flicknova/features/person_detail/presentation/providers/person_detail_notifier.dart';
 import 'package:flicknova/features/person_detail/presentation/widgets/biography_section.dart';
@@ -27,6 +28,9 @@ class _PersonDetailScreenState extends ConsumerState<PersonDetailScreen> {
     // Load person details when screen initializes
     Future.microtask(() {
       ref.read(personDetailProvider.notifier).loadPersonDetail(widget.personId);
+
+      // Track screen view
+      FirebaseAnalyticsService.instance.logScreenView('person_detail_screen');
     });
   }
 

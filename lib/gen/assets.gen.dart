@@ -17,8 +17,11 @@ import 'package:vector_graphics/vector_graphics.dart' as _vg;
 class $AssetsBrandingGen {
   const $AssetsBrandingGen();
 
+  /// File path: assets/branding/logo.png
+  AssetGenImage get logoPng => const AssetGenImage('assets/branding/logo.png');
+
   /// File path: assets/branding/logo.svg
-  SvgGenImage get logo => const SvgGenImage('assets/branding/logo.svg');
+  SvgGenImage get logoSvg => const SvgGenImage('assets/branding/logo.svg');
 
   /// File path: assets/branding/logo_name.svg
   SvgGenImage get logoName => const SvgGenImage('assets/branding/logo_name.svg');
@@ -27,7 +30,7 @@ class $AssetsBrandingGen {
   SvgGenImage get logoNoB => const SvgGenImage('assets/branding/logo_no_b.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values => [logo, logoName, logoNoB];
+  List<dynamic> get values => [logoPng, logoSvg, logoName, logoNoB];
 }
 
 class $AssetsIconsGen {

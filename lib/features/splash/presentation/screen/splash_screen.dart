@@ -47,7 +47,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
               mainAxisAlignment: .center,
               mainAxisSize: .min,
               children: [
-                Assets.branding.logo.svg(height: 110.h, fit: BoxFit.fill),
+                Assets.branding.logoSvg.svg(height: 110.h, fit: BoxFit.fill),
                 SizedBox(height: 5),
                 Assets.branding.logoName.svg(height: 48.h, width: 228.w),
                 Text(

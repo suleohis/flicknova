@@ -16,17 +16,14 @@ import 'generated/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
 
   try {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
+    // Configure Crashlytics to catch Flutter errors
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-
 
     // Pass all uncaught asynchronous errors to Crashlytics
     PlatformDispatcher.instance.onError = (error, stack) {
@@ -37,16 +34,12 @@ void main() async {
     debugPrint('Firebase initialization error: $e');
   }
 
-  await Supabase.initialize(
-    url: Env.supabaseUrl,
-    anonKey: Env.supabaseAnonKey,
-  );
+  await Supabase.initialize(url: Env.supabaseUrl, anonKey: Env.supabaseAnonKey);
 
   // Initialize TMDB client early
   TmdbClient().init();
 
-  runApp(ProviderScope(
-      child: MyApp()));
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends ConsumerWidget {
@@ -55,7 +48,7 @@ class MyApp extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, ref) {
-    return  ScreenUtilInit(
+    return ScreenUtilInit(
       designSize: const Size(402, 804),
       ensureScreenSize: true,
       minTextAdapt: true,

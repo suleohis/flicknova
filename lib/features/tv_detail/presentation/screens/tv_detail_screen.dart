@@ -17,6 +17,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flicknova/core/extensions/context_extension.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/services/firebase_analytics_service.dart';
 import '../../../../core/services/notification_service.dart';
 import '../../../../core/widgets/youtube_player_widget.dart';
 import '../../../person_detail/presentation/screens/person_detail_screen.dart';
@@ -35,7 +36,12 @@ class _TVDetailScreenState extends ConsumerState<TVDetailScreen> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      ref.read(tvDetailProvider.notifier).loadTVSeriesDetail(widget.seriesId, 'tv');
+      ref
+          .read(tvDetailProvider.notifier)
+          .loadTVSeriesDetail(widget.seriesId, 'tv');
+
+      // Track screen view
+      FirebaseAnalyticsService.instance.logScreenView('tv_detail_screen');
     });
   }
 
@@ -151,34 +157,41 @@ class _TVDetailScreenState extends ConsumerState<TVDetailScreen> {
                     padding: EdgeInsets.all(16.w),
                     child: Row(
                       children: [
-                        if  (detailState.series?.videos?.results != null &&
+                        if (detailState.series?.videos?.results != null &&
                             (detailState.series?.videos?.results.isNotEmpty ??
                                 false))
-                        Expanded(
-                          child: ElevatedButton.icon(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => YouTubePlayerWidget(
-                                    videoKey: detailState.series?.videos?.results.last.key ??'',
-                                    title: detailState.series?.name ??''
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => YouTubePlayerWidget(
+                                      videoKey:
+                                          detailState
+                                              .series
+                                              ?.videos
+                                              ?.results
+                                              .last
+                                              .key ??
+                                          '',
+                                      title: detailState.series?.name ?? '',
+                                    ),
                                   ),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.playButton,
+                                foregroundColor: AppColors.background,
+                                padding: EdgeInsets.symmetric(vertical: 14.h),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.r),
                                 ),
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.playButton,
-                              foregroundColor: AppColors.background,
-                              padding: EdgeInsets.symmetric(vertical: 14.h),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.r),
                               ),
+                              icon: Icon(Icons.play_arrow, size: 24.sp),
+                              label: Text(s.play_trailer),
                             ),
-                            icon: Icon(Icons.play_arrow, size: 24.sp),
-                            label: Text(s.play_trailer),
                           ),
-                        ),
                         SizedBox(width: 12.w),
                         Expanded(
                           child: WatchlistButton(
@@ -194,16 +207,14 @@ class _TVDetailScreenState extends ConsumerState<TVDetailScreen> {
                                 NotificationService.showSuccess(
                                   context: context,
                                   message:
-                                  '${detailState.series?.name ?? ''} '
-                                      '${ detailState.isInWatchlist ? s.removed:
-                                  s.added}',
+                                      '${detailState.series?.name ?? ''} '
+                                      '${detailState.isInWatchlist ? s.removed : s.added}',
                                   title: s.success,
                                 );
                               } else {
                                 NotificationService.showError(
                                   context: context,
-                                  message:
-                                  s.something_went_wrong,
+                                  message: s.something_went_wrong,
                                   title: s.error,
                                 );
                               }
@@ -324,11 +335,16 @@ class _TVDetailScreenState extends ConsumerState<TVDetailScreen> {
   Widget _buildCastCard(BuildContext context, CastMemberEntity actor) {
     return GestureDetector(
       onTap: () {
+        // Track person view
+        FirebaseAnalyticsService.instance.logPersonView(
+          personId: actor.id,
+          name: actor.name,
+        );
+
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                PersonDetailScreen(personId: actor.id),
+            builder: (context) => PersonDetailScreen(personId: actor.id),
           ),
         );
       },

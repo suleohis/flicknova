@@ -1,4 +1,5 @@
 import 'package:flicknova/core/models/tv_show_entity.dart';
+import 'package:flicknova/core/services/firebase_analytics_service.dart';
 import 'package:flicknova/features/tv_detail/presentation/screens/tv_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,6 +31,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     final searchState = ref.watch(searchProvider);
     final recentlyViewed = ref.watch(recentlyViewedProvider);
     final homeState = ref.watch(homeProvider);
+
+    // Track screen view
+    FirebaseAnalyticsService.instance.logScreenView('search_screen');
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -76,7 +80,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             onCategorySelected: (category) {
               ref.read(searchProvider.notifier).selectedGenreOnTap(category);
             },
-
           ),
         ),
 
@@ -100,11 +103,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           SliverToBoxAdapter(
             child: SearchResultsGrid(
               results: searchState.results.where((genre) {
-                if (searchState.selectedGenres.isEmpty)
-                  {
-                    return true;
-                  }
-                else {
+                if (searchState.selectedGenres.isEmpty) {
+                  return true;
+                } else {
                   if (genre is MovieEntity) {
                     return searchState.selectedGenres.any((selectedGenre) {
                       return genre.genreIds.contains(selectedGenre.id);
@@ -123,9 +124,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 if (item is MovieEntity) {
                   ref.read(recentlyViewedProvider.notifier).addMovie(item);
                 }
-                if (item is TVShowEntity) {
-
-                }
+                if (item is TVShowEntity) {}
               },
             ),
           ),
@@ -153,7 +152,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MovieDetailScreen(movieId: movie.id, mediaType: movie.mediaType,),
+                    builder: (context) => MovieDetailScreen(
+                      movieId: movie.id,
+                      mediaType: movie.mediaType,
+                    ),
                   ),
                 );
               },
@@ -176,7 +178,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MovieDetailScreen(movieId: movie.id, mediaType: movie.mediaType,),
+                    builder: (context) => MovieDetailScreen(
+                      movieId: movie.id,
+                      mediaType: movie.mediaType,
+                    ),
                   ),
                 );
               },
@@ -190,7 +195,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   ),
                 );
               },
-
             ),
             SizedBox(height: 32.h),
           ],
@@ -200,7 +204,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             genres: searchState.genres,
             selectedGenres: searchState.selectedGenres,
             onGenreSelected: (genre) {
-             ref.read(searchProvider.notifier).selectedGenreOnTap(genre);
+              ref.read(searchProvider.notifier).selectedGenreOnTap(genre);
             },
           ),
 
