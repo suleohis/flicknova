@@ -45,7 +45,6 @@ class TopCastScreen extends ConsumerWidget {
               ),
             ),
           );
-          ;
         },
       ),
     );
@@ -56,7 +55,7 @@ class _TopCastCard extends StatelessWidget {
   final CastMemberEntity cast;
   final VoidCallback? onTap;
 
-  const _TopCastCard({super.key, required this.cast, this.onTap});
+  const _TopCastCard({ required this.cast, this.onTap});
 
   @override
   Widget build(BuildContext context) {

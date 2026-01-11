@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:140319445760:android:aca30db3569ae3896e99e5",
+        "android_client_info": {
+          "package_name": "com.ephraimlabs.flicknova"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClVD1gdftQN8KVxiWMppDCADUL0pq1Xmw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:140319445760:android:28c41693ea79d1f56e99e5",
         "android_client_info": {
           "package_name": "com.example.flicknova"

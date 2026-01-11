@@ -229,7 +229,7 @@ class _EpisodeCardState extends State<EpisodeCard> {
               width: 32.w,
               height: 32.w,
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.6),
+                color: Colors.black.withValues(alpha: 0.6),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -248,7 +248,7 @@ class _EpisodeCardState extends State<EpisodeCard> {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.7),
+                  color: Colors.black.withValues(alpha: 0.7),
                   borderRadius: BorderRadius.circular(4.r),
                 ),
                 child: Text(

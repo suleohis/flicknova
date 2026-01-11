@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/models/movie_entity.dart';
-import '../../../../core/services/notification_service.dart';
 import '../../../watchlist/data/watchlist_service.dart';
 import '../../../watchlist/domain/entities/watchlist_item_entity.dart';
 import '../../data/repositories/movie_detail_repository_impl.dart';

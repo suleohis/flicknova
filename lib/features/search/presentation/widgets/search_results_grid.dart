@@ -1,14 +1,12 @@
 import 'package:flicknova/core/extensions/context_theme_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../core/models/movie_entity.dart';
 import '../../../../core/models/person_entity.dart';
 import '../../../../core/models/tv_show_entity.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../generated/app_localizations.dart';
-import '../../../../routes/app_router.dart';
 import '../../../home/presentation/widgets/movie_card.dart';
 import '../../../home/presentation/widgets/person_card.dart';
 import '../../../home/presentation/widgets/tv_card.dart';

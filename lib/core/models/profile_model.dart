@@ -11,6 +11,7 @@ class ProfileModel extends ProfileEntity {
     super.watchList,
   });
 
+  @override
   ProfileModel copyWith({
     String? id,
     String? displayName,

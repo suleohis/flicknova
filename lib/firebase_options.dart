@@ -52,7 +52,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyClVD1gdftQN8KVxiWMppDCADUL0pq1Xmw',
-    appId: '1:140319445760:android:28c41693ea79d1f56e99e5',
+    appId: '1:140319445760:android:aca30db3569ae3896e99e5',
     messagingSenderId: '140319445760',
     projectId: 'flicknova-app',
     storageBucket: 'flicknova-app.firebasestorage.app',
@@ -60,20 +60,20 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyA3pSpvJQ_srgAdJZaA2LWp4TIAZnpSPSs',
-    appId: '1:140319445760:ios:52e0d0802b79c3f56e99e5',
+    appId: '1:140319445760:ios:b68386b34a71204c6e99e5',
     messagingSenderId: '140319445760',
     projectId: 'flicknova-app',
     storageBucket: 'flicknova-app.firebasestorage.app',
-    iosBundleId: 'com.example.flicknova',
+    iosBundleId: 'com.ephraimlabs.flicknova',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyA3pSpvJQ_srgAdJZaA2LWp4TIAZnpSPSs',
-    appId: '1:140319445760:ios:52e0d0802b79c3f56e99e5',
+    appId: '1:140319445760:ios:b68386b34a71204c6e99e5',
     messagingSenderId: '140319445760',
     projectId: 'flicknova-app',
     storageBucket: 'flicknova-app.firebasestorage.app',
-    iosBundleId: 'com.example.flicknova',
+    iosBundleId: 'com.ephraimlabs.flicknova',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'flicknova-app.firebasestorage.app',
     measurementId: 'G-51CP7HVGMD',
   );
+
 }

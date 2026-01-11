@@ -3,10 +3,10 @@ import '../../domain/entities/user_entity.dart';
 
 class UserModel extends UserEntity {
   UserModel({
-    required String id,
-    required String email,
-    required String? displayName,
-  }) : super(id: id, email: email, displayName: displayName);
+    required super.id,
+    required super.email,
+    required super.displayName,
+  });
 
   factory UserModel.fromSupabase(supabase.User user) {
     return UserModel(

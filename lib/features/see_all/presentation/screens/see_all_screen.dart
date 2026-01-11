@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../core/models/movie_entity.dart';
 import '../../../../core/models/person_entity.dart';
 import '../../../../core/models/tv_show_entity.dart';
-import '../../../../routes/app_router.dart';
 import '../../../../shared/app_loading.dart';
 import '../../../home/presentation/widgets/movie_card.dart';
 import '../../../home/presentation/widgets/person_card.dart';

@@ -7,7 +7,6 @@ import '../../../../core/services/notification_service.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/youtube_player_widget.dart';
 import '../../../../shared/app_loading.dart';
-import '../../../tv_detail/presentation/providers/tv_detail_notifier.dart';
 import '../providers/movie_detail_notifier.dart';
 import '../widgets/action_buttons_row.dart';
 import '../widgets/cast_list.dart';

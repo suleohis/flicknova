@@ -39,6 +39,7 @@ class MovieModel extends MovieEntity {
     );
   }
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'id': id,

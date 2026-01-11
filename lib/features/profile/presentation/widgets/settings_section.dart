@@ -50,7 +50,7 @@ class _SettingsSectionState extends State<SettingsSection> {
                     _notificationsEnabled = value;
                   });
                 },
-                activeColor: AppColors.primary,
+                activeTrackColor: AppColors.primary,
               ),
             ],
           ),

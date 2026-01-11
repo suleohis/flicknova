@@ -19,7 +19,6 @@ class UserStatsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final s = S.of(context);
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w),

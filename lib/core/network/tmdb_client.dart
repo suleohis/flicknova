@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
+import 'package:flutter/foundation.dart';
 import 'package:stack_trace/stack_trace.dart';
 import '../../env/env.dart';
 import 'tmdb_exception.dart';
@@ -183,7 +184,7 @@ class TmdbClient {
 
     // Rate limit specific handling
     if (tmdbCode == 25 || statusCode == 429) {
-      final retryAfter = response?.headers.value('retry-after');
+      // final retryAfter = response?.headers.value('retry-after');
       // You could add exponential backoff here
     }
 
@@ -195,7 +196,7 @@ class TmdbClient {
     );
 
     // Log with full stack trace
-    print('TMDB ERROR: $exception\n${exception.stackTrace}');
+    debugPrint('TMDB ERROR: $exception\n${exception.stackTrace}');
 
     throw exception;
   }

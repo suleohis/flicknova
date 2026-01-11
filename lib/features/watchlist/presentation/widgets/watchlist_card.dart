@@ -76,7 +76,7 @@ class WatchlistCard extends StatelessWidget {
                       end: Alignment.topCenter,
                       colors: [
                         AppColors.background,
-                        AppColors.background.withOpacity(0.8),
+                        AppColors.background.withValues(alpha: 0.8),
                         Colors.transparent,
                       ],
                     ),

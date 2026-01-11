@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../generated/app_localizations.dart';
-import '../../../auth/presentation/providers/auth_notifier.dart';
 
 class CustomBottomNavBar extends ConsumerWidget {
   final int currentIndex;
@@ -20,7 +19,7 @@ class CustomBottomNavBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final s = S.of(context);
-    final authState = ref.watch(authProvider);
+    // final authState = ref.watch(authProvider);
     // final avatarUrl = authState.profile?.avatarUrl;
 
     return Container(
