@@ -24,4 +24,7 @@ abstract class Env {
 
   @EnviedField(varName: 'ENABLE_LOGGING')
   static final String enableLogging = _Env.enableLogging;
+
+  @EnviedField(varName: 'SUPABASE_WEB_CLIENT_ID')
+  static final String supabaseWebClientId = _Env.supabaseWebClientId;
 }

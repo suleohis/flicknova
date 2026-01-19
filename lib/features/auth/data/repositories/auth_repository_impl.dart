@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flicknova/core/models/profile_model.dart';
 import 'package:flicknova/core/utils/api_const.dart';
+import 'package:flicknova/env/env.dart';
 import 'package:flicknova/features/auth/data/models/user_model.dart';
 import 'package:flicknova/features/auth/domain/repositories/auth_repository.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -15,8 +16,7 @@ import '../../domain/entities/user_entity.dart';
 class AuthRepositoryImpl implements AuthRepository {
   final SupabaseClient _client = Supabase.instance.client;
   // Use your Web Client ID here (from Google Cloud Web client)
-  static const String _webClientId =
-      '996389293594-58f48nr2m2ajrv3v5p4osiaqdjaf1kv8.apps.googleusercontent.com';
+
 
   // Optional: iOS-specific client ID for better native flow
   // static const String? _iosClientId =
@@ -27,7 +27,7 @@ class AuthRepositoryImpl implements AuthRepository {
     final GoogleSignIn googleSignIn = GoogleSignIn.instance;
     unawaited(
       googleSignIn.initialize(
-        serverClientId: _webClientId, // Required for Supabase
+        serverClientId: Env.supabaseWebClientId, // Required for Supabase
         // clientId: _iosClientId,        // iOS native
       ),
     );
