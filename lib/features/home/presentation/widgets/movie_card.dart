@@ -68,7 +68,7 @@ class MovieCard extends StatelessWidget {
             Text(
               movie.title,
               style: context.bodyMedium.copyWith(fontWeight: FontWeight.w600),
-              maxLines: 2,
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             SizedBox(height: 4.h),
